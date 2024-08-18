@@ -1,0 +1,118 @@
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+   <div class="title">
+      Penalties
+   </div>
+
+   <div class="left_wrap">
+      Penalty List
+      <div class="wrapper">
+         <div class="table" id="list_table">
+            <div class="row header"><div class="cell">Data</div></div>
+            <div class="row"><div class="cell" data-title="Row">No data Found</div></div>
+         </div>
+      </div>
+   </div>
+
+   <div class="right_wrap">
+      <span id="selected_title">Selected Penalty</span> 
+      <div class="wrapper">
+         <div class="table">
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  penalty_id
+               </div>
+               <div class="cell" data-title="Row">
+                  &nbsp;
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  round_no
+               </div>
+               <div class="cell" data-title="Row" id="penalty_round_no">
+                  <select id="session_no_select"></select>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  incident_no
+               </div>
+               <div class="cell" data-title="Row" id="penalty_incident_no">
+                  <select id="session_no_select"></select>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  session_no
+               </div>
+               <div class="cell" data-title="Row">
+                  <select id="session_no_select"></select>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  score_event
+               </div>
+               <div class="cell" data-title="Row" id="penalty_score_event">
+                  <select id="score_event_select"></select>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  cust_id
+               </div>
+               <div class="cell" data-title="Row">
+                  <input id="cust_id_input" style="display:none"></input><button style="display: none" id="find_driver_btn">find</button><span id="driver_cust_id"><i>click on a cust_id</i></span>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  display_name
+               </div>
+               <div class="cell" data-title="Row" id="penalty_display_name">
+                  &nbsp;
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  positions
+               </div>
+               <div class="cell" data-title="Row" id="penalty_positions">
+                  &nbsp;
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="cell row header" data-title="Row">
+                  championship_points
+               </div>
+               <div class="cell" data-title="Row" id="penalty_championship_points">
+                  &nbsp;
+               </div>
+            </div>
+
+         </div>
+         <button id="save_btn">save</button>
+         <button id="delete_btn">delete</button>
+         <button id="add_btn">add</button>
+         <button id="new_btn">new</button>
+      </div>
+   </div>
+
+   <script src="penalties.js"></script>
+
+</body>

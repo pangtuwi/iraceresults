@@ -1,0 +1,27 @@
+Edits
+   2024-06-19 : Removed Pedro Ramada from eRacecraft Team as per message from Mark Sykes on 06/05
+   2024-06-19 : Added Kerr Wharrie to GT3 Gold as per note from Gaz
+   2024-06-19 : Added Erik Sivertsen to GT3 Bronze as per note from Gaz
+   2024-06-19 : Added Ian Manners to GT3 Silver as wss P11 result both races
+   2024-06-19 : Added Matt Emmens to GT3 Silver as wss P14 / P20 result 
+
+   2024-07-06 : corrected fastest lap calculation
+   2024-07-06 : applied penalties for rounds 4 (Indy) and 5 (R Atlanta)
+   2024-07-06 : James Smaggaasgale added to GTP Silver
+   2024-07-06 : Ryan Walker added to GTP Silver
+   2024-07-06 : James Smaggaasgale added to Team AZZ Tech Racing
+   2024-07-06 : Added in Round 6 (Sebring Endurance round)
+
+   2024-07-16 : Added in 75% laps rule
+   
+ ToDo:
+
+ - apply penalties (Round 6)
+ - apply penalties for changing cars.
+ - apply penalties (Round 7)
+ - apply driver car and class changes
+ - fix where classtotals.json and teamstotals.json is saved / loaded
+ 
+
+
+ 

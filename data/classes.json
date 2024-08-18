@@ -1,0 +1,22 @@
+[
+   {
+       "classname": "LMDH Gold",
+       "classnumber": 1 
+   },
+   {
+       "classname": "LMDH Silver",
+       "classnumber": 2
+   },
+   {
+       "classname": "GT3 Gold",
+       "classnumber": 3 
+   },
+   {
+       "classname": "GT3 Silver",
+       "classnumber": 4 
+   },
+   {
+       "classname": "GT3 Bronze",
+       "classnumber": 5 
+   }
+]

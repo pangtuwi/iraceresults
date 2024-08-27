@@ -1,0 +1,4 @@
+{
+   "apply_drop_scores" : "TRUE",
+   "no_drop_scores_rounds" : [10] 
+}

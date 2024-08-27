@@ -1,0 +1,298 @@
+[
+   {
+      "team_name": "Crest Autosport",
+      "drivers": [
+         {
+            "cust_id": 395972,
+            "display_name": "Nigel Stock"
+         },
+         {
+            "cust_id": 712518,
+            "display_name": "Steven De Greveleer"
+         }
+      ]
+   },
+   {
+      "team_name": "SCCR SimSports",
+      "drivers": [
+         {
+            "cust_id": 357198,
+            "display_name": "Craig Jones7"
+         },
+         {
+            "cust_id": 566232,
+            "display_name": "Kevin Stringer3"
+         }
+      ]
+   },
+   {
+      "team_name": "AZZ Tech Racing",
+      "drivers": [
+         {
+            "cust_id": 846950,
+            "display_name": "Matthew Cheverton"
+         },
+         {
+            "cust_id": 361745,
+            "display_name": "Jake Pitt"
+         },
+         {
+            "cust_id": 795214,
+            "display_name": "James Smaggasgale"
+         }
+      ]
+   },
+   {
+      "team_name": "eRACECraft Yellow",
+      "drivers": [
+         {
+            "cust_id": 144404,
+            "display_name": "Igor Martinez"
+         },
+         {
+            "cust_id": 170412,
+            "display_name": "Jorge Bentes"
+         }
+      ]
+   },
+   {
+      "team_name": "eRACECraft Black",
+      "drivers": [
+         {
+            "cust_id": 293812,
+            "display_name": "Miguel Alpalhão"
+         },
+         {
+            "cust_id": 801520,
+            "display_name": "Rui Soares3"
+         },
+         {
+            "cust_id": 356615,
+            "display_name": "Ricardo Santos5"
+         }
+      ]
+   },
+   {
+      "team_name": "eRACECraft Red",
+      "drivers": [
+         {
+            "cust_id": 238912,
+            "display_name": "Rui R. Reis"
+         },
+         {
+            "cust_id": 839172,
+            "display_name": "Diogo L Sá"
+         }
+      ]
+   },
+   {
+      "team_name": "Full Tilt vMotorsport Purple",
+      "drivers": [
+         {
+            "cust_id": 322197,
+            "display_name": "Nathan Healy"
+         },
+         {
+            "cust_id": 547183,
+            "display_name": "Dwayne Hoffman"
+         }
+      ]
+   },
+   {
+      "team_name": "Full Tilt vMotorsport Green",
+      "drivers": [
+         {
+            "cust_id": 505814,
+            "display_name": "William Guthrie"
+         },
+         {
+            "cust_id": 764555,
+            "display_name": "Hugo Silva10"
+         }
+      ]
+   },
+   {
+      "team_name": "Full Tilt vMotorsport Pink",
+      "drivers": [
+         {
+            "cust_id": 681489,
+            "display_name": "Karel Pucalka"
+         },
+         {
+            "cust_id": 430559,
+            "display_name": "Jesse Payne-Wilkins"
+         }
+      ]
+   },
+   {
+      "team_name": "Quatermass Motorsport",
+      "drivers": [
+         {
+            "cust_id": 900935,
+            "display_name": "Andy Chell"
+         },
+         {
+            "cust_id": 452031,
+            "display_name": "Ben Benneyworth2"
+         }
+      ]
+   },
+   {
+      "team_name": "287 Motorsport",
+      "drivers": [
+         {
+            "cust_id": 668882,
+            "display_name": "Costa Chatzikonstantinou"
+         }
+      ]
+   },
+   {
+      "team_name": "CSA (team Woza)",
+      "drivers": [
+         {
+            "cust_id": 888953,
+            "display_name": "Wesley Lewin"
+         },
+         {
+            "cust_id": 717473,
+            "display_name": "Shaun F Schutte"
+         },
+         {
+            "cust_id": 684107,
+            "display_name": "Stephan Wessels"
+         }
+      ]
+   },
+   {
+      "team_name": "CSA (team Izzit)",
+      "drivers": [
+         {
+            "cust_id": 450627,
+            "display_name": "Davide Favo"
+         },
+         {
+            "cust_id": 98121,
+            "display_name": "Jeffrey Kruger"
+         }
+      ]
+   },
+   {
+      "team_name": "CSA (team Pasop)",
+      "drivers": [
+         {
+            "cust_id": 645127,
+            "display_name": "Elwyn Sykes"
+         },
+         {
+            "cust_id": 1007157,
+            "display_name": "Edwin Simpson"
+         }
+      ]
+   },
+   {
+      "team_name": "United Sim Team",
+      "drivers": [
+         {
+            "cust_id": 872230,
+            "display_name": "Luca Munro"
+         }
+      ]
+   },
+   {
+      "team_name": "Little Fuzzy Racing",
+      "drivers": [
+         {
+            "cust_id": 725757,
+            "display_name": "Baz Meacham"
+         }
+      ]
+   },
+   {
+      "team_name": "Whisky Runners Racing",
+      "drivers": [
+         {
+            "cust_id": 565878,
+            "display_name": "Daniel Fritz4"
+         }
+      ]
+   },
+   {
+      "team_name": "SimRace Sweden eSport",
+      "drivers": [
+         {
+            "cust_id": 370322,
+            "display_name": "Myles Owens"
+         },
+         {
+            "cust_id": 720558,
+            "display_name": "Edvin Forslund"
+         }
+      ]
+   },
+   {
+      "team_name": "Speed 9 eSports",
+      "drivers": [
+         {
+            "cust_id": 214278,
+            "display_name": "Mark Baker7"
+         },
+         {
+            "cust_id": 532447,
+            "display_name": "Paul N T Williams"
+         },
+         {
+            "cust_id": 435038,
+            "display_name": "Jochen Siegert"
+         }
+      ]
+   },
+   {
+      "team_name": "Varano Motorsport",
+      "drivers": [
+         {
+            "cust_id": 562993,
+            "display_name": "Kevin Smith21"
+         }
+      ]
+   },
+   {
+      "team_name": "Snakes Unite Racing",
+      "drivers": [
+         {
+            "cust_id": 436196,
+            "display_name": "Gareth Williams7"
+         },
+         {
+            "cust_id": 807048,
+            "display_name": "Benjamin Mccluskey"
+         }
+      ]
+   },
+   {
+      "team_name": "Frostbyte Motorsport",
+      "drivers": [
+         {
+            "cust_id": 730048,
+            "display_name": "Max Daleiden"
+         }
+      ]
+   },
+   {
+      "team_name": "Full Tilt vMotorsport Blue",
+      "drivers": [
+         {
+            "cust_id": 876012,
+            "display_name": "Ben Altria"
+         }
+      ]
+   },
+   {
+      "team_name": "Team Blue Racing",
+      "drivers": [
+      {
+         "cust_id": 527169,
+         "display_name": "Andy Rooney"
+      }
+   ]
+   }
+]

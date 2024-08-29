@@ -1,14 +1,14 @@
 [
    {
-       "classname": "Gold",
+       "classname": "Pro",
        "classnumber": 1 
    },
    {
-       "classname": "Silver",
+       "classname": "Pro-Am",
        "classnumber": 2
    },
    {
-       "classname": "Bronze",
+       "classname": "Am",
        "classnumber": 3 
    }
 ]

@@ -1,8 +1,10 @@
 const jsonloader = require('./jsonloader');
 const utils = require('./utils/utils');
-//const config = require('./data/config.json');
+const config = require('./data/config.json');
 
 let DriverScoreTable = {};
+let Drivers = {};
+let OriginalDrivers = {};
 
 //Returns score for position from scoring array 
 function getScore(position, scoring) {
@@ -107,6 +109,18 @@ function createClassResultsArray(results, classes, drivers, min_lap_ratio) {
    });
    results.forEach(result => {
       let thisDriver = drivers.find(item => item.cust_id === result.cust_id);
+      if (thisDriver == undefined) {
+         let newDriver = {};
+         newDriver.cust_id = result.cust_id;
+         newDriver.display_name = result.display_name;
+         newDriver.classnumber = config.class_to_add_new_drivers_to;
+         //drivers.push(newDriver);
+         
+         if (config.class_to_add_new_drivers_to != -1 ) {
+            Drivers.push(newDriver);
+            thisDriver = newDriver;
+         }
+      }
       try {
          let classIndex = classResults.findIndex(item => item.classnumber === thisDriver.classnumber);
          let newPositionResult = new Object();
@@ -140,13 +154,16 @@ function createClassResultsArray(results, classes, drivers, min_lap_ratio) {
       }
       catch (err) {
          console.log(" - - - Driver : " + result.display_name + " not found in League Driver list");
+
       }
    });
+
+   if (config.class_to_add_new_drivers_to != -1) jsonloader.saveDrivers(Drivers);
 
    // Process finish interval times (needed for time penalties).   
    // Reset to class leader = 0 and assume +10s gap for everyone > 1 lap down  (note - not accurate just a way to handle)
    classResults.forEach(driverClass => {
-      let first_in_class_interval = driverClass.positions[0].class_interval;
+      let first_in_class_interval = driverClass.positions.length > 0 ? driverClass.positions[0].class_interval : 0;
       let first_in_class_interval_offset = 0;
       let previous_driver_interval = 0;
       if (first_in_class_interval > 0) {
@@ -193,9 +210,11 @@ function updateDriverScoreTable(subSessionResultsByClass, round_no, score_no, sc
       for (var pos = 0; pos < subSessionResultsByClass[class_index].positions.length; pos++) {
          let classPositionDriver = subSessionResultsByClass[class_index].positions[pos];
          let driver = thisClass.drivers.find(item => item.cust_id === classPositionDriver.cust_id);
-         driver.scores[array_position] = classPositionDriver.score;
-         driver.positions[array_position] = pos + 1;
-         driver.penalties[array_position] = classPositionDriver.championship_penalty;
+         if (driver) {
+            driver.scores[array_position] = classPositionDriver.score;
+            driver.positions[array_position] = pos + 1;
+            driver.penalties[array_position] = classPositionDriver.championship_penalty;
+         }
       }
       class_index++;
    }
@@ -335,14 +354,16 @@ async function calc(seasonSessions) {
    const score_array_sizes = getScoreArraySizes(season);  //Calculate size of scoring array 
 
    //load json file containing list of Drivers for season and put into correct classes in DriverScoreTable
-   var Drivers = await jsonloader.getDrivers();
+   Drivers = await jsonloader.getDrivers();
+   OriginalDrivers = Drivers;
+
    Drivers.forEach(driver => {   //create score arrays and put each driver into correct position in class array
       driver.scores = new Array(score_array_sizes.total).fill(0);   //Score Array filled with zeros
       driver.positions = new Array(score_array_sizes.total).fill(0);   //position Array filled with zeros
       driver.penalties = new Array(score_array_sizes.total).fill(0);   //penalties Array filled with zeros
       let driverClassNumber = driver.classnumber;
       const index = DriverScoreTable.findIndex(elem => elem.classnumber === driverClassNumber);
-      DriverScoreTable[index].drivers.push(driver);
+      if (index != -1) DriverScoreTable[index].drivers.push(driver);  
    });
 
    //Load driver Class Changes

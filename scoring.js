@@ -158,7 +158,24 @@ function createClassResultsArray(results, classes, drivers, min_lap_ratio) {
       }
    });
 
-   if (config.class_to_add_new_drivers_to != -1) jsonloader.saveDrivers(Drivers);
+   if (config.class_to_add_new_drivers_to != -1) {
+      /*const DriversToSave = Drivers.map(x => Object.assign({}, x,
+         { cust_id: x.cust_id ,
+            display_name : x.display_name,
+            classnumber : x.classnumber
+         }
+       )); */
+
+      const DriversToSave = Drivers.map(item => {
+         const container = {};
+         container.cust_id = item.cust_id;
+         container.display_name = item.display_name;
+         container.classnumber = item.classnumber;
+         return container;
+     })
+
+      jsonloader.saveDrivers(DriversToSave);
+   }
 
    // Process finish interval times (needed for time penalties).   
    // Reset to class leader = 0 and assume +10s gap for everyone > 1 lap down  (note - not accurate just a way to handle)

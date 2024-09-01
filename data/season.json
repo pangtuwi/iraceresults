@@ -27,7 +27,7 @@
             },{
                 "session_no": 2,
                 "event_type": "Race 2",
-                "subsession_id": 69000434,
+                "subsession_id": 70299051,
                 "scored_events" : [
                     {
                         "score_event": "Fastest Lap",
@@ -40,7 +40,23 @@
                         "scoring_system": 2         
                     }
                 ]
-            }
+            },{
+               "session_no": 3,
+               "event_type": "Race 3",
+               "subsession_id": 70299903,
+               "scored_events" : [
+                   {
+                       "score_event": "Fastest Lap",
+                       "simsession_name": "RACE",
+                       "scoring_system": 1            
+                   },
+                   {
+                       "score_event": "Race",
+                       "simsession_name": "RACE",
+                       "scoring_system": 2         
+                   }
+               ]
+           }
         ]    
    }  
 ]

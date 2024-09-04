@@ -1,14 +1,14 @@
-Pos,ID,Name,Qualifying,Fastest Lap,Race,Fastest Lap,Race,Fastest Lap,Race,Total
-1,1062148,Sam Bradley,0,0,50,0,50,0,50,145
-2,385849,Matt Emmens,0,0,28,0,28,0,28,128
-3,565878,Daniel Fritz4,0,0,45,0,45,0,45,121
-4,548231,Mark Kent,0,0,36,0,36,0,36,119
-5,659379,Josh Brown5,0,0,30,0,30,0,30,111
-6,419461,Mitchell West,0,0,40,0,40,0,40,98
-7,462190,Roy Plummer,0,0,32,0,32,0,32,94
-8,597893,Craig Tillotson5,0,0,34,0,34,0,34,94
-9,45526,Marcel Fritsch,5,0,0,0,0,0,0,90
-10,461979,Jonathan Collins3,0,5,55,5,55,5,55,86
-11,562993,Kevin Smith21,0,0,26,0,26,0,26,60
-12,1043171,Lewis Mason3,0,0,0,0,0,0,0,0
-13,668882,Costa Chatzikonstantinou,0,0,0,0,0,0,0,0
+Pos,ID,Name,Qualifying,Fastest Lap,Race,Laps Led,Fastest Lap,Race,Fastest Lap,Race,Total
+1,1062148,Sam Bradley,0,0,50,0,0,50,0,50,145
+2,385849,Matt Emmens,0,0,28,0,0,28,0,28,128
+3,565878,Daniel Fritz4,0,0,45,0,0,45,0,45,121
+4,548231,Mark Kent,0,0,36,0,0,36,0,36,119
+5,659379,Josh Brown5,0,0,30,0,0,30,0,30,111
+6,419461,Mitchell West,0,0,40,0,0,40,0,40,98
+7,462190,Roy Plummer,0,0,32,0,0,32,0,32,94
+8,597893,Craig Tillotson5,0,0,34,0,0,34,0,34,94
+9,45526,Marcel Fritsch,5,0,0,0,0,0,0,0,90
+10,461979,Jonathan Collins3,0,5,55,0,5,55,5,55,86
+11,562993,Kevin Smith21,0,0,26,0,0,26,0,26,60
+12,1043171,Lewis Mason3,0,0,0,0,0,0,0,0,0
+13,668882,Costa Chatzikonstantinou,0,0,0,0,0,0,0,0,0

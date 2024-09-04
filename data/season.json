@@ -22,6 +22,11 @@
                         "score_event": "Race",
                         "simsession_name": "RACE",
                         "scoring_system": 2         
+                    },
+                    {
+                        "score_event": "Laps Led",
+                        "simsession_name": "RACE",
+                        "scoring_system": 3         
                     }
                 ]
             },{

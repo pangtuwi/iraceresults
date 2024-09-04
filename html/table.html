@@ -99,12 +99,10 @@ https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascr
             <td class = "header-td"; colspan="100%"></td>
          </tr>
          <tr class = "button-tr">
-            <td width="15%"><button class="button-class-select" id="btn0" onclick="getData(0)"> LMDH Gold</button></td>
-            <td width="15%"><button class="button-class-select" id="btn1" onclick="getData(1)"> LMDH Silver</button></td>
-            <td width="15%"><button class="button-class-select" id="btn2" onclick="getData(2)"> GT3 Gold</button></td>
-            <td width="15%"><button class="button-class-select" id="btn3" onclick="getData(3)"> GT3 Silver</button></td>
-            <td width="15%"><button class="button-class-select" id="btn4" onclick="getData(4)"> GT3 Bronze</button></td>
-            <td width="15%"><button class="button-class-select" id="btn5" onclick="getTeamsData(5)"> Teams</button></td>
+            <td width="15%"><button class="button-class-select" id="btn0" onclick="getData(0)"> Pro</button></td>
+            <td width="15%"><button class="button-class-select" id="btn1" onclick="getData(1)"> Pro-Am</button></td>
+            <td width="15%"><button class="button-class-select" id="btn2" onclick="getData(2)"> Am</button></td>
+            <td width="15%"><button class="button-class-select" id="btn3" onclick="getTeamsData(3)"> Teams</button></td>
 
          </tr>
          <tr>
@@ -125,7 +123,7 @@ https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascr
       function toggleButtons (bNo){
          //Functon to toggle the button classes
          var buttonId = 0
-         for (let i = 0; i < 6; i++) {
+         for (let i = 0; i < 4; i++) {
             let thisBut = document.getElementById("btn"+i);
             console.log(thisBut);
             if (i == bNo) {

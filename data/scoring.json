@@ -16,5 +16,11 @@
       "scoring_type": "Position",
       "min_lap_ratio" : 0.75,
       "position_scores":[55, 50, 45, 40, 36, 34, 32, 30, 28, 26, 24, 22, 20, 18, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+   }, 
+   {
+      "scoring_category": "Laps Led",
+      "scoring_type": "Laps Led",
+      "min_lap_ratio" : 0.75,
+      "position_scores": [5]
    }
 ]

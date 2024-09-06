@@ -121,7 +121,7 @@ function createClassResultsArray(results, classes, drivers, min_lap_ratio) {
          newPositionResult.class_interval = result.class_interval;
          newPositionResult.laps_lead = result.laps_lead;
          newPositionResult.starting_position = result.starting_position;
-         newPositionResult.finish_position = result.finish_position;
+         newPositionResult.finish_position = result.finish_position + 1;  //iracing counts from 0 
          newPositionResult.championship_penalty = 0;
 
          classResults[classIndex].positionCounter = classResults[classIndex].positionCounter + 1;
@@ -129,7 +129,7 @@ function createClassResultsArray(results, classes, drivers, min_lap_ratio) {
             classResults[classIndex].leaderLapsCompleted = result.laps_complete;
          }
          let newPosition = classResults[classIndex].positionCounter;
-         newPositionResult.finish_position = newPosition
+         newPositionResult.finish_position = newPosition;
 
          if (result.reason_out == "Disconnected") {
             newPositionResult.finished = 0
@@ -138,11 +138,12 @@ function createClassResultsArray(results, classes, drivers, min_lap_ratio) {
          } else if (result.laps_complete < min_lap_ratio * classResults[classIndex].leaderLapsCompleted) {
             newPositionResult.finished = 0
             newPositionResult.position_after_penalties = -1
-            console.log(" - - - Driver " + result.display_name + " only completed "+ result.laps_complete + " of " + classResults[classIndex].leaderLapsCompleted + "laps.  DQ");
+            console.log(" - - - Driver " + result.display_name + " only completed "+ result.laps_complete + " of " + classResults[classIndex].leaderLapsCompleted + " laps.  DQ");
          } else {
             newPositionResult.finished = 1
             newPositionResult.position_after_penalties = newPosition
          }
+
          classResults[classIndex].positions.push(newPositionResult);
       }
       catch (err) {
@@ -150,6 +151,20 @@ function createClassResultsArray(results, classes, drivers, min_lap_ratio) {
 
       }
    });
+
+   //calculate starting position in class
+   let class_driver_count = [];
+   let class_counter = 0;
+   classResults.forEach(driverClass => {
+      class_counter += 1;
+      class_driver_count.push(driverClass.positions.length);
+      if (class_counter > 1) {
+         driverClass.positions.forEach(position => {
+            position.starting_position -= class_driver_count[class_counter-2];
+         });
+      }
+   });
+
 
    if (config.class_to_add_new_drivers_to != -1) {
       const DriversToSave = Drivers.map(item => {
@@ -352,12 +367,34 @@ function applyPositionScores(classResults, scoring) {
 function applyLapsLedScores(classResults, scoring) {
    classResults.forEach(driverClass => {
       driverClass.positions.forEach(position => {
-         position.score = position.laps_lead * getScore(1, scoring);
-         if (position.laps_lead > 0 ) console.log (" - - - ", position.display_name, " led for ", position.laps_lead, "laps and got additional score of ", position.score);
+
+         if (position.laps_lead > 0 ) {
+            position.score =  getScore(1, scoring);
+            console.log (" - - - ", position.display_name, " led for ", position.laps_lead, "laps and got additional score of ", position.score);
+         } else {
+            position.score = 0;
+         }
       });
    });
    return classResults
-} //applyPositionScores
+} //applyLapsLedScores
+
+
+// Inserts scores into driver Table based on Positions gained in class
+function applyPositionsGainedScores(classResults, scoring) {
+   classResults.forEach(driverClass => {
+      driverClass.positions.forEach(position => {
+         const positions_gained = position.position_after_penalties - position.starting_position;
+         if (positions_gained > 0 ) {
+            position.score = positions_gained * getScore(1, scoring);
+            console.log (" - - - ", position.display_name, " gained ", positions_gained, " positions and got additional score of ", position.score);
+         } else {
+            position.score = 0;
+         }
+      });
+   });
+   return classResults
+} //applyPositionsGainedScores
 
 
 //Calculates the scores for the whole season
@@ -439,11 +476,14 @@ async function calc(seasonSessions) {
             console.log(" - - - found penalties for this event ", subsession_penalties.length);
             resultsAfterPositionPenalties = applyPenalties(season, resultsSplitByClass, Drivers, subsession_penalties);
 
+            //ToDo Penlty for race must carry over to Positions gained (work around = 2 penalties)
             let score_type = scoring[scoreEvent.scoring_system].scoring_type;
             if ((score_type === "Position") || (score_type === "Fastest Lap")){
                scoredResults = applyPositionScores(resultsAfterPositionPenalties, subsession_score_array);
             } else if (score_type === "Laps Led"){
                scoredResults = applyLapsLedScores(resultsAfterPositionPenalties, subsession_score_array);
+            } else if (score_type === "Positions Gained"){
+               scoredResults = applyPositionsGainedScores(resultsAfterPositionPenalties, subsession_score_array);
             }
             let scoresAdded = updateDriverScoreTable(scoredResults, round.round_no, score_event_counter, score_array_sizes);
 

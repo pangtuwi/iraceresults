@@ -63,7 +63,7 @@ async function saveDrivers(newDrivers){
    let filename = './data/drivers.json';
    let timestamp = Math.floor(Date.now());
    let backupfilename = './data/backup/drivers_' + timestamp + '.json';
-   await fs.copyFile(filename, backupfilename);
+   //await fs.copyFile(filename, backupfilename);
    await fs.writeFile(filename, JSON.stringify(newDrivers));
 } //saveDrivers
 

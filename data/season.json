@@ -27,6 +27,11 @@
                         "score_event": "Laps Led",
                         "simsession_name": "RACE",
                         "scoring_system": 3         
+                    },
+                    {
+                        "score_event": "Positions Gained",
+                        "simsession_name": "RACE",
+                        "scoring_system": 4         
                     }
                 ]
             },{
@@ -43,6 +48,16 @@
                         "score_event": "Race",
                         "simsession_name": "RACE",
                         "scoring_system": 2         
+                    },
+                    {
+                        "score_event": "Laps Led",
+                        "simsession_name": "RACE",
+                        "scoring_system": 3         
+                    },
+                    {
+                        "score_event": "Positions Gained",
+                        "simsession_name": "RACE",
+                        "scoring_system": 4         
                     }
                 ]
             },{
@@ -59,13 +74,23 @@
                        "score_event": "Race",
                        "simsession_name": "RACE",
                        "scoring_system": 2         
+                   },
+                   {
+                       "score_event": "Laps Led",
+                       "simsession_name": "RACE",
+                       "scoring_system": 3         
+                   },
+                   {
+                       "score_event": "Positions Gained",
+                       "simsession_name": "RACE",
+                       "scoring_system": 4         
                    }
                ]
            }
         ]    
    },{
       "round_no": 2,
-      "track_name": "2-dunno",
+      "track_name": "2-Hock",
       "sessions" : [
           {
              "session_no":1, 
@@ -86,6 +111,16 @@
                       "score_event": "Race",
                       "simsession_name": "RACE",
                       "scoring_system": 2         
+                  },
+                  {
+                      "score_event": "Laps Led",
+                      "simsession_name": "RACE",
+                      "scoring_system": 3         
+                  },
+                  {
+                      "score_event": "Positions Gained",
+                      "simsession_name": "RACE",
+                      "scoring_system": 4         
                   }
               ]
           },{
@@ -102,6 +137,16 @@
                       "score_event": "Race",
                       "simsession_name": "RACE",
                       "scoring_system": 2         
+                  },
+                  {
+                      "score_event": "Laps Led",
+                      "simsession_name": "RACE",
+                      "scoring_system": 3         
+                  },
+                  {
+                      "score_event": "Positions Gained",
+                      "simsession_name": "RACE",
+                      "scoring_system": 4         
                   }
               ]
           },{
@@ -118,6 +163,16 @@
                      "score_event": "Race",
                      "simsession_name": "RACE",
                      "scoring_system": 2         
+                 },
+                 {
+                     "score_event": "Laps Led",
+                     "simsession_name": "RACE",
+                     "scoring_system": 3         
+                 },
+                 {
+                     "score_event": "Positions Gained",
+                     "simsession_name": "RACE",
+                     "scoring_system": 4         
                  }
              ]
          }

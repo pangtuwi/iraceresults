@@ -22,5 +22,11 @@
       "scoring_type": "Laps Led",
       "min_lap_ratio" : 0.75,
       "position_scores": [5]
+   }, 
+   {
+      "scoring_category": "Positions Gained",
+      "scoring_type": "Positions Gained",
+      "min_lap_ratio" : 0.75,
+      "position_scores": [1]
    }
 ]

@@ -54,6 +54,18 @@ http.createServer(function (req, res) {
    switch (pathname) {
       case "./recalculate":
          results.reCalculate().then((result) => {
+            //Save updated driver file
+            if (config.class_to_add_new_drivers_to != -1) {
+               const DriversToSave = drivers.map(item => {
+                  const container = {};
+                  container.cust_id = item.cust_id;
+                  container.display_name = item.display_name;
+                  container.classnumber = item.classnumber;
+                  return container;
+              })
+               jsonloader.saveDrivers(DriversToSave);
+            }
+            //return results
             const data = JSON.stringify(result);
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);

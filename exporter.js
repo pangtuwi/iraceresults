@@ -55,7 +55,7 @@ async function exportRoundCSV(season, roundindex, driverScores){
    round.sessions.forEach(session => {
       scoreCount = scoreCount + session.scored_events.length;
       session.scored_events.forEach(scored_event => {
-         let titleStr = scored_event.score_event
+         let titleStr = session.event_type + "-" + scored_event.score_event
          outputHeaders.push(titleStr)
          outputLine[titleStr] = titleStr
          scoreColumns.push(titleStr)
@@ -63,9 +63,6 @@ async function exportRoundCSV(season, roundindex, driverScores){
    });
    outputHeaders.push("Total");
    outputLine.Total = 0;
-   //console.log("Headers are :", outputHeaders)
-   //console.log("Columns are: ", scoreColumns)
-
 
    //Iterate through Driver Scores
    driverScores.forEach(driverClass => {
@@ -82,20 +79,12 @@ async function exportRoundCSV(season, roundindex, driverScores){
             lineTotal = lineTotal + score;
             columnCounter +=1
          }
-
- /*        driver.scores.forEach(score => {
-            var nameindex = scoreColumns[i]
-            newline[nameindex] = score
-            lineTotal = lineTotal + score
-            i += 1;
-         }); */
-
          newline.Total = lineTotal
          outputArray.push(newline)
       });
 
       //Sort
-      //const sorter1 = (a, b) => a.last_nom.toLowerCase() > b.last_nom.toLowerCase() ? 1 : -1;
+
       const sorter1 = (a, b) => a.Total < b.Total ? 1 : -1;
       outputArray.sort(sorter1)
       let newPos = 0

@@ -1,17 +1,17 @@
-Pos,ID,Name,Qualifying,Fastest Lap,Race,Laps Led,Positions Gained,Fastest Lap,Race,Laps Led,Positions Gained,Fastest Lap,Race,Laps Led,Positions Gained,Total
-1,69065,Wojciech Swirydowicz,5,0,40,0,0,0,40,0,0,0,40,0,0,177
-2,511499,Mikey Doble,0,0,36,0,0,0,36,0,0,0,36,0,0,138
-3,703434,Andrew Pike2,0,0,34,0,0,0,34,0,0,0,34,0,0,125
-4,417499,Jamie Dorey,0,0,45,0,0,0,45,0,0,0,45,0,0,125
-5,78460,Adam Delmont,0,5,55,5,1,5,55,5,1,5,55,5,1,121
-6,807048,Benjamin Mccluskey,0,0,32,0,0,0,32,0,0,0,32,0,0,110
-7,238543,Loris Pascucci,0,0,50,0,0,0,50,0,0,0,50,0,0,104
-8,458422,Lee Horne,0,0,26,0,0,0,26,0,0,0,26,0,0,88
-9,245397,Adam McNally,0,0,30,0,0,0,30,0,0,0,30,0,0,87
-10,834265,Isaac Doble,0,0,24,0,1,0,24,0,1,0,24,0,1,87
-11,380577,Jonathan Robberechts,0,0,28,0,0,0,28,0,0,0,28,0,0,72
-12,158246,Gavan Gardener,0,0,0,0,0,0,0,0,0,0,0,0,0,66
-13,23406,Wayne Douglas,0,0,22,0,0,0,22,0,0,0,22,0,0,60
-14,836127,Joseph Doble,0,0,0,0,0,0,0,0,0,0,0,0,0,46
+Pos,ID,Name,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 3-Fastest Lap,Race 3-Race,Race 3-Laps Led,Race 3-Positions Gained,Total
+1,69065,Wojciech Swirydowicz,5,5,55,5,0,5,55,5,0,0,40,0,7,182
+2,511499,Mikey Doble,0,0,50,0,0,0,50,0,0,0,34,0,5,139
+3,703434,Andrew Pike2,0,0,45,0,3,0,45,0,0,0,30,0,3,126
+4,417499,Jamie Dorey,0,0,40,0,0,0,36,0,0,0,45,0,4,125
+5,807048,Benjamin Mccluskey,0,0,34,0,0,0,40,0,1,0,28,0,1,104
+6,78460,Adam Delmont,0,0,8,0,0,0,12,0,0,5,55,5,0,85
+7,238543,Loris Pascucci,0,0,11,0,1,0,18,0,1,0,50,0,1,82
+8,458422,Lee Horne,0,0,24,0,1,0,30,0,3,0,6,0,0,64
+9,245397,Adam McNally,0,0,30,0,2,0,0,0,0,0,22,0,6,60
+10,834265,Isaac Doble,0,0,26,0,0,0,28,0,1,0,4,0,0,59
+11,158246,Gavan Gardener,0,0,32,0,1,0,22,0,0,0,0,0,0,55
+12,380577,Jonathan Robberechts,0,0,6,0,2,0,7,0,0,0,11,0,3,29
+13,836127,Joseph Doble,0,0,0,0,0,0,16,0,3,0,0,0,0,19
+14,23406,Wayne Douglas,0,0,0,0,0,0,0,0,1,0,0,0,1,2
 15,493157,Patrick Falconer,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 16,714631,Reece Watt,0,0,0,0,0,0,0,0,0,0,0,0,0,0

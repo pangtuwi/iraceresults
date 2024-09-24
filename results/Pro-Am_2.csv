@@ -1,23 +1,22 @@
-Pos,ID,Name,Qualifying,Fastest Lap,Race,Laps Led,Positions Gained,Fastest Lap,Race,Laps Led,Positions Gained,Fastest Lap,Race,Laps Led,Positions Gained,Total
-1,573543,Nick Clibbens,5,0,40,0,0,0,40,0,0,0,40,0,0,156
-2,846950,Matthew Cheverton,0,0,45,0,15,0,45,0,15,0,45,0,15,151
-3,293575,Mathew Addy,0,0,55,0,16,0,55,0,16,0,55,0,16,143
-4,191917,Liam Silkstone,0,0,50,0,16,0,50,0,16,0,50,0,16,141
-5,861733,Alex Meredith,0,0,34,0,1,0,34,0,1,0,34,0,1,135
-6,692544,Mikel Leese2,0,0,28,0,11,0,28,0,11,0,28,0,11,125
-7,876012,Ben Altria,0,0,0,0,10,0,0,0,10,0,0,0,10,124
-8,637216,Russell Fowler,0,0,32,0,4,0,32,0,4,0,32,0,4,98
-9,297570,Piotr Dziegielewski,0,0,30,0,6,0,30,0,6,0,30,0,6,94
-10,449970,Sam Vanolst,0,5,36,0,0,5,36,0,0,5,36,0,0,90
-11,361745,Jake Pitt,0,0,26,0,0,0,26,0,0,0,26,0,0,79
-12,300195,Valentin Amblard,0,0,20,0,9,0,20,0,9,0,20,0,9,77
-13,750468,Luke Jones11,0,0,24,0,0,0,24,0,0,0,24,0,0,68
-14,419128,Andy X Fox,0,0,22,0,1,0,22,0,1,0,22,0,1,68
-15,45118,Duncan Marais,0,0,0,0,0,0,0,0,0,0,0,0,0,63
-16,375113,Mark Sykes,0,0,16,0,9,0,16,0,9,0,16,0,9,60
-17,112892,Slawomir Jaworski,0,0,0,0,0,0,0,0,0,0,0,0,0,52
-18,181524,Alain McKane,0,0,18,0,0,0,18,0,0,0,18,0,0,47
-19,525328,Sam J Smith,0,0,0,0,0,0,0,0,0,0,0,0,0,44
-20,795214,James Smaggasgale,0,0,0,0,0,0,0,0,0,0,0,0,0,20
-21,929713,Toby Prosser,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-22,492984,Ian Manners,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Pos,ID,Name,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 3-Fastest Lap,Race 3-Race,Race 3-Laps Led,Race 3-Positions Gained,Total
+1,846950,Matthew Cheverton,0,0,36,0,0,0,50,0,0,0,50,0,0,136
+2,191917,Liam Silkstone,0,0,32,0,0,0,45,0,0,0,55,0,0,132
+3,573543,Nick Clibbens,5,5,55,0,0,0,20,0,0,0,45,0,2,132
+4,861733,Alex Meredith,0,0,50,0,0,0,28,0,0,0,36,0,0,114
+5,692544,Mikel Leese2,0,0,40,0,0,0,40,0,0,0,30,0,0,110
+6,876012,Ben Altria,0,0,45,0,0,5,55,0,0,0,0,0,0,105
+7,297570,Piotr Dziegielewski,0,0,28,0,0,0,34,0,0,0,32,0,0,94
+8,449970,Sam Vanolst,0,0,15,0,0,0,16,0,0,5,40,0,7,83
+9,637216,Russell Fowler,0,0,16,0,0,0,32,0,0,0,34,0,0,82
+10,361745,Jake Pitt,0,0,30,0,0,0,22,0,0,0,28,0,0,80
+11,300195,Valentin Amblard,0,0,13,0,0,0,30,0,7,0,22,0,0,72
+12,750468,Luke Jones11,0,0,26,0,0,0,14,0,0,0,26,0,0,66
+13,375113,Mark Sykes,0,0,12,0,0,0,26,0,6,0,18,0,0,62
+14,419128,Andy X Fox,0,0,14,0,0,0,24,0,0,0,24,0,0,62
+15,112892,Slawomir Jaworski,0,0,18,0,0,0,36,0,2,0,0,0,0,56
+16,45118,Duncan Marais,0,0,34,0,0,0,15,0,0,0,0,0,0,49
+17,525328,Sam J Smith,0,0,24,0,0,0,18,0,0,0,0,0,0,42
+18,181524,Alain McKane,0,0,20,0,0,0,0,0,0,0,20,0,0,40
+19,795214,James Smaggasgale,0,0,22,0,0,0,0,0,0,0,0,0,0,22
+20,929713,Toby Prosser,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+21,492984,Ian Manners,0,0,0,0,0,0,0,0,0,0,0,0,0,0

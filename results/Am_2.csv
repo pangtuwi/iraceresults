@@ -1,14 +1,14 @@
-Pos,ID,Name,Qualifying,Fastest Lap,Race,Laps Led,Positions Gained,Fastest Lap,Race,Laps Led,Positions Gained,Fastest Lap,Race,Laps Led,Positions Gained,Total
-1,461979,Jonathan Collins3,0,0,55,0,2,0,55,0,2,0,55,0,2,169
-2,45526,Marcel Fritsch,5,5,28,0,0,5,28,0,0,5,28,0,0,133
-3,565878,Daniel Fritz4,0,0,50,0,0,0,50,0,0,0,50,0,0,127
-4,462190,Roy Plummer,0,0,32,0,0,0,32,0,0,0,32,0,0,114
+Pos,ID,Name,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 3-Fastest Lap,Race 3-Race,Race 3-Laps Led,Race 3-Positions Gained,Total
+1,461979,Jonathan Collins3,0,0,55,0,0,0,55,0,0,0,55,0,0,165
+2,45526,Marcel Fritsch,5,5,40,0,0,5,45,0,0,5,28,0,0,133
+3,565878,Daniel Fritz4,0,0,50,0,0,0,24,0,0,0,50,0,3,127
+4,462190,Roy Plummer,0,0,32,0,0,0,50,0,0,0,32,0,0,114
 5,597893,Craig Tillotson5,0,0,36,0,0,0,36,0,0,0,36,0,0,108
-6,385849,Matt Emmens,0,0,40,0,0,0,40,0,0,0,40,0,0,108
-7,548231,Mark Kent,0,0,45,0,0,0,45,0,0,0,45,0,0,101
-8,419461,Mitchell West,0,0,26,0,0,0,26,0,0,0,26,0,0,98
-9,1062148,Sam Bradley,0,0,34,0,0,0,34,0,0,0,34,0,0,92
-10,659379,Josh Brown5,0,0,30,0,0,0,30,0,0,0,30,0,0,62
-11,1043171,Lewis Mason3,0,0,0,0,0,0,0,0,0,0,0,0,0,50
-12,668882,Costa Chatzikonstantinou,0,0,0,0,0,0,0,0,0,0,0,0,0,40
+6,385849,Matt Emmens,0,0,34,0,0,0,34,0,0,0,40,0,0,108
+7,548231,Mark Kent,0,0,26,0,0,0,30,0,0,0,45,0,0,101
+8,419461,Mitchell West,0,0,45,0,0,0,26,0,0,0,26,0,0,97
+9,1062148,Sam Bradley,0,0,30,0,0,0,28,0,0,0,34,0,0,92
+10,659379,Josh Brown5,0,0,0,0,0,0,32,0,0,0,30,0,0,62
+11,1043171,Lewis Mason3,0,0,28,0,0,0,22,0,0,0,0,0,0,50
+12,668882,Costa Chatzikonstantinou,0,0,0,0,0,0,40,0,0,0,0,0,0,40
 13,562993,Kevin Smith21,0,0,0,0,0,0,0,0,0,0,0,0,0,0

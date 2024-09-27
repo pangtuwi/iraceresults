@@ -1,17 +1,14 @@
 [
    {
-       "classname": "Pro",
-       "classnumber": 1,
-       "position_score_by" : "overall" 
+       "classname": "Gold",
+       "classnumber": 1 
    },
    {
-       "classname": "Pro-Am",
-       "classnumber": 2,
-       "position_score_by" : "class"
+       "classname": "Silver",
+       "classnumber": 2
    },
    {
-       "classname": "Am",
-       "classnumber": 3,
-       "position_score_by" : "class" 
+       "classname": "Bronze",
+       "classnumber": 3 
    }
 ]

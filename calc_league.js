@@ -48,7 +48,7 @@ async function getSubsessionData(link) {
 async function reCalculate() {
    // let subsessionIdArray = [];
    try {
-      const config = await jsonloader.getConfig();
+      const config = await jsonloader.getConfig();      
       const season = await jsonloader.getSeason();
       const seasonSubSessions = scores.getSubSessionList(season);
       let loadFromFileSubSessions = [];

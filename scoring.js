@@ -266,6 +266,10 @@ function applyPenalties(season, classResults, drivers, penalties) {
          //console.log(" - - - Processing Position Penalty for:", penalty.display_name);
          let driver = drivers.find(item => penalty.cust_id === item.cust_id);
          let class_index = driver.classnumber - 1;
+         if (class_index < 0) {
+            class_index = 0;
+            console.log ("class index not found for driver ", driver.display_name);
+         }
          let thisClass = classResults[class_index].positions
          // let lastPos = thisClass.length
          let driverPenalised = thisClass.find(item => driver.cust_id === item.cust_id);
@@ -411,7 +415,7 @@ function applyPositionsGainedScores(classResults, scoring) {
    classResults.forEach(driverClass => {
       driverClass.positions.forEach(position => {
          const positions_gained = position.starting_position_in_class - position.finish_position_in_class_after_penalties;
-         console.log(position.display_name, ", ", driverClass.classnumber, ", ",position.starting_position, ", ", position.starting_position_in_class, ", ", position.finish_position, ",", position.finish_position_in_class, ", ", position.finish_position_after_penalties, ",", position.finish_position_in_class_after_penalties, ", ", positions_gained);
+         //console.log(position.display_name, ", ", driverClass.classnumber, ", ",position.starting_position, ", ", position.starting_position_in_class, ", ", position.finish_position, ",", position.finish_position_in_class, ", ", position.finish_position_after_penalties, ",", position.finish_position_in_class_after_penalties, ", ", positions_gained);
          if ((positions_gained > 0) && (position.finished == 1)) {
             position.score = positions_gained * getScore(1, scoring);
             //console.log(" - - - ", position.display_name, " gained ", positions_gained, " positions and got additional score of ", position.score);

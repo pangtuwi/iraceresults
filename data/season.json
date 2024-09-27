@@ -1,92 +1,46 @@
 [
    {
         "round_no": 1,
-        "track_name": "1-Catalunya",
+        "track_name": "1-Fuji",
         "sessions" : [
             {
                "session_no":1, 
-               "event_type": "Race 1",
-                "subsession_id": 70297109,
+               "event_type": "Sprint",
+                "subsession_id": 71651111,
                 "scored_events" : [
                     {
-                        "score_event": "Qualifying",
+                        "score_event": "Sprint Qualifying",
                         "simsession_name": "QUALIFY", 
                         "scoring_system": 0
                     },
                     {
-                        "score_event": "Fastest Lap",
+                        "score_event": "Sprint Race Fastest Lap",
                         "simsession_name": "RACE",
                         "scoring_system": 1            
                     },
                     {
-                        "score_event": "Race",
-                        "simsession_name": "RACE",
-                        "scoring_system": 2         
-                    },
-                    {
-                        "score_event": "Laps Led",
+                        "score_event": "Sprint Race",
                         "simsession_name": "RACE",
                         "scoring_system": 3         
-                    },
-                    {
-                        "score_event": "Positions Gained",
-                        "simsession_name": "RACE",
-                        "scoring_system": 4         
                     }
                 ]
             },{
                 "session_no": 2,
-                "event_type": "Race 2",
-                "subsession_id": 70299051,
+                "event_type": "Feature",
+                "subsession_id": 71653123,
                 "scored_events" : [
                     {
-                        "score_event": "Fastest Lap",
+                        "score_event": "Feature Race Fastest Lap",
                         "simsession_name": "RACE",
                         "scoring_system": 1            
                     },
                     {
-                        "score_event": "Race",
-                        "simsession_name": "RACE",
-                        "scoring_system": 2         
-                    },
-                    {
-                        "score_event": "Laps Led",
-                        "simsession_name": "RACE",
-                        "scoring_system": 3         
-                    },
-                    {
-                        "score_event": "Positions Gained",
+                        "score_event": "Feature Race",
                         "simsession_name": "RACE",
                         "scoring_system": 4         
                     }
                 ]
-            },{
-               "session_no": 3,
-               "event_type": "Race 3",
-               "subsession_id": 70299903,
-               "scored_events" : [
-                   {
-                       "score_event": "Fastest Lap",
-                       "simsession_name": "RACE",
-                       "scoring_system": 1            
-                   },
-                   {
-                       "score_event": "Race",
-                       "simsession_name": "RACE",
-                       "scoring_system": 2         
-                   },
-                   {
-                       "score_event": "Laps Led",
-                       "simsession_name": "RACE",
-                       "scoring_system": 3         
-                   },
-                   {
-                       "score_event": "Positions Gained",
-                       "simsession_name": "RACE",
-                       "scoring_system": 4         
-                   }
-               ]
-           }
+            }
         ]    
    }
 ]

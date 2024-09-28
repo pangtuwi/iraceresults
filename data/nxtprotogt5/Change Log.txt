@@ -1,5 +1,12 @@
 Edits
    2024-08-27 : First creation of NXTTCC7 Data
+   2024-08-28 : Added Teams
+      Crest Autosport - no Olly Peters
+      CSA - No Chris Shorter
+      JWM - No Harley Bicknell
+      AZZ Tech Racing 2 - no Nathan Lewis-Stone
+
+    
 
  
 

@@ -1,9 +1,10 @@
 const jsonloader = require('./jsonloader');
 const utils = require('./utils/utils');
-const config = require('./data/config.json');
+
 
 let DriverScoreTable = {};
 let Drivers = {};
+let Season = {};
 
 
 //Returns size of score Array required = sum of score events in all rounds
@@ -90,7 +91,7 @@ function getScoreArrayPosition(season, round_no, session_no, score_event) {
 }//getScoreArrayPosition
 
 //Takes iracing session Results and creates an array of driver results by driver class 
-function createClassResultsArray(results, classes, drivers, score_event_type, min_lap_ratio) {
+function createClassResultsArray(leagueconfig, results, classes, score_event_type, min_lap_ratio) {
    let classResults = utils.deepCopy(classes);  // create new array
    classResults.forEach(driverClass => {
       driverClass.positions = [];
@@ -98,17 +99,25 @@ function createClassResultsArray(results, classes, drivers, score_event_type, mi
       driverClass.leaderLapsCompleted = 0;
    });
    results.forEach(result => {
-      let thisDriver = drivers.find(item => item.cust_id === result.cust_id);
+      let thisDriver = Drivers.find(item => item.cust_id === result.cust_id);
       if (thisDriver == undefined) {
          let newDriver = {};
          newDriver.cust_id = result.cust_id;
          newDriver.display_name = result.display_name;
-         newDriver.classnumber = config.class_to_add_new_drivers_to;
-         //drivers.push(newDriver);
+         newDriver.classnumber = leagueconfig.class_to_add_new_drivers_to;
 
-         if (config.class_to_add_new_drivers_to != -1) {
-            Drivers.push(newDriver);
-            thisDriver = newDriver;
+         if (leagueconfig.class_to_add_new_drivers_to != -1) {
+            Drivers.push(newDriver);   //Add to Driver List
+            thisDriver = newDriver;    //Make current drive
+
+            //Add to DriverScoreTable
+            const score_array_sizes = getScoreArraySizes(Season);  //Calculate size of scoring array 
+            thisDriver.scores = new Array(score_array_sizes.total).fill(0);   //Score Array filled with zeros
+            thisDriver.positions = new Array(score_array_sizes.total).fill(0);   //position Array filled with zeros
+            thisDriver.penalties = new Array(score_array_sizes.total).fill(0);   //penalties Array filled with zeros
+            let driverClassNumber = thisDriver.classnumber;
+            const index = DriverScoreTable.findIndex(elem => elem.classnumber === driverClassNumber);
+            if (index != -1) DriverScoreTable[index].drivers.push(thisDriver);
          }
       }
       try {
@@ -429,7 +438,7 @@ function applyPositionsGainedScores(classResults, scoring) {
 
 
 //Calculates the scores for the whole season
-async function calc(seasonSessions) {
+async function calc(leagueconfig, seasonSessions) {
    //Load driver Class descriptors from json file and create DriverScoreTable
    let driverClasses = await jsonloader.getClasses();
    DriverScoreTable = utils.deepCopy(driverClasses);
@@ -440,9 +449,9 @@ async function calc(seasonSessions) {
    //Load Scoring Points System from json file   
    const scoring = await jsonloader.getScoringPointsSystem();
 
-   //Load Season config file containing rounds, events etc. into season object and create score arrays
-   const season = await jsonloader.getSeason();
-   const score_array_sizes = getScoreArraySizes(season);  //Calculate size of scoring array 
+   //Load Season file containing rounds, events etc. into season object and create score arrays
+   Season = await jsonloader.getSeason();
+   const score_array_sizes = getScoreArraySizes(Season);  //Calculate size of scoring array 
 
    //load json file containing list of Drivers for season and put into correct classes in DriverScoreTable
    Drivers = await jsonloader.getDrivers();
@@ -464,7 +473,7 @@ async function calc(seasonSessions) {
    const Penalties = await jsonloader.getPenalties();
 
    //Process season object, scoring each event of each session of each round.
-   season.forEach(round => {
+   Season.forEach(round => {
       console.log("Calculating Scores for round ", round.round_no, " = ", round.track_name);
       var score_event_counter = 0;
 
@@ -494,7 +503,7 @@ async function calc(seasonSessions) {
             console.log(" - - processing event ", scoreEvent.score_event);
             let subsession = session_results.find(item => item.simsession_name === scoreEvent.simsession_name);
             let subsession_score_array = scoring[scoreEvent.scoring_system].position_scores;  //scoring system to use
-            let resultsSplitByClass = createClassResultsArray(subsession.results, driverClasses, Drivers, scoreEvent.score_event, scoring[scoreEvent.scoring_system].min_lap_ratio);
+            let resultsSplitByClass = createClassResultsArray(leagueconfig, subsession.results, driverClasses, scoreEvent.score_event, scoring[scoreEvent.scoring_system].min_lap_ratio);
 
             if (scoring[scoreEvent.scoring_system].scoring_type === "Fastest Lap") {
                console.log(" - - - Applying Fastest Lap scoring");
@@ -505,7 +514,7 @@ async function calc(seasonSessions) {
                return ((item.round_no == round.round_no) && (item.session_no == session.session_no) && (item.score_event == scoreEvent.score_event))
             });
             console.log(" - - - found penalties for this event ", subsession_penalties.length);
-            resultsAfterPositionPenalties = applyPenalties(season, resultsSplitByClass, Drivers, subsession_penalties);
+            resultsAfterPositionPenalties = applyPenalties(Season, resultsSplitByClass, Drivers, subsession_penalties);
 
             //ToDo Penlty for race must carry over to Positions gained (work around = 2 penalties)
             let score_type = scoring[scoreEvent.scoring_system].scoring_type;
@@ -696,6 +705,10 @@ function teamsResultsTable(season, teams, classesArray) {
    return teamsTable;
 }//teamsResultsTable
 
+function getNewDrivers(){
+   return Drivers;
+} //getNewDrivers
+
 //ToDo : What to do if there is a driver in the results that is not in the drivers list.
 //toDo : Occasional timeouts from iRacing
 //ToDo : Eliminate reason_out:"Disconnected" drivers
@@ -705,3 +718,4 @@ exports.getSubSessionList = getSubSessionList;
 exports.calc = calc;
 exports.classResultsTable = classResultsTable;
 exports.teamsResultsTable = teamsResultsTable;
+exports.getNewDrivers = getNewDrivers;

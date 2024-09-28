@@ -1,6 +1,6 @@
 const fs = require('fs/promises');
 
-async function getConfig () {
+async function getLeagueConfig () {
    const data = await fs.readFile('./data/config.json', { encoding: 'utf8' });
    //console.log(data);
    const obj = JSON.parse(data);
@@ -91,7 +91,7 @@ async function getSubSession (subsession_id) {
    return obj;
 }
 
-exports.getConfig = getConfig;
+exports.getLeagueConfig = getLeagueConfig;
 exports.getSeason = getSeason; 
 exports.getScoringPointsSystem = getScoringPointsSystem;
 exports.getDrivers = getDrivers;

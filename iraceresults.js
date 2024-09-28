@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const querystring = require('querystring');
 
-const config = require('./config.js');
+const serverconfig = require('./config.js');
 const editor = require('./editor.js');
 const iRacing = require('./iracing.js');
 const jsonloader = require('./jsonloader');
@@ -38,7 +38,7 @@ http.createServer(function (req, res) {
    const parsedUrl = url.parse(req.url);
 
    // extract URL path
-   var pathname = `.${parsedUrl.pathname.replace(config.rootpath, "")}`;
+   var pathname = `.${parsedUrl.pathname.replace(serverconfig.rootpath, "")}`;
 
    //Default to index.html if root called
    if (pathname == "./") pathname = "./index.html";
@@ -54,18 +54,7 @@ http.createServer(function (req, res) {
    switch (pathname) {
       case "./recalculate":
          results.reCalculate().then((result) => {
-            //Save updated driver file
-            if (config.class_to_add_new_drivers_to != -1) {
-               const DriversToSave = drivers.map(item => {
-                  const container = {};
-                  container.cust_id = item.cust_id;
-                  container.display_name = item.display_name;
-                  container.classnumber = item.classnumber;
-                  return container;
-              })
-               jsonloader.saveDrivers(DriversToSave);
-            }
-            //return results
+
             const data = JSON.stringify(result);
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
@@ -348,6 +337,6 @@ http.createServer(function (req, res) {
             }
          });
    }
-}).listen(parseInt(config.port));
+}).listen(parseInt(serverconfig.port));
 
-console.log(`Server listening on port ${config.port}`);
+console.log(`Server listening on port ${serverconfig.port}`);

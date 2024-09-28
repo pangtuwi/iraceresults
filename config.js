@@ -1,8 +1,7 @@
-const port = process.argv[2] || 3003;
-const rootpath = "/nxtgen/nxttcc7";
-const apply_drop_scores = true;
+const port = process.argv[2] || 3004;
+const rootpath = "/nxtgen/nxtgt3s6";
 
-console.log("Config loaded");
+console.log("Server config loaded");
 
 exports.port = port;
 exports.rootpath = rootpath;

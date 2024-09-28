@@ -48,7 +48,7 @@ async function getSubsessionData(link) {
 async function reCalculate() {
    // let subsessionIdArray = [];
    try {
-      const config = await jsonloader.getConfig();      
+      const leagueconfig = await jsonloader.getLeagueConfig();      
       const season = await jsonloader.getSeason();
       const seasonSubSessions = scores.getSubSessionList(season);
       let loadFromFileSubSessions = [];
@@ -89,9 +89,10 @@ async function reCalculate() {
       }
 
       //Calculate Scores for the season
-      const driverScores = await scores.calc(seasonSessions);
-      const classResults = await scores.classResultsTable(season, driverScores, config.apply_drop_scores, config.no_drop_scores_rounds);
+      const driverScores = await scores.calc(leagueconfig, seasonSessions);
+      const classResults = await scores.classResultsTable(season, driverScores, leagueconfig.apply_drop_scores, leagueconfig.no_drop_scores_rounds);
       const teamsResults = await scores.teamsResultsTable(season, teams, classResults);
+      const newDrivers = await scores.getNewDrivers();
 
       //Output full results JSON
       const results = { "season": [], "driverScores": [] };
@@ -108,7 +109,19 @@ async function reCalculate() {
       exporter.exportResultsJSON(classResults, "./results/classtotals.json")
 
       //Output Teams Results Table
-      exporter.exportResultsJSON(teamsResults, "./results/teamstotals.json")
+      exporter.exportResultsJSON(teamsResults, "./results/teamstotals.json");
+
+      //Save new Drivers File if updated
+      if (leagueconfig.class_to_add_new_drivers_to != -1) {
+         const DriversToSave = newDrivers.map(item => {
+            const container = {};
+            container.cust_id = item.cust_id;
+            container.display_name = item.display_name;
+            container.classnumber = item.classnumber;
+            return container;
+        })
+         jsonloader.saveDrivers(DriversToSave);
+      }
 
       return classResults;
 

@@ -224,7 +224,7 @@ https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascr
          toggleButtons(but_no);
          let container = document.getElementById("container");
          container.innerText = 'Loading Teams Data'
-         fetch('/teams')
+         fetch('./teams')
             .then(res => res.json())
             .then(data => {
                //container.innerText = JSON.stringify(data, null, 2)

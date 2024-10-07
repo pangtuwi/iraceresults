@@ -296,15 +296,25 @@ function applyPenalties(season, classResults, drivers, penalties) {
 
       // Finishing position penalties
       if (penalty.positions > 0) {
-         //console.log(" - - - Processing Position Penalty for:", penalty.display_name);
+         console.log(" - - - Processing Position Penalty for:", penalty.display_name);
          let driver = drivers.find(item => penalty.cust_id === item.cust_id);
-         let class_index = driver.classnumber - 1
+         let class_index = driver.classnumber - 1;
          //TODO : fix the class_index not down to zero
-         let thisClass = classResults[class_index].positions
-         let lastPos = thisClass.length
-         let driverPenalised = thisClass.find(item => driver.cust_id === item.cust_id)
-         let driverPos = driverPenalised.finish_position_in_class - 1;
-         if (driverPenalised.finish_position_in_class != lastPos) {
+         let thisClass = classResults[class_index].positions;
+         let lastPos = thisClass.length;
+         let driverPenalised = thisClass.find(item => driver.cust_id === item.cust_id);
+         let driverPos = driverPenalised.finish_position_in_class_after_penalties - 1;
+         //console.log("     last pos =",lastPos);
+         //console.log("     driver pos = ", driverPos);
+
+         if (driverPenalised.finished == 0) {
+            console.log(' - - - - ', driver.display_name, ' did not Finish, position penalty not applied');
+            //thisClass[driverPos].finish_position_after_penalties = -1;
+            //thisClass[driverPos].finish_position_in_class_after_penalties = -1;
+            //abouve not required as already set.
+         } else if (driverPenalised.finish_position_in_class_after_penalties == lastPos){
+            console.log(' - - - - ', driver.display_name, " in last position, position penalty not applied")
+         } else {
             let countPositionsAffected = Math.min(penalty.positions, lastPos - driverPos - 1);
             for (let i = driverPos; i < driverPos + countPositionsAffected; i++) {
                thisClass[i] = thisClass[i + 1];
@@ -312,17 +322,9 @@ function applyPenalties(season, classResults, drivers, penalties) {
                thisClass[i].finish_position_in_class_after_penalties = i + 1;
             }
             thisClass[driverPos + countPositionsAffected] = driverPenalised;
-            if (driverPenalised.finished == 0) {
-               console.log(' - - - - ', driver.display_name, ' did not Finish, position penalty not applied');
-               thisClass[driverPos + countPositionsAffected].finish_position_after_penalties = -1;
-               thisClass[driverPos + countPositionsAffected].finish_position_in_class_after_penalties = -1;
-            } else {
-               console.log(' - - - - ', driver.display_name, ": Penalty of ", countPositionsAffected, " positions applied");
-               thisClass[driverPos + countPositionsAffected].finish_position_after_penalties = driverPenalised.finish_position + penalty.positions;
-               thisClass[driverPos + countPositionsAffected].finish_position_in_class_after_penalties = driverPenalised.finish_position_in_class + penalty.positions;
-            }
-         } else {
-            console.log(' - - - - ', driver.display_name, " in last position, position penalty not applied")
+            console.log(' - - - - ', driver.display_name, ": Penalty of ", countPositionsAffected, " positions applied");
+            thisClass[driverPos + countPositionsAffected].finish_position_after_penalties = driverPenalised.finish_position + penalty.positions;
+            thisClass[driverPos + countPositionsAffected].finish_position_in_class_after_penalties = driverPenalised.finish_position_in_class + penalty.positions;
          }
       }
 
@@ -469,7 +471,7 @@ async function calc(leagueData, seasonSessions) {
    });
 
    //Load driver Class Changes
-   const classChanges = leagueData.drivers;//await jsonloader.getClassChanges();
+   const classChanges = leagueData.classchanges;//await jsonloader.getClassChanges();
 
    //load json file containing list of Penalties
    const Penalties = leagueData.penalties;//await jsonloader.getPenalties();

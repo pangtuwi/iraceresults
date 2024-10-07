@@ -1,7 +1,7 @@
 console.log("= = = = = = NodeJS running app.js Express version of iRaceResults = = = = = =");
 
 // Express requirements
-var config = require ('./appconfig.js');
+var config = require('./appconfig.js');
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -10,6 +10,7 @@ var cookieParser = require('cookie-parser');
 
 //my app requirements
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
+var editor = require('./editor.js');
 
 app.use(bodyParser.urlencoded({ extended: false })); //To parse URL encoded data
 app.use(bodyParser.json());//To parse json data
@@ -22,48 +23,81 @@ app.use(express.static('html'));
 leaguedata.loadCache();
 
 //Middleware
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
    console.log("A request received at " + Date.now() + " for " + JSON.stringify(req.url));
    next();
 });
 
 //Routes
 app.get('/', function (req, res) {
-   res.sendFile(path.join(__dirname,"html/index.html"));
-}); 
+   res.sendFile(path.join(__dirname, "html/index.html"));
+});
 
 app.get('/cache', function (req, res) {
-   res.send (JSON.stringify(leaguedata.cache));
+   res.send(JSON.stringify(leaguedata.cache));
 });
 
 // https://www.tutorialspoint.com/expressjs/expressjs_url_building.htm
-app.get('/:leagueid', function(req, res){
+app.get('/:leagueid', function (req, res) {
    const reqLeagueiD = req.params.leagueid.toUpperCase();
-   if (config.leagueIDs.includes(reqLeagueiD)){ 
+   if (config.leagueIDs.includes(reqLeagueiD)) {
       res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league tables');
    } else {
       res.send('Sorry, this is an unknown league.');
    }
 });
 
-app.get('/:leagueid/:route', function(req, res){
-   const reqLeagueiD = req.params.leagueid.toUpperCase();
-   
-   switch (req.params.route){
+app.get('/:leagueid/:route', function (req, res) {
+   const reqLeagueID = req.params.leagueid.toUpperCase();
+
+   switch (req.params.route) {
+      case "favicon.ico":
+         res.sendFile(path.join(__dirname, '/img/favicon.ico'));
+         break;
+      case "bkgrnd.jpg":
+         res.sendFile(path.join(__dirname, '/img/bkgrnd.jpg'));
+         break;
+      case "leftbar.png":
+         res.sendFile(path.join(__dirname, '/img/leftbar.png'));
+         break;
+      case "middlebar.png":
+         res.sendFile(path.join(__dirname, '/img/middlebar.png'));
+         break;
+      case "header.png":
+         res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/header.png'));
+         break;
+      case "footer.png":
+         res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
+         break;
       case "tables":
-         res.send("Tables for " + reqLeagueiD);
+         //res.send("Tables for " + reqLeagueiD);
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/tables.html'));
+         break;
+      case "classtotals":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classtotals));
+         break;
+      case "teamstotals":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].teamstotals));
          break;
       case "recalculate":
-         leaguedata.reCalculate(reqLeagueiD);
-         res.send("recalculated " + reqLeagueiD);
+         leaguedata.reCalculate(reqLeagueID).then((result) => {
+            leaguedata.updateCache(reqLeagueID).then((result2) => {
+               res.send("recalculated " + reqLeagueID + '<br> <a href = "tables"> Reload Tables </a>');
+            });
+         });
          break;
-      default : 
-      res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueiD + " and the route requested is :" + req.params.route);
+      default:
+         res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
    }//switch route
 });
 
 // Other routes here
-app.get('*', function(req, res){
+app.get('*', function (req, res) {
    res.send('Sorry, this is an invalid URL.');
 });
 

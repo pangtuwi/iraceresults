@@ -1,0 +1,258 @@
+<!-- https://fonts.google.com/selection/embed
+https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascript#:~:text=If%20you%20want%20to%20do,%3D%20'json'%3B%20xhr.-->
+
+<html>
+<head>
+   <meta charset="utf-8">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Days+One&display=swap" rel="stylesheet">
+   <link rel="icon" href="./favicon.ico" sizes="any">   
+   <style>
+      body {
+         background-color: black;
+      }
+      table, tr, th, td, thead, tbody, tfoot  {
+         border: 0px solid, white;
+         border-collapse: collapse;
+         color: white;
+         text-align: center;  
+         padding: 0;
+         border-spacing: 0;
+      }
+      .header-tr {
+         vertical-align: middle; 
+         background-position:center;
+         background-size:contain; 
+         background-image:url('header.png');
+      }
+      .header-td {
+         height: 96px;
+      }
+      .button-tr {
+         height: 100px;
+      }
+      .button-class-select {
+         font-family: "Days One", sans-serif;
+         font-weight: 400;
+         font-style: normal;
+         font-size: larger;
+         color: gray;
+         background-color: lightgray;
+      }
+      .button-class-selected {
+         font-family: "Days One", sans-serif;
+         font-weight: 400;
+         font-style: normal;
+         font-size: x-large;
+         color: black;
+         background-color: yellow;
+      }
+      .score-table {
+         border : 0px solid, white;
+         font-family: "Days One", sans-serif;
+         font-size: small;
+         font-weight: 200;
+         font-style : normal;
+         width: 1280px;
+         margin-left: auto;
+         margin-right: auto;
+      }
+      .table-column-headers {
+         text-align: center; 
+         vertical-align: middle;
+         font-weight: 400;
+      }
+      .score-td {
+         background-image: url("middlebar.png");
+         height: 72px;
+         vertical-align: middle;
+      }
+      .score-td-left {
+         background-image: url("leftbar.png");
+         height: 72px;
+         width: 110px;
+         vertical-align: middle;
+      }
+      .score-td-name {
+         background-image: url("middlebar.png");
+         height: 72px;
+         width: 200px;
+         text-align: left;
+         vertical-align: middle;
+      }
+      .footer-tr {
+         vertical-align: middle; 
+         background-position:center;
+         background-size:contain; 
+         background-image:url('footer.png');
+      }
+      .footer-td {
+         height: 61px;
+      }
+   </style>
+</head>
+<body >
+   <div>
+      <table class = "score-table" >
+         <tr class="header-tr">
+            <td class = "header-td"; colspan="100%"></td>
+         </tr>
+         <tr class = "button-tr">
+            <td width="15%"><button class="button-class-select" id="btn0" onclick="getData(0)"> Gold</button></td>
+            <td width="15%"><button class="button-class-select" id="btn1" onclick="getData(1)"> Silver</button></td>
+            <td width="15%"><button class="button-class-select" id="btn2" onclick="getData(2)"> Bronze</button></td>
+            <td width="15%"><button class="button-class-select" id="btn3" onclick="getTeamsData(3)"> Teams</button></td>
+
+         </tr>
+         <tr>
+            <td colspan="100%" id="container"><br><br><br><br>Select a class above to view results<br><br><br><br>
+            </td>
+         </tr> 
+         <tr class="footer-tr">
+            <td class = "footer-td"; colspan="100%"></td>
+         </tr>
+
+      </table>
+   </div>
+   <!-- m<div id="container" class="center"></div>-->
+   <br>
+   
+   <script>
+
+      function getCookie(name) {
+        // Split cookie string and get all individual name=value pairs in an array
+        let cookieArr = document.cookie.split(";");
+    
+        // Loop through the array elements
+        for(let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+    
+            /* Removing whitespace at the beginning of the cookie name and compare it with the given string */
+            if(name == cookiePair[0].trim()) {
+                // Decode the cookie value and return
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        // Return null if not found
+        return null;
+      }
+   
+      function toggleButtons (bNo){
+         //Functon to toggle the button classes
+         var buttonId = 0
+         for (let i = 0; i < 4; i++) {
+            let thisBut = document.getElementById("btn"+i);
+            console.log(thisBut);
+            if (i == bNo) {
+               thisBut.classList.add("button-class-selected");
+            }  else {
+               thisBut.classList.remove("button-class-selected");
+            }
+         }
+      }
+
+      // Function to convert JSON data to HTML table
+      function convert(jsonData, NG_Class) {
+             
+         // Get the container element where the table will be inserted
+         let container = document.getElementById("container");
+
+         //Clear it
+         container.innerHTML = "";
+         
+         // Create the table element
+         let table = document.createElement("table");
+         //table.style.cssText = 'position:absolute;top:300px;left:300px;width:200px;height:200px;-moz-border-radius:100px;border:1px  solid #ddd;-moz-box-shadow: 0px 0px 8px  #fff;display:none;';
+         table.style.cssText = 'width:100%';
+         
+         //USe correct data (-1 is a hack to say dont select sub array)
+         let tableData = {};
+         if (NG_Class == -1) {
+            tableData = jsonData;
+          } else {
+            tableData = jsonData[NG_Class];            
+          } 
+         
+          // Get the keys (column names) of the correct object in the JSON data
+         let cols = Object.keys(tableData[0]);
+         
+         // Create the header element
+         let thead = document.createElement("thead");
+         let tr = document.createElement("tr");
+         tr.classList.add("table-column-headers")
+         
+         
+         // Loop through the column names and create header cells
+         cols.forEach((item) => {
+            let th = document.createElement("th");
+            th.innerText = item; // Set the column name as the text of the header cell
+            tr.appendChild(th); // Append the header cell to the header row
+         });
+         thead.appendChild(tr); // Append the header row to the header
+         table.append(tr) // Append the header to the table
+         
+         // Loop through the JSON data and create table rows
+         tableData.forEach((item) => {
+            let tr = document.createElement("tr");
+            
+            // Get the values of the current object in the JSON data
+            let vals = Object.values(item);
+            
+            // Loop through the values and create table cells
+            let counter = 0;
+            vals.forEach((elem) => {
+               counter +=1;
+               let td = document.createElement("td");
+               switch (counter) {
+                  case 1 :
+                     td.classList.add("score-td-left"); 
+                     break;
+                  case 2 :
+                     td.classList.add("score-td-name"); 
+                     break;    
+                  default :
+                     td.classList.add("score-td");
+               }
+               
+               td.innerText = elem; // Set the value as the text of the table cell
+               tr.appendChild(td); // Append the table cell to the table row
+            });
+            table.appendChild(tr); // Append the table row to the table
+         });
+         container.appendChild(table) // Append the table to the container element
+      } //convert (to HTML)
+
+      // gets data from API and sets the content of #result div
+      function getData (NG_Class){
+        // let leagueid = getCookie("leagueid");
+         toggleButtons(NG_Class);
+         let container = document.getElementById("container");
+         container.innerText = 'Loading....' + NG_Class
+         //fetch('./'+leagueid+'/classtotals')
+         fetch('./classtotals')
+            .then(res => res.json())
+            .then(data => {
+               //container.innerText = JSON.stringify(data, null, 2)
+               convert (data, NG_Class);
+            })
+            .catch(error => console.log(error))
+      }
+
+      // gets teams data from API and sets the content of #result div
+      function getTeamsData (but_no){
+         //let leagueid = getCookie("leagueid");
+         toggleButtons(but_no);
+         let container = document.getElementById("container");
+         container.innerText = 'Loading Teams Data'
+         fetch('./teamstotals')
+            .then(res => res.json())
+            .then(data => {
+               //container.innerText = JSON.stringify(data, null, 2)
+               convert (data, -1);  //-1 is a hack to use the same function
+            })
+            .catch(error => console.log(error))
+      }
+   </script>
+</body>
+</html>

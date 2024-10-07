@@ -304,7 +304,7 @@ function applyPenalties(season, classResults, drivers, penalties) {
          let lastPos = thisClass.length
          let driverPenalised = thisClass.find(item => driver.cust_id === item.cust_id)
          let driverPos = driverPenalised.finish_position_in_class_after_penalties - 1;
-         if (driverPenalised.finish_position_in_class != lastPos) {
+         if (driverPenalised.finish_position_in_class_after_penalties != lastPos) {
             let countPositionsAffected = Math.min(penalty.positions, lastPos - driverPos - 1);
             for (let i = driverPos; i < driverPos + countPositionsAffected; i++) {
                thisClass[i] = thisClass[i + 1];

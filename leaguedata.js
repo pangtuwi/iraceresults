@@ -177,4 +177,5 @@ async function reCalculate(leagueID) {
 
 exports.cache = cache;
 exports.loadCache = loadCache;
+exports.updateCache = updateCache;
 exports.reCalculate = reCalculate;

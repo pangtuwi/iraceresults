@@ -83,54 +83,57 @@ async function getSubsessionData(link) {
    return res.data;
 }
 
+async function downloadNewSessionFiles(seasonSubSessions, leagueID) {
+   console.log("in downloadNewSubSessionFiles");
+   let loadFromFileSubSessions = [];
+   let loadFromiRacingSubSessions = [];
+
+   //Check which Subsession datafiles have already been downloaded
+   for (const subsession_id of seasonSubSessions) {
+      const pathToFileOrDir = `./data/${leagueID}/irresults/${subsession_id}.json`;
+
+      // Check if the file or directory exists synchronously
+      if (fs.existsSync(pathToFileOrDir)) {
+         console.log(`The file  '${pathToFileOrDir}' exists.`);
+         loadFromFileSubSessions.push(subsession_id);
+      } else {
+         console.log(`The file '${pathToFileOrDir}' does not exist.`);
+         loadFromiRacingSubSessions.push(subsession_id);
+      }
+   }
+
+   if (loadFromFileSubSessions.length > 0) {
+      for (const subsession_id of loadFromFileSubSessions) {
+         console.log("getting subsession data from File for : " + subsession_id);
+         const obj = await jsonloader.getSubSession(leagueID, subsession_id);
+         seasonSessions[subsession_id] = obj;
+      }
+   }
+
+   if (loadFromiRacingSubSessions.length > 0) {
+      const cookie = await authUser();
+      for (const subsession_id of loadFromiRacingSubSessions) {
+         console.log("getting subsession data from iRacing.com for : " + subsession_id);
+         const subsessiondata = await getSubsession(subsession_id, cookie);
+         const obj = await getSubsessionData(subsessiondata.link);
+         seasonSessions[subsession_id] = obj;
+         exporter.exportLeagueSessionJSON(leagueID, obj);
+      }
+   }
+} //downloadNewSessionFiles
+
 async function reCalculate(leagueID) {
    // let subsessionIdArray = [];
    try {
-      //const leagueconfig = await jsonloader.getLeagueConfig();      
-      //const season = await jsonloader.getSeason();
-      //const teams = await jsonloader.getTeams();
+      console.log("Recalculating - start by updating cache");
       await updateCache(leagueID);
+      console.log("Cache Updated");
       var leagueData = cache[leagueID];
-      //const leagueconfig = cache[leagueID].config;
-      //const teams = cache[leagueID].teams;
-      //const season = cache[leagueID].season;
+      
+      console.log("Checking if I have all the subsession Files");
       const seasonSubSessions = calcscores.getSubSessionList(leagueData.season);
-
-      let loadFromFileSubSessions = [];
-      let loadFromiRacingSubSessions = [];
-
-      //Check which Subsession datafiles have already been downloaded
-      for (const subsession_id of seasonSubSessions) {
-         const pathToFileOrDir = `./data/${leagueID}/irresults/${subsession_id}.json`;
-
-         // Check if the file or directory exists synchronously
-         if (fs.existsSync(pathToFileOrDir)) {
-            console.log(`The file  '${pathToFileOrDir}' exists.`);
-            loadFromFileSubSessions.push(subsession_id);
-         } else {
-            console.log(`The file '${pathToFileOrDir}' does not exist.`);
-            loadFromiRacingSubSessions.push(subsession_id);
-         }
-      }
-
-      if (loadFromFileSubSessions.length > 0) {
-         for (const subsession_id of loadFromFileSubSessions) {
-            console.log("getting subsession data from File for : " + subsession_id);
-            const obj = await jsonloader.getSubSession(leagueID, subsession_id);
-            seasonSessions[subsession_id] = obj;
-         }
-      }
-
-      if (loadFromiRacingSubSessions.length > 0) {
-         const cookie = await authUser();
-         for (const subsession_id of loadFromiRacingSubSessions) {
-            console.log("getting subsession data from iRacing.com for : " + subsession_id);
-            const subsessiondata = await getSubsession(subsession_id, cookie);
-            const obj = await getSubsessionData(subsessiondata.link);
-            seasonSessions[subsession_id] = obj;
-            exporter.exportSessionJSON(obj);
-         }
-      }
+      await downloadNewSessionFiles(seasonSubSessions, leagueID);
+      console.log ("Got all the files, calcualting");
 
       //Calculate Scores for the season
       const driverScores = await calcscores.calc(leagueData, seasonSessions); 

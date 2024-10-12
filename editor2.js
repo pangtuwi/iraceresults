@@ -41,7 +41,7 @@ function objToHTMLTable(baseHTTMLFile, tableData, headerColor, callback) {
       if (err) {
          return(`Error getting baseHTMLFile: ${err}.`);
       } else {
-         console.log("base HTML file returned");
+         //console.log("base HTML file returned");
          let tableHeaderHTML = tableHeaderRow(tableData, headerColor);
          let tableBodyHTML = tableRows(tableData);
          HTMLData = HTMLData.replace('<div class="row header"><div class="cell">Data</div></div>', tableHeaderHTML);
@@ -52,7 +52,7 @@ function objToHTMLTable(baseHTTMLFile, tableData, headerColor, callback) {
 } //objToHTMLTable
 
  function getDriversHTML(leagueID, driverClass, callback){
-   console.log ("in getDriversHTML function");
+   //console.log ("in getDriversHTML function");
    var drivers = leaguedata.cache[leagueID].drivers;
    var filteredDrivers = drivers;
    if (driverClass != -1) filteredDrivers = drivers.filter(o => o.classnumber == driverClass);

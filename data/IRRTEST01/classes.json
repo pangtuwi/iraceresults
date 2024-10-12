@@ -1,0 +1,18 @@
+[
+   {
+       "classname": "Gold",
+       "classnumber": 1 
+   },
+   {
+       "classname": "Silver",
+       "classnumber": 2
+   },
+   {
+       "classname": "Bronze",
+       "classnumber": 3 
+   },
+   {
+       "classname": "Unclassified",
+       "classnumber": 4 
+   }
+]

@@ -1,6 +1,7 @@
 const csvwrite = require('./csvwrite')
 const utils = require ('./utils/utils');
 const fs = require('fs');
+var path = require('path');
 
 //Returns size of score Array required = sum of score events in all rounds
 function getScoreArrayIndexes(season, this_round_index) {
@@ -110,6 +111,14 @@ async function exportSessionJSON(session){
    });
 } //exportSessionJSON
 
+async function exportLeagueSessionJSON(leagueID, session){
+   let filename = path.join(__dirname, '/data/'+leagueID+'/irresults/'+session.subsession_id + '.json');
+   fs.writeFile(filename, JSON.stringify(session), (err) => {
+      if (err) throw err;
+      console.log('Session saved : ', filename);
+   });
+} //exportSessionJSON
+
 async function exportResultsJSON(results, filename){
    //let filename = 'results.json'
    fs.writeFile(filename, JSON.stringify(results), (err) => {
@@ -120,5 +129,6 @@ async function exportResultsJSON(results, filename){
 
 exports.exportRoundCSV = exportRoundCSV;
 exports.exportSessionJSON = exportSessionJSON;
+exports.exportLeagueSessionJSON = exportLeagueSessionJSON;
 exports.exportResultsJSON = exportResultsJSON;
 //exports.exportClassResultsTableJSON = exportClassResultsTableJSON;  MOVED TO SCORING.JS

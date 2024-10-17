@@ -86,5 +86,49 @@
       "positions": 2,
       "licence_points": 4,
       "championship_points": 0
+   },
+   {
+      "incident_no": 3,
+      "round_no": 3,
+      "session_no": 1,
+      "cust_id": 1115893,
+      "display_name": "Mat Gatter",
+      "score_event": "Endurance Race",
+      "positions": 3,
+      "licence_points": 6,
+      "championship_points": 5
+   },
+   {
+      "incident_no": 4,
+      "round_no": 3,
+      "session_no": 1,
+      "cust_id": 640632,
+      "display_name": "Mike Barber",
+      "score_event": "Endurance Race",
+      "positions": 3,
+      "licence_points": 6,
+      "championship_points": 5
+   },
+   {
+      "incident_no": 8,
+      "round_no": 3,
+      "session_no": 1,
+      "cust_id": 668882,
+      "display_name": "Costa Chatzikonstantinou",
+      "score_event": "Endurance Race",
+      "positions": 1,
+      "licence_points": 6,
+      "championship_points": 0
+   },
+   {
+      "incident_no": 11,
+      "round_no": 3,
+      "session_no": 1,
+      "cust_id": 888953,
+      "display_name": "Wesley Lewin",
+      "score_event": "Endurance Race",
+      "positions": 1,
+      "licence_points": 0,
+      "championship_points": 0
    }
 ]

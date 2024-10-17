@@ -1,0 +1,85 @@
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="/style.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<style>
+   .header_img {
+      height: 80px;
+      vertical-align: middle;
+      background-position: center;
+      background-size: contain;
+      background-image: url('header.png');
+   }
+</style>
+
+<body>
+   <div class="header_img"></div>
+   <div class="title" id="title">
+      PROTEST FOR LEAGUE XXXXXXXXXX
+   </div>
+
+   <div class="left_wrap">
+      Please enter the following information :
+      <div class="wrapper">
+         <div class="table" id="protesting_driver_table">
+            <div class="row header">
+               <div class="cell">Reporting Driver</div>
+               <div class="cell"></div>
+            </div>
+            <div class="row">
+               <div class="cell" data-title="Row">Select Your name</div>
+               <div class="cell" data-title="Row"><select id="protesting_driver_select"></select>&nbsp; Filter:<input
+                     type="search" id="protesting_driver_search" /></div>
+            </div>
+         </div>
+
+         <div class="table" id="event_information_table">
+            <div class="row header">
+               <div class="cell">Incident Information</div>
+               <div class="cell"></div>
+            </div>
+            <div class="row">
+               <div class="cell" data-title="Row">Round</div>
+               <div class="cell" data-title="Row"><select id="round_select"></select></div>
+            </div>
+            <div class="row">
+               <div class="cell" data-title="Row">Event</div>
+               <div class="cell" data-title="Row"><select id="session_select"></select></div>
+            </div>
+            <div class="row">
+               <div class="cell" data-title="Row">Session</div>
+               <div class="cell" data-title="Row"><select id="scored_event_select"></select></div>
+            </div>
+
+            <div class="row">
+               <div class="cell" data-title="Row">Lap</div>
+               <div class="cell" data-title="Row"><input type="text" id="protest_lap" text="enter lap no" /></div>
+            </div>
+            <div class="row">
+               <div class="cell" data-title="Row">Corner</div>
+               <div class="cell" data-title="Row"><input type="text" id="protest_corner"
+                     text="enter corner # or name" /></div>
+            </div>
+            <div class="row">
+               <div class="cell" data-title="Row">Driver you believe to be at fault</div>
+               <div class="cell" data-title="Row"><select id="protested_driver_select"></select>&nbsp; Filter:<input
+                     type="search" id="protested_driver_search" /></div>
+            </div>
+            <div class="row">
+               <div class="cell" data-title="Row">Driver statement</div>
+               <div class="cell" data-title="Row">
+               <textarea id="incident_description" name="incident_description" rows="6" cols="60"> YOUR DESCRIPTION OF THE INCIDENT  **PLEASE KEEP IT CLEAN** 
+               </textarea>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <script src="/protest.js"></script>
+
+</body>

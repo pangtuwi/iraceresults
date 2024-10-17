@@ -45,7 +45,7 @@ app.get('/:leagueid', function (req, res) {
    if (config.leagueIDs.includes(reqLeagueiD)) {
       //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league tables');
       res.sendFile(path.join(__dirname, '/html/tables.html'));
-   
+
    } else {
       res.send('Sorry, this is an unknown league.');
    }
@@ -93,6 +93,10 @@ app.get('/:leagueid/:route', function (req, res) {
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].teamstotals));
          break;
+      case "protest":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/protest.html'));
+         break;
       case "recalculate":
          console.log("have been asked to recalculate");
          leaguedata.reCalculate(reqLeagueID).then((result) => {
@@ -107,13 +111,39 @@ app.get('/:leagueid/:route', function (req, res) {
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classes));
          break;
-
+      case "drivers":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
+         break;
+      case "rounds":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.getRounds(reqLeagueID)));
+         break;
+      case "sessions":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.getSessions(reqLeagueID)));
+         break;
+      case "scoredevents":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.getScoredEvents(reqLeagueID)));
+         break;
       default:
          res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
    }//switch route
 });
 
+app.post('/:leagueid/:route', function (req, res) {
+   const reqLeagueID = req.params.leagueid.toUpperCase();
+   switch (req.params.route) {
 
+      default:
+         res.send('UNKNOWN POST ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
+   }
+});
 
 // Other routes here
 app.get('*', function (req, res) {

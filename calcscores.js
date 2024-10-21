@@ -265,10 +265,37 @@ function getSubSessionList(season) {
    return subsessionIdArray;
 } // getSubSessionList
 
+
 // applies penalties into Driver Score Table
 function applyPenalties(season, classResults, drivers, penalties) {
    //ToDo : Check if both time and position penalties applied.   Would cause issues
    penalties.forEach(penalty => {
+
+      //disqualification
+      if (penalty.disqualified == 1) {
+         console.log(" - - - Processing DISQUALIFICATION Penalty for:", penalty.display_name);
+         let driver = drivers.find(item => penalty.cust_id === item.cust_id);
+         let class_index = driver.classnumber - 1;
+         let thisClass = classResults[class_index].positions;
+         let lastPos = thisClass.length - 1; // Zero based array index
+         let driverPenalised = thisClass.find(item => driver.cust_id === item.cust_id);
+         let driverPos = driverPenalised.finish_position_in_class_after_penalties - 1; //Zero based array index
+         let countPositionsAffected = lastPos - driverPos + 1;
+
+         // re-order other drivers
+         if (countPositionsAffected > 1) {
+            for (let i = driverPos; i < driverPos + countPositionsAffected-1; i++) {
+               thisClass[i] = thisClass[i + 1];
+               thisClass[i].finish_position_after_penalties = i + 1;
+               thisClass[i].finish_position_in_class_after_penalties = i + 1;
+            }
+         }
+         //Penalised driver to back and DSQ
+         driverPenalised.finished = 0;
+         driverPenalised.finish_position_after_penalties = -1;
+         driverPenalised.finish_position_in_class_after_penalties = -1;
+         thisClass[lastPos] = driverPenalised;
+      }
 
       //time penalties
       if (penalty.time_added > 0) {
@@ -277,7 +304,7 @@ function applyPenalties(season, classResults, drivers, penalties) {
          let class_index = driver.classnumber - 1;
          if (class_index < 0) {
             class_index = 0;
-            console.log ("class index not found for driver ", driver.display_name);
+            console.log("class index not found for driver ", driver.display_name);
          }
          let thisClass = classResults[class_index].positions
          // let lastPos = thisClass.length
@@ -312,7 +339,7 @@ function applyPenalties(season, classResults, drivers, penalties) {
             //thisClass[driverPos].finish_position_after_penalties = -1;
             //thisClass[driverPos].finish_position_in_class_after_penalties = -1;
             //abouve not required as already set.
-         } else if (driverPenalised.finish_position_in_class_after_penalties == lastPos){
+         } else if (driverPenalised.finish_position_in_class_after_penalties == lastPos) {
             console.log(' - - - - ', driver.display_name, " in last position, position penalty not applied")
          } else {
             let countPositionsAffected = Math.min(penalty.positions, lastPos - driverPos - 1);
@@ -709,7 +736,7 @@ function teamsResultsTable(season, teams, classesArray) {
    return teamsTable;
 }//teamsResultsTable
 
-function getNewDrivers(){
+function getNewDrivers() {
    return Drivers;
 } //getNewDrivers
 

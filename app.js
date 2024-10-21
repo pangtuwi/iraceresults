@@ -126,6 +126,12 @@ app.get('/:leagueid/:route', function (req, res) {
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.getSessions(reqLeagueID)));
          break;
+         case "penalties":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
+            break;
+            
       case "scoredevents":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);

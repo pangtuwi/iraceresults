@@ -99,8 +99,6 @@ function getScoredEvents(leagueID) {
 
 //Function to login to iRacing (note password determined elsewhere)
 async function authUser() {
-   var password = "pdhn!10iRacing";
-   var username = "pangtuwi@gmail.com";
    const res = await axiosInstance.post('/auth', {
       email: 'pangtuwi@gmail.com',
       password: 'tVIAVW3xGUvWyrBu03jVVtM7FxLobilJe9UqzAw+cv4='

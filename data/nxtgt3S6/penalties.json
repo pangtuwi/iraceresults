@@ -124,11 +124,23 @@
       "incident_no": 11,
       "round_no": 3,
       "session_no": 1,
-      "cust_id": 888953,
-      "display_name": "Wesley Lewin",
       "score_event": "Endurance Race",
+      "cust_id": 34483,
+      "display_name": "Mike Riedner",
       "positions": 1,
       "licence_points": 0,
       "championship_points": 0
+   },
+   {
+      "incident_no": 11,
+      "round_no": 3,
+      "session_no": 1,
+      "score_event": "Endurance Race",
+      "cust_id": 888953,
+      "display_name": "Wesley Lewin",
+      "positions": 0,
+      "licence_points": 0,
+      "championship_points": 0,
+      "disqualified" : 1
    }
 ]

@@ -78,7 +78,7 @@ function getScoreArrayIndexes(rounds, scoring, this_round_index) {
          scored_events_length = scoring[round.score_types[subsession_counter]].scored_events.length;
          if (round_counter == this_round_index) {
             //this_round_size = round_size + session.scored_events.length;
-            
+
             this_round_size = round_size + scored_events_length;
          }
          total_size = total_size + scored_events_length;
@@ -103,20 +103,24 @@ function getScoreArrayPosition(rounds, scoring, round_no, session_no, score_even
    let position_counter = 0;
    let position_found = 0;
    let round_counter = 0;
-   let session_counter = 0;
+
    let event_counter = 0;
    rounds.forEach(round => {
-      round.subsession_ids.forEach(session => {
-         session.scored_events = scoring[round.score_types[session_counter]];
-         session.scored_events.forEach(event => {
-            if ((round_counter == round_no) && (session_counter == session_no) && (event.score_event = score_event)) {
-               position_found = position_counter;
-            }
-            position_counter += 1;
-            event_counter += 1;
+      let session_counter = 0;
+      if (round.subsession_ids.length > 0) {
+         round.subsession_ids.forEach(session => {
+            console.log ("looking for array poisiton for ", round_counter, " and session ", session);
+            let scored_events = scoring[round.score_types[session_counter]].scored_events;
+            scored_events.forEach(event => {
+               if ((round_counter == round_no) && (session_counter == session_no) && (event.score_event = score_event)) {
+                  position_found = position_counter;
+               }
+               position_counter += 1;
+               event_counter += 1;
+            });
+            session_counter += 1;
          });
-         session_counter += 1;
-      });
+      }
       round_counter += 1;
    });
    return position_found;
@@ -405,7 +409,7 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
       if (penalty.championship_points > 0) {
          console.log(" - - - -  Processing Championship points Penalty for:", penalty.display_name, "  ", penalty.championship_points, " points");
          let driver = drivers.find(item => penalty.cust_id === item.cust_id);
-         let score_array_position = getScoreArrayPosition(rounds, penalty.round_no, penalty.session_no, penalty.score_event);
+         let score_array_position = getScoreArrayPosition(rounds, Scoring, penalty.round_no, penalty.session_no, penalty.score_event);
          let class_index = driver.classnumber - 1;
          //TODO : fix the class_index not down to zero
          let thisClassPositions = classResults[class_index].positions;
@@ -555,67 +559,68 @@ async function calc(leagueData, seasonSessions) {
    //Process season object, scoring each event of each session of each round.
    Rounds.forEach(round => {
       if (round.subsession_ids.length > 0) {
-      console.log("Calculating Scores for round ", round.round_no, " = ", round.track_name);
-      var score_event_counter = 0;
+         console.log("Calculating Scores for round ", round.round_no, " = ", round.track_name);
+         var score_event_counter = 0;
 
-      // Process class changes
-      classChanges.forEach(classChange => {
-         var driver_to_move = {};
-         if (classChange.change_from_round == round.round_no) {
-            //take driver out of class and put in new class
-            DriverScoreTable.forEach(driverClassTable => {
-               driver_to_move = driverClassTable.drivers.find(item => item.cust_id === classChange.cust_id) ?? driver_to_move;
-               driverClassTable.drivers = driverClassTable.drivers.filter(x => x.cust_id !== classChange.cust_id);
-            });
-            DriverScoreTable[classChange.new_class_number - 1].drivers.push(driver_to_move);
-            var driver = Drivers.find((item => item.cust_id === classChange.cust_id));
-            driver.classnumber = classChange.new_class_number;
-         }
-      });
-
-      var subsession_counter = 0;
-      round.subsession_ids.forEach(session => {
-         //let subsession_id = session.subsession_id;
-         let subsession_id = session;
-         let session_results = seasonSessions[subsession_id].session_results;
-         console.log(" - processing session ", subsession_id);
-
-         //session.scored_events.forEach(scoreEvent => {
-         Scoring[round.score_types[subsession_counter]].scored_events.forEach(scoreEvent => {
-            score_event_counter++;
-            console.log(" - - processing event ", scoreEvent.score_event);
-            let subsession = session_results.find(item => item.simsession_name === scoreEvent.simsession_name);
-            let subsession_score_array = points[scoreEvent.scoring_system].position_scores;  //scoring system to use
-            let resultsSplitByClass = createClassResultsArray(leagueconfig, subsession.results, driverClasses, scoreEvent.score_event, points[scoreEvent.scoring_system].min_lap_ratio);
-
-            if (points[scoreEvent.scoring_system].scoring_type === "Fastest Lap") {
-               console.log(" - - - Applying Fastest Lap scoring");
-               resultsSplitByClass = applyFastestLap(resultsSplitByClass);
+         // Process class changes
+         classChanges.forEach(classChange => {
+            var driver_to_move = {};
+            if (classChange.change_from_round == round.round_no) {
+               //take driver out of class and put in new class
+               DriverScoreTable.forEach(driverClassTable => {
+                  driver_to_move = driverClassTable.drivers.find(item => item.cust_id === classChange.cust_id) ?? driver_to_move;
+                  driverClassTable.drivers = driverClassTable.drivers.filter(x => x.cust_id !== classChange.cust_id);
+               });
+               DriverScoreTable[classChange.new_class_number - 1].drivers.push(driver_to_move);
+               var driver = Drivers.find((item => item.cust_id === classChange.cust_id));
+               driver.classnumber = classChange.new_class_number;
             }
-
-            let subsession_penalties = Penalties.filter(function (item) {
-               return ((item.round_no == round.round_no) && (item.session_no == session.session_no) && (item.score_event == scoreEvent.score_event))
-            });
-            console.log(" - - - found penalties for this event ", subsession_penalties.length);
-            resultsAfterPositionPenalties = applyPenalties(Rounds, resultsSplitByClass, Drivers, subsession_penalties);
-
-            //ToDo Penlty for race must carry over to Positions gained (work around = 2 penalties)
-            let score_type = points[scoreEvent.scoring_system].scoring_type;
-            if (score_type === "Position") {
-               scoredResults = applyPositionScores(resultsAfterPositionPenalties, subsession_score_array);
-            } else if (score_type === "Fastest Lap") {
-               scoredResults = applyFastestLapScores(resultsAfterPositionPenalties, subsession_score_array);
-            } else if (score_type === "Laps Led") {
-               scoredResults = applyLapsLedScores(resultsAfterPositionPenalties, subsession_score_array);
-            } else if (score_type === "Positions Gained") {
-               scoredResults = applyPositionsGainedScores(resultsAfterPositionPenalties, subsession_score_array);
-            }
-            let scoresAdded = updateDriverScoreTable(scoredResults, round.round_no, score_event_counter, score_array_sizes);
-
          });
-         subsession_counter += 1;
-      });
-   }
+
+         var subsession_counter = 0;
+         round.subsession_ids.forEach(session => {
+            //let subsession_id = session.subsession_id;
+            let subsession_id = session;
+            let session_results = seasonSessions[subsession_id].session_results;
+            console.log(" - processing session ", subsession_id);
+
+            //session.scored_events.forEach(scoreEvent => {
+            Scoring[round.score_types[subsession_counter]].scored_events.forEach(scoreEvent => {
+               score_event_counter++;
+               console.log(" - - processing event ", scoreEvent.score_event);
+               let subsession = session_results.find(item => item.simsession_name === scoreEvent.simsession_name);
+               let subsession_score_array = points[scoreEvent.scoring_system].position_scores;  //scoring system to use
+               let resultsSplitByClass = createClassResultsArray(leagueconfig, subsession.results, driverClasses, scoreEvent.score_event, points[scoreEvent.scoring_system].min_lap_ratio);
+
+               if (points[scoreEvent.scoring_system].scoring_type === "Fastest Lap") {
+                  //console.log(" - - - Applying Fastest Lap scoring");
+                  resultsSplitByClass = applyFastestLap(resultsSplitByClass);
+               }
+
+               let subsession_penalties = Penalties.filter(function (item) {
+                  //return ((item.round_no == round.round_no) && (item.session_no == session.session_no) && (item.score_event == scoreEvent.score_event))
+                  return ((item.round_no == round.round_no) && (item.session_no == subsession_counter + 1) && (item.score_event == scoreEvent.score_event))
+               });
+               console.log(" - - - found penalties for this event ", subsession_penalties.length);
+               resultsAfterPositionPenalties = applyPenalties(Rounds, resultsSplitByClass, Drivers, subsession_penalties);
+
+               //ToDo Penlty for race must carry over to Positions gained (work around = 2 penalties)
+               let score_type = points[scoreEvent.scoring_system].scoring_type;
+               if (score_type === "Position") {
+                  scoredResults = applyPositionScores(resultsAfterPositionPenalties, subsession_score_array);
+               } else if (score_type === "Fastest Lap") {
+                  scoredResults = applyFastestLapScores(resultsAfterPositionPenalties, subsession_score_array);
+               } else if (score_type === "Laps Led") {
+                  scoredResults = applyLapsLedScores(resultsAfterPositionPenalties, subsession_score_array);
+               } else if (score_type === "Positions Gained") {
+                  scoredResults = applyPositionsGainedScores(resultsAfterPositionPenalties, subsession_score_array);
+               }
+               let scoresAdded = updateDriverScoreTable(scoredResults, round.round_no, score_event_counter, score_array_sizes);
+
+            });
+            subsession_counter += 1;
+         });
+      }
    });
 
    return DriverScoreTable;

@@ -25,13 +25,15 @@ var cache = {};
 
 async function loadCache() {
    await Promise.all(config.leagueIDs.map(async (leagueID) => {
-      let league = { "config": {}, "classes": [], "scoring": [], "drivers": [], "teams": [], "season": [], "classchanges": [], "penalties": [] };
+      let league = { "config": {}, "classes": [], "scoring": [], "points": [], "drivers": [], "teams": [], "rounds": [],"classchanges": [], "penalties": [] };
       league.config = await jsonloader.getLeagueConfig(leagueID);
       league.classes = await jsonloader.getClasses(leagueID);
-      league.scoring = await jsonloader.getScoringPointsSystem(leagueID);
+      league.scoring = await jsonloader.getScoring(leagueID);
+      league.points = await jsonloader.getPoints(leagueID);
       league.drivers = await jsonloader.getDrivers(leagueID);
       league.teams = await jsonloader.getTeams(leagueID);
-      league.season = await jsonloader.getSeason(leagueID);
+      //league.season = await jsonloader.getSeason(leagueID);
+      league.rounds = await jsonloader.getRounds(leagueID);
       league.classchanges = await jsonloader.getClassChanges(leagueID);
       league.penalties = await jsonloader.getPenalties(leagueID);
       league.classtotals = await jsonloader.getClassTotals(leagueID);
@@ -42,13 +44,15 @@ async function loadCache() {
 } //loadCache
 
 async function updateCache(leagueID) {
-   let league = { "config": {}, "classes": [], "scoring": [], "drivers": [], "teams": [], "season": [], "classchanges": [], "penalties": [] };
+   let league = { "config": {}, "classes": [], "scoring": [], "points": [],"drivers": [], "teams": [], "rounds": [], "classchanges": [], "penalties": [] };
    league.config = await jsonloader.getLeagueConfig(leagueID);
    league.classes = await jsonloader.getClasses(leagueID);
-   league.scoring = await jsonloader.getScoringPointsSystem(leagueID);
+   league.scoring = await jsonloader.getScoring(leagueID);
+   league.points = await jsonloader.getPoints(leagueID);
    league.drivers = await jsonloader.getDrivers(leagueID);
    league.teams = await jsonloader.getTeams(leagueID);
-   league.season = await jsonloader.getSeason(leagueID);
+   //league.season = await jsonloader.getSeason(leagueID);
+   league.rounds = await jsonloader.getRounds(leagueID);
    league.classchanges = await jsonloader.getClassChanges(leagueID);
    league.penalties = await jsonloader.getPenalties(leagueID);
    league.classtotals = await jsonloader.getClassTotals(leagueID);
@@ -59,9 +63,11 @@ async function updateCache(leagueID) {
 
 function getRounds(leagueID) {
    //const rounds = {};
-   return cache[leagueID].season;
+   //return cache[leagueID].season;
+   return cache[leagueID].rounds;
 } //getRounds
 
+/*  old version using season construct
 function getSessions(leagueID) {
    const sessions = [];
    cache[leagueID].season.forEach(round => {
@@ -78,6 +84,25 @@ function getSessions(leagueID) {
    return sessions;
 } //getSessions
 
+*/
+
+function getSessions(leagueID) {
+   const sessions = [];
+   cache[leagueID].rounds.forEach(round => {
+      var subsession_counter = 0;
+      round.subsession_ids.forEach(subsession=> {
+         let thisSession = {};
+         thisSession.subsession_id = subsession;
+         thisSession.score_type_id = round.score_types[subsession_counter];
+         thisSession.round_no = round.round_no;
+         sessions.push(thisSession);
+         subsession_counter += 1;
+      });
+   });
+   return sessions;
+} //getSessions
+
+/*
 function getScoredEvents(leagueID) {
    const scored_events = [];
    cache[leagueID].season.forEach(round => {
@@ -96,6 +121,7 @@ function getScoredEvents(leagueID) {
    });
    return scored_events;
 } //getScoredEvents
+ */
 
 //Function to login to iRacing (note password determined elsewhere)
 async function authUser() {
@@ -172,26 +198,28 @@ async function reCalculate(leagueID) {
       var leagueData = cache[leagueID];
 
       console.log("Checking if I have all the subsession Files");
-      const seasonSubSessions = calcscores.getSubSessionList(leagueData.season);
+      const session_array = getSessions(leagueID);
+      const seasonSubSessions = calcscores.getSubSessionArray(session_array);
       await downloadNewSessionFiles(seasonSubSessions, leagueID);
       console.log("Got all the files, calculating");
 
       //Calculate Scores for the season
       const driverScores = await calcscores.calc(leagueData, seasonSessions);
-      const classResults = await calcscores.classResultsTable(leagueData.season, driverScores, leagueData.config.apply_drop_scores, leagueData.config.no_drop_scores_rounds);
-      const teamsResults = await calcscores.teamsResultsTable(leagueData.season, leagueData.teams, classResults);
+      const classResults = await calcscores.classResultsTable(leagueData.rounds, driverScores, leagueData.config.apply_drop_scores, leagueData.config.no_drop_scores_rounds);
+      const teamsResults = await calcscores.teamsResultsTable(leagueData.rounds, leagueData.teams, classResults);
       const newDrivers = await calcscores.getNewDrivers();
 
       //Output full results JSON
+      /*
       const results = { "season": [], "driverScores": [] };
       results.season = leagueData.season
       results.driverScores = driverScores;
-      exporter.exportResultsJSON(results, "results.json");
+      exporter.exportResultsJSON(results, "results.json"); */
 
       //Output CSV for each round
-      leagueData.season.forEach(round => {
+     /* leagueData.season.forEach(round => {
          exporter.exportRoundCSV(leagueData.season, round.round_no, driverScores);
-      });
+      }); */
 
       //Output Individual Results Table
       exporter.exportResultsJSON(classResults, './data/' + leagueID + '/classtotals.json');
@@ -225,4 +253,4 @@ exports.updateCache = updateCache;
 exports.reCalculate = reCalculate;
 exports.getRounds = getRounds;
 exports.getSessions = getSessions;
-exports.getScoredEvents = getScoredEvents;
+//exports.getScoredEvents = getScoredEvents;

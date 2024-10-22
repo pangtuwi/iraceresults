@@ -55,6 +55,7 @@ app.get('/:leagueid', function (req, res) {
 app.get('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
 
+   if (config.leagueIDs.includes(reqLeagueID)) {
    switch (req.params.route) {
       case "favicon.ico":
          res.sendFile(path.join(__dirname, '/img/favicon.ico'));
@@ -126,20 +127,23 @@ app.get('/:leagueid/:route', function (req, res) {
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.getSessions(reqLeagueID)));
          break;
-         case "penalties":
-            res.setHeader("Content-Type", "application/json");
-            res.writeHead(200);
-            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
-            break;
-            
-      case "scoredevents":
+      case "penalties":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
+         break;
+
+    /*  case "scoredevents":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.getScoredEvents(reqLeagueID)));
-         break;
+         break; */
       default:
          res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
    }//switch route
+} else {
+   res.send('Sorry, this is an unknown league.');
+}
 });
 
 app.post('/:leagueid/:route', function (req, res) {

@@ -1,38 +1,52 @@
 [
    {
-      "scoring_category": "Sprint Qualifying",
-      "scoring_type": "Position",
-      "min_lap_ratio" : 0,
-      "position_scores": [1]
-   }, 
-   {
-      "scoring_category": "Sprint and Feature Fastest Lap",
-      "scoring_type": "Fastest Lap",
-      "min_lap_ratio" : 0.75,
-      "position_scores": [1]
+      "score_type": "Sprint",
+      "scored_events": [
+         {
+            "score_event": "Sprint Qualifying",
+            "simsession_name": "QUALIFY",
+            "scoring_system": 0
+         },
+         {
+            "score_event": "Sprint Race Fastest Lap",
+            "simsession_name": "RACE",
+            "scoring_system": 1
+         },
+         {
+            "score_event": "Sprint Race",
+            "simsession_name": "RACE",
+            "scoring_system": 3
+         }
+      ]
    },
    {
-      "scoring_category": "Endurance Fastest Lap",
-      "scoring_type": "Fastest Lap",
-      "min_lap_ratio" : 0.75,
-      "position_scores": [2]
+      "score_type": "Feature",
+      "scored_events": [
+         {
+            "score_event": "Feature Race Fastest Lap",
+            "simsession_name": "RACE",
+            "scoring_system": 1
+         },
+         {
+            "score_event": "Feature Race",
+            "simsession_name": "RACE",
+            "scoring_system": 4
+         }
+      ]
    },
    {
-      "scoring_category": "Sprint Race",
-      "scoring_type": "Position",
-      "min_lap_ratio" : 0.75,
-      "position_scores":[18, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-   },
-   {
-      "scoring_category": "Feature Race",
-      "scoring_type": "Position",
-      "min_lap_ratio" : 0.75,
-      "position_scores":[25, 21, 19, 17, 16, 15, 14, 13, 12, 10, 8, 6, 4, 2, 1]
-   },
-   {
-      "scoring_category": "Endurance Race",
-      "scoring_type": "Position",
-      "min_lap_ratio" : 0.75,
-      "position_scores":[50, 45, 40, 35, 30, 25, 20, 15, 13, 10, 8, 6, 4, 2, 1]
+      "score_type": "Endurance",
+      "scored_events": [
+         {
+            "score_event": "Endurance Race Fastest Lap",
+            "simsession_name": "RACE",
+            "scoring_system": 2
+         },
+         {
+            "score_event": "Endurance Race",
+            "simsession_name": "RACE",
+            "scoring_system": 5
+         }
+      ]
    }
 ]

@@ -1,0 +1,122 @@
+[
+   {
+      "round_no": 1,
+      "track_name": "1-Catalunya",
+      "start_time": "2024-09-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         70297109,
+         70299051,
+         70299903
+      ]
+   },
+   {
+      "round_no": 2,
+      "track_name": "2-Hockenh",
+      "start_time": "2024-09-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         70447893,
+         70449815,
+         70450549
+      ]
+   },
+   {
+      "round_no": 3,
+      "track_name": "3-Fuji",
+      "start_time": "2024-09-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         70595641,
+         70597328,
+         70598269
+      ]
+   },
+   {
+      "round_no": 4,
+      "track_name": "4-CharlR",
+      "start_time": "2024-09-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         70746338,
+         70747895,
+         70748472
+      ]
+   },
+   {
+      "round_no": 5,
+      "track_name": "5-Spa",
+      "start_time": "2024-09-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         70897307,
+         70897307,
+         70897307
+      ]
+   },
+   {
+      "round_no": 6,
+      "track_name": "6-MagnyC",
+      "start_time": "2024-09-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         71290850,
+         71292949,
+         71293992
+      ]
+   },
+   {
+      "round_no": 7,
+      "track_name": "7-Oulton",
+      "start_time": "2024-09-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         71451399,
+         71453483,
+         71454413
+      ]
+   },
+   {
+      "round_no": 8,
+      "track_name": "8-Suzuka",
+      "start_time": "2024-09-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         71607251,
+         71609184,
+         71610019
+      ]
+   }
+]

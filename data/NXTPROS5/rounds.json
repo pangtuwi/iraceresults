@@ -1,0 +1,89 @@
+[
+   {
+      "round_no": 1,
+      "track_name": "1-Mugel","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [0, 1],
+      "subsession_ids": [
+         68997639,
+         69000434
+      ]
+   },
+   {
+      "round_no": 2,
+      "track_name": "2-Aragó","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [0, 1],
+      "subsession_ids": [
+         69165849,
+         69168387
+      ]
+   },
+   {
+      "round_no": 3,
+      "track_name": "3-Silve","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [2],
+      "subsession_ids": [
+         69309358
+      ]
+   },
+   {
+      "round_no": 4,
+      "track_name": "4-IndyR","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [0, 1],
+      "subsession_ids": [
+         69424049,
+         69426133
+      ]
+   },
+   {
+      "round_no": 5,
+      "track_name": "5-R.Atl","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [0, 1],
+      "subsession_ids": [
+         69729030,
+         69730961
+      ]
+   },
+   {
+      "round_no": 6,
+      "track_name": "6-Sebri","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [2],
+      "subsession_ids": [
+         69884677
+      ]
+   },
+   {
+      "round_no": 7,
+      "track_name": "7-Spa F","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [0, 1],
+      "subsession_ids": [
+         70193314,
+         70195403
+      ]
+   },
+   {
+      "round_no": 8,
+      "track_name": "8-Imola ","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [0, 1],
+      "subsession_ids": [
+         70340956,
+         70342993
+      ]
+   },
+   {
+      "round_no": 9,
+      "track_name": "9-Porti","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [0, 1],
+      "subsession_ids": [
+         70489805,
+         70491808
+      ]
+   },
+   {
+      "round_no": 10,
+      "track_name": "10-LeMan","start_time": "2024-09-26T20:00:00Z",
+      "score_types" : [2],
+      "subsession_ids": [
+         70638022
+      ]
+   }
+]

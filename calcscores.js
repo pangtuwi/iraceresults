@@ -4,11 +4,14 @@ const utils = require('./utils/utils');
 
 let DriverScoreTable = {};
 let Drivers = {};
-let Season = {};
+//let Season = {};
+let Rounds = {};
+let Scoring = {};
 
 
 //Returns size of score Array required = sum of score events in all rounds
-function getScoreArraySizes(season) {
+//old verison using season construct
+/*function getScoreArraySizes(season) {
    let total_size = 0;
    let total_rounds = 0
    let rounds_array = [];
@@ -26,18 +29,41 @@ function getScoreArraySizes(season) {
       rounds: rounds_array
    }
    return score_size;
+} //getScoreArraySizes */
+
+function getScoreArraySizes(rounds, scoring) {
+   let total_size = 0;
+   let total_rounds = 0
+   let rounds_array = [];
+   rounds.forEach(round => {
+      total_rounds++;
+      let round_size = 0;
+      round.score_types.forEach(scoreType => {
+         const score_events = scoring[scoreType].scored_events;
+         total_size = total_size + score_events.length;
+         round_size = round_size + score_events.length
+      });
+      rounds_array.push(round_size);
+   });
+   const score_size = {
+      total: total_size,
+      rounds: rounds_array
+   }
+   return score_size;
 } //getScoreArraySizes
 
+
 //Returns size of score Array required = sum of score events in all rounds
-function getScoreArrayIndexes(season, this_round_index) {
+function getScoreArrayIndexes(rounds, scoring, this_round_index) {
    let total_size = 0;
    let total_rounds = 0
    let this_round_start_index = 0;
    let this_round_size = 0;
+   let scored_events_length = 0;
    let round_size = 0;
    let rounds_array = [];
    let round_counter = 0;
-   season.forEach(round => {
+   rounds.forEach(round => {
       total_rounds++;
       round_size = 0;
       if (round_counter == this_round_index) {
@@ -47,12 +73,17 @@ function getScoreArrayIndexes(season, this_round_index) {
             this_round_start_index = total_size;
          }
       }
-      round.sessions.forEach(session => {
+      var subsession_counter = 0;
+      round.subsession_ids.forEach(session => {
+         scored_events_length = scoring[round.score_types[subsession_counter]].scored_events.length;
          if (round_counter == this_round_index) {
-            this_round_size = round_size + session.scored_events.length;
+            //this_round_size = round_size + session.scored_events.length;
+            
+            this_round_size = round_size + scored_events_length;
          }
-         total_size = total_size + session.scored_events.length;
-         round_size = round_size + session.scored_events.length;
+         total_size = total_size + scored_events_length;
+         round_size = round_size + scored_events_length;
+         subsession_counter += 1;
       });
       rounds_array.push(round_size);
       round_counter += 1;
@@ -68,14 +99,15 @@ function getScoreArrayIndexes(season, this_round_index) {
 } //getScoreArrayIndexes
 
 // Returns the score array position of a specified round, session and event
-function getScoreArrayPosition(season, round_no, session_no, score_event) {
+function getScoreArrayPosition(rounds, scoring, round_no, session_no, score_event) {
    let position_counter = 0;
    let position_found = 0;
    let round_counter = 0;
    let session_counter = 0;
    let event_counter = 0;
-   season.forEach(round => {
-      round.sessions.forEach(session => {
+   rounds.forEach(round => {
+      round.subsession_ids.forEach(session => {
+         session.scored_events = scoring[round.score_types[session_counter]];
          session.scored_events.forEach(event => {
             if ((round_counter == round_no) && (session_counter == session_no) && (event.score_event = score_event)) {
                position_found = position_counter;
@@ -111,7 +143,8 @@ function createClassResultsArray(leagueconfig, results, classes, score_event_typ
             thisDriver = newDriver;    //Make current drive
 
             //Add to DriverScoreTable
-            const score_array_sizes = getScoreArraySizes(Season);  //Calculate size of scoring array 
+            //const score_array_sizes = getScoreArraySizes(Season);  //Calculate size of scoring array 
+            const score_array_sizes = getScoreArraySizes(Rounds, Scoring);  //Calculate size of scoring array 
             thisDriver.scores = new Array(score_array_sizes.total).fill(0);   //Score Array filled with zeros
             thisDriver.positions = new Array(score_array_sizes.total).fill(0);   //position Array filled with zeros
             thisDriver.penalties = new Array(score_array_sizes.total).fill(0);   //penalties Array filled with zeros
@@ -251,7 +284,7 @@ function updateDriverScoreTable(subSessionResultsByClass, round_no, score_no, sc
    }
 } //updateDriverScoreTable
 
-//Takes the season config file and Returns an array containing all of the iracing subsession_ids required for download 
+/*//Takes the season config file and Returns an array containing all of the iracing subsession_ids required for download 
 function getSubSessionList(season) {
    let subsessionIdArray = [];
    for (const round of season) {
@@ -264,10 +297,23 @@ function getSubSessionList(season) {
    }
    return subsessionIdArray;
 } // getSubSessionList
+ */
+
+function getSubSessionArray(sessions) {
+   let subsessionIdArray = [];
+   for (const session of sessions) {
+      let subsession_id = session.subsession_id;
+      if (!subsessionIdArray.includes(subsession_id)) {
+         subsessionIdArray.push(subsession_id);
+      }
+
+   }
+   return subsessionIdArray;
+} // getSubSessionArray
 
 
 // applies penalties into Driver Score Table
-function applyPenalties(season, classResults, drivers, penalties) {
+function applyPenalties(rounds, classResults, drivers, penalties) {
    //ToDo : Check if both time and position penalties applied.   Would cause issues
    penalties.forEach(penalty => {
 
@@ -284,7 +330,7 @@ function applyPenalties(season, classResults, drivers, penalties) {
 
          // re-order other drivers
          if (countPositionsAffected > 1) {
-            for (let i = driverPos; i < driverPos + countPositionsAffected-1; i++) {
+            for (let i = driverPos; i < driverPos + countPositionsAffected - 1; i++) {
                thisClass[i] = thisClass[i + 1];
                thisClass[i].finish_position_after_penalties = i + 1;
                thisClass[i].finish_position_in_class_after_penalties = i + 1;
@@ -359,7 +405,7 @@ function applyPenalties(season, classResults, drivers, penalties) {
       if (penalty.championship_points > 0) {
          console.log(" - - - -  Processing Championship points Penalty for:", penalty.display_name, "  ", penalty.championship_points, " points");
          let driver = drivers.find(item => penalty.cust_id === item.cust_id);
-         let score_array_position = getScoreArrayPosition(season, penalty.round_no, penalty.session_no, penalty.score_event);
+         let score_array_position = getScoreArrayPosition(rounds, penalty.round_no, penalty.session_no, penalty.score_event);
          let class_index = driver.classnumber - 1;
          //TODO : fix the class_index not down to zero
          let thisClassPositions = classResults[class_index].positions;
@@ -395,25 +441,25 @@ function applyFastestLap(classResults) {
 } //applyFastestLap
 
 
-//Returns score for position from scoring array 
-function getScore(position, scoring) {
+//Returns points for position from scoring array 
+function getPoints(position, points) {
    let position_index = position - 1; // i.e. P1 = 0
-   if ((position > scoring.length) || (position == -1)) {
+   if ((position > points.length) || (position == -1)) {
       return (0);
    } else {
-      return (scoring[position_index]);
+      return (points[position_index]);
    }
-} //getScore
+} //getPoints
 
 
 // Inserts scores into driver Table based on positions after penalties
-function applyPositionScores(classResults, scoring) {
+function applyPositionScores(classResults, points) {
    classResults.forEach(driverClass => {
       driverClass.positions.forEach(position => {
          if (driverClass.position_score_by == "overall") {
-            position.score = getScore(position.finish_position_after_penalties, scoring);
+            position.score = getPoints(position.finish_position_after_penalties, points);
          } else {   //score by class
-            position.score = getScore(position.finish_position_in_class_after_penalties, scoring);
+            position.score = getPoints(position.finish_position_in_class_after_penalties, points);
          }
       });
    });
@@ -422,10 +468,10 @@ function applyPositionScores(classResults, scoring) {
 
 
 // Inserts scores into driver Table based on fastest lap position in class
-function applyFastestLapScores(classResults, scoring) {
+function applyFastestLapScores(classResults, points) {
    classResults.forEach(driverClass => {
       driverClass.positions.forEach(position => {
-         position.score = getScore(position.fastest_lap_position_in_class, scoring);
+         position.score = getPoints(position.fastest_lap_position_in_class, points);
       });
    });
    return classResults
@@ -433,11 +479,11 @@ function applyFastestLapScores(classResults, scoring) {
 
 
 // Inserts scores into driver Table based on Laps Led
-function applyLapsLedScores(classResults, scoring) {
+function applyLapsLedScores(classResults, points) {
    classResults.forEach(driverClass => {
       driverClass.positions.forEach(position => {
          if ((position.laps_lead > 0) && (position.finished > 0)) {
-            position.score = getScore(1, scoring);
+            position.score = getPoints(1, points);
             console.log(" - - - ", position.display_name, " led for ", position.laps_lead, "laps and got additional score of ", position.score);
          } else {
             position.score = 0;
@@ -449,13 +495,13 @@ function applyLapsLedScores(classResults, scoring) {
 
 
 // Inserts scores into driver Table based on Positions gained in class
-function applyPositionsGainedScores(classResults, scoring) {
+function applyPositionsGainedScores(classResults, points) {
    classResults.forEach(driverClass => {
       driverClass.positions.forEach(position => {
          const positions_gained = position.starting_position_in_class - position.finish_position_in_class_after_penalties;
          //console.log(position.display_name, ", ", driverClass.classnumber, ", ",position.starting_position, ", ", position.starting_position_in_class, ", ", position.finish_position, ",", position.finish_position_in_class, ", ", position.finish_position_after_penalties, ",", position.finish_position_in_class_after_penalties, ", ", positions_gained);
          if ((positions_gained > 0) && (position.finished == 1)) {
-            position.score = positions_gained * getScore(1, scoring);
+            position.score = positions_gained * getPoints(1, points);
             //console.log(" - - - ", position.display_name, " gained ", positions_gained, " positions and got additional score of ", position.score);
          } else {
             position.score = 0;
@@ -478,11 +524,14 @@ async function calc(leagueData, seasonSessions) {
    });
 
    //Load Scoring Points System from json file   
-   const scoring = leagueData.scoring;//await jsonloader.getScoringPointsSystem();
+   //const scoring = leagueData.scoring;//await jsonloader.getScoringPointsSystem();
+   const points = leagueData.points;//await jsonloader.getScoringPointsSystem();
 
    //Load Season file containing rounds, events etc. into season object and create score arrays
-   Season = leagueData.season;//await jsonloader.getSeason();
-   const score_array_sizes = getScoreArraySizes(Season);  //Calculate size of scoring array 
+   //Season = leagueData.season;//await jsonloader.getSeason();  OLD version using Season
+   Rounds = leagueData.rounds;
+   Scoring = leagueData.scoring;
+   const score_array_sizes = getScoreArraySizes(Rounds, Scoring);  //Calculate size of scoring array 
 
    //load json file containing list of Drivers for season and put into correct classes in DriverScoreTable
    Drivers = leagueData.drivers;//await jsonloader.getDrivers();
@@ -504,7 +553,8 @@ async function calc(leagueData, seasonSessions) {
    const Penalties = leagueData.penalties;//await jsonloader.getPenalties();
 
    //Process season object, scoring each event of each session of each round.
-   Season.forEach(round => {
+   Rounds.forEach(round => {
+      if (round.subsession_ids.length > 0) {
       console.log("Calculating Scores for round ", round.round_no, " = ", round.track_name);
       var score_event_counter = 0;
 
@@ -523,20 +573,22 @@ async function calc(leagueData, seasonSessions) {
          }
       });
 
-
-      round.sessions.forEach(session => {
-         let subsession_id = session.subsession_id;
+      var subsession_counter = 0;
+      round.subsession_ids.forEach(session => {
+         //let subsession_id = session.subsession_id;
+         let subsession_id = session;
          let session_results = seasonSessions[subsession_id].session_results;
          console.log(" - processing session ", subsession_id);
 
-         session.scored_events.forEach(scoreEvent => {
+         //session.scored_events.forEach(scoreEvent => {
+         Scoring[round.score_types[subsession_counter]].scored_events.forEach(scoreEvent => {
             score_event_counter++;
             console.log(" - - processing event ", scoreEvent.score_event);
             let subsession = session_results.find(item => item.simsession_name === scoreEvent.simsession_name);
-            let subsession_score_array = scoring[scoreEvent.scoring_system].position_scores;  //scoring system to use
-            let resultsSplitByClass = createClassResultsArray(leagueconfig, subsession.results, driverClasses, scoreEvent.score_event, scoring[scoreEvent.scoring_system].min_lap_ratio);
+            let subsession_score_array = points[scoreEvent.scoring_system].position_scores;  //scoring system to use
+            let resultsSplitByClass = createClassResultsArray(leagueconfig, subsession.results, driverClasses, scoreEvent.score_event, points[scoreEvent.scoring_system].min_lap_ratio);
 
-            if (scoring[scoreEvent.scoring_system].scoring_type === "Fastest Lap") {
+            if (points[scoreEvent.scoring_system].scoring_type === "Fastest Lap") {
                console.log(" - - - Applying Fastest Lap scoring");
                resultsSplitByClass = applyFastestLap(resultsSplitByClass);
             }
@@ -545,10 +597,10 @@ async function calc(leagueData, seasonSessions) {
                return ((item.round_no == round.round_no) && (item.session_no == session.session_no) && (item.score_event == scoreEvent.score_event))
             });
             console.log(" - - - found penalties for this event ", subsession_penalties.length);
-            resultsAfterPositionPenalties = applyPenalties(Season, resultsSplitByClass, Drivers, subsession_penalties);
+            resultsAfterPositionPenalties = applyPenalties(Rounds, resultsSplitByClass, Drivers, subsession_penalties);
 
             //ToDo Penlty for race must carry over to Positions gained (work around = 2 penalties)
-            let score_type = scoring[scoreEvent.scoring_system].scoring_type;
+            let score_type = points[scoreEvent.scoring_system].scoring_type;
             if (score_type === "Position") {
                scoredResults = applyPositionScores(resultsAfterPositionPenalties, subsession_score_array);
             } else if (score_type === "Fastest Lap") {
@@ -561,12 +613,15 @@ async function calc(leagueData, seasonSessions) {
             let scoresAdded = updateDriverScoreTable(scoredResults, round.round_no, score_event_counter, score_array_sizes);
 
          });
+         subsession_counter += 1;
       });
+   }
    });
+
    return DriverScoreTable;
 };  //calc
 
-async function classResultsTable(season, driverScores, apply_drop_scores_text, no_drop_scores_rounds) {
+async function classResultsTable(rounds, driverScores, apply_drop_scores_text, no_drop_scores_rounds) {
    //Set up header and array data structures
    let apply_drop_scores = (apply_drop_scores_text === "TRUE");
    let classesArray = [];
@@ -576,13 +631,15 @@ async function classResultsTable(season, driverScores, apply_drop_scores_text, n
    let scoreColumns = [];
    let outputArray = [];
    let arrayIndexes = [];
-   season.forEach(function (round, i) {
-      let thisArrayIndexSet = getScoreArrayIndexes(season, i);
-      arrayIndexes.push(thisArrayIndexSet);
-      let titleStr = round.track_name;
-      outputHeaders.push(titleStr);
-      scoreColumns.push(titleStr);
-      outputLine[titleStr] = 0;
+   rounds.forEach(function (round, i) {
+      if (round.subsession_ids.length > 0) {
+         let thisArrayIndexSet = getScoreArrayIndexes(rounds, Scoring, i);
+         arrayIndexes.push(thisArrayIndexSet);
+         let titleStr = round.track_name;
+         outputHeaders.push(titleStr);
+         scoreColumns.push(titleStr);
+         outputLine[titleStr] = 0;
+      }
    });
    if (apply_drop_scores) {
       outputHeaders.push("Drop");
@@ -648,7 +705,7 @@ async function classResultsTable(season, driverScores, apply_drop_scores_text, n
 } // ClassResultsTable
 
 // Teams Results Table Calculation
-function teamsResultsTable(season, teams, classesArray) {
+function teamsResultsTable(rounds, teams, classesArray) {
    //Create output Table
    let teamsTable = [];
 
@@ -665,7 +722,7 @@ function teamsResultsTable(season, teams, classesArray) {
    let outputHeaders = ["Pos", "Team Name", "Driver 1", "Driver 2", "Driver 3"];
    let outputLine = { "Pos": 0, "Team Name": "", "Driver 1": "", "Driver 2": "", "Driver 3": "" }
 
-   season.forEach(function (round, i) {
+   rounds.forEach(function (round, i) {
       //let thisArrayIndexSet = getScoreArrayIndexes(season, i);
       //arrayIndexes.push(thisArrayIndexSet);
       let titleStr = round.track_name;
@@ -745,7 +802,8 @@ function getNewDrivers() {
 //ToDo : Eliminate reason_out:"Disconnected" drivers
 //ToDo : Class moves for Drivers
 
-exports.getSubSessionList = getSubSessionList;
+//exports.getSubSessionList = getSubSessionList;
+exports.getSubSessionArray = getSubSessionArray;
 exports.calc = calc;
 exports.classResultsTable = classResultsTable;
 exports.teamsResultsTable = teamsResultsTable;

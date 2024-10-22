@@ -9,6 +9,7 @@ async function getLeagueConfig (leagueid) {
    return obj;
 }
 
+/*
  async function getSeason (leagueid) {
    const data = await fs.readFile('./data/' + leagueid + '/season.json', { encoding: 'utf8' });
    //console.log(data);
@@ -16,9 +17,26 @@ async function getLeagueConfig (leagueid) {
    //console.log(obj);   
    return obj;
 }
+   */
 
-async function getScoringPointsSystem (leagueid) {
+async function getScoring (leagueid) {
    const data = await fs.readFile('./data/' + leagueid + '/scoring.json', { encoding: 'utf8' });
+   //console.log(data);
+   const obj = JSON.parse(data);
+   //console.log(obj);   
+   return obj;
+}
+
+async function getPoints (leagueid) {
+   const data = await fs.readFile('./data/' + leagueid + '/points.json', { encoding: 'utf8' });
+   //console.log(data);
+   const obj = JSON.parse(data);
+   //console.log(obj);   
+   return obj;
+}
+
+async function getRounds (leagueid) {
+   const data = await fs.readFile('./data/' + leagueid + '/rounds.json', { encoding: 'utf8' });
    //console.log(data);
    const obj = JSON.parse(data);
    //console.log(obj);   
@@ -102,8 +120,10 @@ async function getSubSession (leagueid, subsession_id) {
 }
 
 exports.getLeagueConfig = getLeagueConfig;
-exports.getSeason = getSeason; 
-exports.getScoringPointsSystem = getScoringPointsSystem;
+//exports.getSeason = getSeason; 
+exports.getRounds = getRounds; 
+exports.getScoring = getScoring;
+exports.getPoints = getPoints;
 exports.getDrivers = getDrivers;
 exports.saveDrivers = saveDrivers;
 exports.getClasses = getClasses;

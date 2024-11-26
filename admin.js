@@ -22,10 +22,14 @@ router.get('/', function (req, res) {
    res.send('GET route on admin.');
 });
 
+
 router.get('/:leagueid', function (req, res) {
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    if (config.leagueIDs.includes(reqLeagueiD)) {
-      res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league admin');
+      //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league admin');
+
+         res.sendFile(path.join(__dirname, '/html/admin.html'));
+         
    } else {
       res.send('Sorry, this is an unknown league.');
    }
@@ -51,6 +55,26 @@ router.get('/:leagueid/:route', function (req, res) {
                res.end(data);
             }
          });
+         break;
+
+      case "leagueid":
+            const reqLeagueiD = req.params.leagueid.toUpperCase();
+            const leagueIDObj = {"leagueid":reqLeagueiD};
+            console.log("sending leagueID: ", JSON.stringify(leagueIDObj));
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leagueIDObj));
+         break;
+
+      case "protests":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].protests));
+         break;
+
+      case "stewarding":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/stewarding.html'));
          break;
 
       case "classes":
@@ -181,7 +205,16 @@ router.post('/:leagueid/:route', function (req, res) {
                res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));
             }
          }
+         break;
 
+      case "penalty":
+         var newPenalty = {}
+         newPenalty = JSON.parse(req.body.penalty);
+         console.log("new Penalty Recieved : ", newPenalty);
+         leaguedata.submitPenalty(reqLeagueID, newPenalty).then((result) => {
+            leaguedata.cache[reqLeagueID].penalties = result;
+            res.sendFile(path.join(__dirname, '/html/protestconf.html'));
+         });
          break;
 
       default:

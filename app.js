@@ -1,3 +1,4 @@
+
 console.log("= = = = = = NodeJS running app.js Express version of iRaceResults = = = = = =");
 
 // Express requirements
@@ -56,100 +57,120 @@ app.get('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
 
    if (config.leagueIDs.includes(reqLeagueID)) {
-   switch (req.params.route) {
-      case "favicon.ico":
-         res.sendFile(path.join(__dirname, '/img/favicon.ico'));
-         break;
-      case "bkgrnd.jpg":
-         res.sendFile(path.join(__dirname, '/img/bkgrnd.jpg'));
-         break;
-      case "leftbar.png":
-         res.sendFile(path.join(__dirname, '/img/leftbar.png'));
-         break;
-      case "middlebar.png":
-         res.sendFile(path.join(__dirname, '/img/middlebar.png'));
-         break;
-      case "header.png":
-         res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/header.png'));
-         break;
-      case "footer.png":
-         res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
-         break;
-      case "style.css":
-         res.sendFile(path.join(__dirname, '/css/style.css'));
-         break;
+      switch (req.params.route) {
+         case "favicon.ico":
+            res.sendFile(path.join(__dirname, '/img/favicon.ico'));
+            break;
+         case "bkgrnd.jpg":
+            res.sendFile(path.join(__dirname, '/img/bkgrnd.jpg'));
+            break;
+         case "leftbar.png":
+            res.sendFile(path.join(__dirname, '/img/leftbar.png'));
+            break;
+         case "middlebar.png":
+            res.sendFile(path.join(__dirname, '/img/middlebar.png'));
+            break;
+         case "header.png":
+            res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/header.png'));
+            break;
+         case "footer.png":
+            res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
+            break;
+         case "style.css":
+            res.sendFile(path.join(__dirname, '/css/style.css'));
+            break;
 
-      case "tables":
-         //res.send("Tables for " + reqLeagueiD);
-         res.cookie('leagueid', reqLeagueID);
-         res.sendFile(path.join(__dirname, '/html/tables.html'));
-         break;
-      case "classtotals":
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classtotals));
-         break;
-      case "teamstotals":
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].teamstotals));
-         break;
-      case "protest":
-         res.cookie('leagueid', reqLeagueID);
-         res.sendFile(path.join(__dirname, '/html/protest.html'));
-         break;
-      case "recalculate":
-         console.log("have been asked to recalculate");
-         leaguedata.reCalculate(reqLeagueID).then((result) => {
-            leaguedata.updateCache(reqLeagueID).then((result2) => {
-               console.log("recalculation done - sending response");
-               res.send("recalculated " + reqLeagueID + '<br> <a href = "tables"> Reload Tables </a>');
+         case "tables":
+            //res.send("Tables for " + reqLeagueiD);
+            res.cookie('leagueid', reqLeagueID);
+            res.sendFile(path.join(__dirname, '/html/tables.html'));
+            break;
+         case "classtotals":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classtotals));
+            break;
+         case "teamstotals":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].teamstotals));
+            break;
+         case "protest":
+            res.cookie('leagueid', reqLeagueID);
+            res.sendFile(path.join(__dirname, '/html/protest.html'));
+            break;
+         case "recalculate":
+            console.log("have been asked to recalculate");
+            leaguedata.reCalculate(reqLeagueID).then((result) => {
+               leaguedata.updateCache(reqLeagueID).then((result2) => {
+                  console.log("recalculation done - sending response");
+                  res.send("recalculated " + reqLeagueID + '<br> <a href = "tables"> Reload Tables </a>');
+               });
             });
-         });
-         break;
-      case "classes":
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classes));
-         break;
-      case "drivers":
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
-         break;
-      case "rounds":
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.getRounds(reqLeagueID)));
-         break;
-      case "sessions":
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.getSessions(reqLeagueID)));
-         break;
-      case "penalties":
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
-         break;
-
-    /*  case "scoredevents":
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.getScoredEvents(reqLeagueID)));
-         break; */
-      default:
-         res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
-   }//switch route
-} else {
-   res.send('Sorry, this is an unknown league.');
-}
+            break;
+         case "classes":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classes));
+            break;
+         case "protests":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].protests));
+            break;
+         case "drivers":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
+            break;
+         case "rounds":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.getRounds(reqLeagueID)));
+            break;
+         case "protestablerounds":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.getProtestableRounds(reqLeagueID)));
+            break;
+         case "penalties":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
+            break;
+         case "penaltylist":
+            //res.cookie('leagueid', reqLeagueID);
+            res.sendFile(path.join(__dirname, '/html/penalties.html'));
+            break;
+         default:
+            res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
+      }//switch route
+   } else {
+      res.send('Sorry, this is an unknown league.');
+   }
 });
 
 app.post('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
    switch (req.params.route) {
+      case "scoredevents":
+         const reqRoundNo = req.body.round_no;
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         const scoredEvents = leaguedata.getScoredEvents(reqLeagueID, reqRoundNo);
+         res.end(JSON.stringify(scoredEvents));
+         break;
 
+      case "protestconfirmation":
+         var newProtest = {}
+         newProtest = JSON.parse(req.body.protest);
+         //console.log("new Protest Recieved : ", newProtest);
+         leaguedata.submitProtest(reqLeagueID, newProtest).then((result) => {
+            leaguedata.cache[reqLeagueID].protests = result;
+            res.sendFile(path.join(__dirname, '/html/protestconf.html'));
+         });
+
+         break;
       default:
          res.send('UNKNOWN POST ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
    }

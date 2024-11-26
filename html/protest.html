@@ -3,7 +3,10 @@
 <head>
    <meta charset="utf-8">
    <link rel="stylesheet" href="/style.css">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+   <script src="/jquery-3.7.1.js"></script>
+   <script src="/protest.js"></script>
+   <script src="/jquery.redirect.js"></script>
 </head>
 
 <style>
@@ -19,11 +22,10 @@
 <body>
    <div class="header_img"></div>
    <div class="title" id="title">
-      PROTEST FOR LEAGUE XXXXXXXXXX
+      PROTEST SUBMISSION FORM
    </div>
 
-   <div class="left_wrap">
-      Please enter the following information :
+   <div class="left_wrap" id="driver_input" style="display: block;">
       <div class="wrapper">
          <div class="table" id="protesting_driver_table">
             <div class="row header">
@@ -44,14 +46,11 @@
             </div>
             <div class="row">
                <div class="cell" data-title="Row">Round</div>
-               <div class="cell" data-title="Row"><select id="round_select"></select></div>
+               <div class="cell" data-title="Row"><select id="round_select"></select> &nbsp <span class="comment"
+                     id="round_select_comment"></span></div>
             </div>
             <div class="row">
                <div class="cell" data-title="Row">Event</div>
-               <div class="cell" data-title="Row"><select id="session_select"></select></div>
-            </div>
-            <div class="row">
-               <div class="cell" data-title="Row">Session</div>
                <div class="cell" data-title="Row"><select id="scored_event_select"></select></div>
             </div>
 
@@ -70,16 +69,59 @@
                      type="search" id="protested_driver_search" /></div>
             </div>
             <div class="row">
-               <div class="cell" data-title="Row">Driver statement</div>
+               <div class="cell" data-title="Row">Driver statement
+                  <div class="comment"><br>YOUR DESCRIPTION OF THE INCIDENT **PLEASE KEEP IT CLEAN**</div>
+               </div>
                <div class="cell" data-title="Row">
-               <textarea id="incident_description" name="incident_description" rows="6" cols="60"> YOUR DESCRIPTION OF THE INCIDENT  **PLEASE KEEP IT CLEAN** 
-               </textarea>
+                  <textarea id="incident_description" name="incident_description" rows="6" cols="60"></textarea>
                </div>
             </div>
+         </div>
+
+
+         <div class="submit">
+            <button id="next_btn">next</button>
+
          </div>
       </div>
    </div>
 
-   <script src="/protest.js"></script>
+   <div class="left_wrap" id="driver_confirmation" style="display: none;">
+      <div class="wrapper">
+         <div class="table" id="driver_confirmation_table">
+            <div class="row header">
+               <div class="cell">Protest Confirmation</div>
+            </div>
+            <div class="row">
+               <div class="cell">
+                  <p>
+                     <b>Protesting Driver : </b><span id = "protesting_driver_name"></span><br>
+                     <b>Driver at Fault : </b><span id = "protested_driver_name"></span><br>
+                     <b>Round : </b><span id="round_name"></span><br>
+                     <b>Event : </b><span id="event"></span><br>
+                     <b>Your statement : </b><span id = "driver_statement"></span>
+                  </p>
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell">Please confirm : <br>
+                     <input type="checkbox" id = "CB1">That you are <span id="protesting_driver_name2"></span></input><br>
+                     <input type="checkbox" id = "CB2">That you have read and understand the league rules</input><br>
+                     <input type="checkbox" id = "CB3">That you wish to protest against <span id = "protested_driver_name2"></span></input><br>
+                     <input type="checkbox" id = "CB4">That you confirm and stand by your incident description above</input><br>
+                  </div>
+            </div>
+            
+         </div>
+         <div class="submit">
+            <button id="submit_btn">Submit</button>
+            <button id="cancel_btn"> Cancel</button>
+
+         </div>
+      </div>
+   </div>
+
+
+
 
 </body>

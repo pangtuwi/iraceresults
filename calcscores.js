@@ -109,10 +109,10 @@ function getScoreArrayPosition(rounds, scoring, round_no, session_no, score_even
       let session_counter = 0;
       if (round.subsession_ids.length > 0) {
          round.subsession_ids.forEach(session => {
-            console.log ("looking for array poisiton for ", round_counter, " and session ", session);
+            //console.log("looking for array poisiton for ", round_counter, " and session ", session);
             let scored_events = scoring[round.score_types[session_counter]].scored_events;
             scored_events.forEach(event => {
-               if ((round_counter == round_no) && (session_counter == session_no) && (event.score_event = score_event)) {
+               if ((round_counter == round_no) && (session_counter == session_no) && (event.score_event == score_event)) {
                   position_found = position_counter;
                }
                position_counter += 1;
@@ -414,7 +414,11 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
          //TODO : fix the class_index not down to zero
          let thisClassPositions = classResults[class_index].positions;
          let driverPenalisedIndex = thisClassPositions.findIndex(item => penalty.cust_id === item.cust_id);
-         thisClassPositions[driverPenalisedIndex].championship_penalty -= penalty.championship_points;
+         if (driverPenalisedIndex == -1) {
+            console.log("WARNING- PENALISED DRIVER NOT FOUND IN THIS EVENT");
+         } else {
+            thisClassPositions[driverPenalisedIndex].championship_penalty -= penalty.championship_points;
+         }
       }
    });
    return classResults

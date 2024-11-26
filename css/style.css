@@ -19,6 +19,10 @@ body {
    font-size: large;
  }
 
+ .leagueid {
+   font-weight: bold;
+ }
+
 .wrapper {
   margin: 0 auto;
   padding: 20px;
@@ -27,6 +31,15 @@ body {
   max-height: 600px;
   overflow-y:auto;
 }
+
+.wrapperconf {
+   margin: 0 auto;
+   padding: 20px;
+   max-width: 1200px;
+   color: white;
+   max-height: 600px;
+   overflow-y:auto;
+ }
 
 .left_wrap {
    padding: 20px;
@@ -42,6 +55,19 @@ body {
    color: lightgrey;
 }
 
+.left_wrap_narrow {
+   padding: 10px;
+   width: 35%;
+   float: left;
+   color: lightgrey;
+}
+
+.right_wrap_wide {
+   padding: 10px;
+   width: 55%;
+   float: left;
+   color: lightgrey;
+}
 .table {
   margin: 0 0 20px 0;
   width: 100%;
@@ -80,6 +106,20 @@ body {
 input {
    width: 100px;
 }
+
+a {
+   color: lightgray;
+   text-decoration: none;
+ }
+ 
+ a:hover {
+   text-decoration: underline;
+ }
+ 
+ a:active {
+   color: white;
+ }
+
 @media screen and (max-width: 580px) {
   .row {
     padding: 8px 0;
@@ -90,12 +130,34 @@ input {
 .cell {
   padding: 6px 12px;
   display: table-cell;
+  vertical-align: middle;
+}
+
+.comment {
+   font-size: 12px;
+   font-style: italic;
+   padding-left: 20px;
+}
+
+.submit {
+   text-align: right;
 }
 
 button {
    width: 70px;
    float: right;
    margin-left: 10px;
+}
+
+.menuitem {
+   width: 90px;
+   float: right;
+   text-align: center;
+   margin-left: 10px;
+   font-weight: 500;
+   font-size: medium;
+  color: #ffffff;
+
 }
 
 @media screen and (max-width: 580px) {

@@ -25,7 +25,7 @@ var cache = {};
 
 async function loadCache() {
    await Promise.all(config.leagueIDs.map(async (leagueID) => {
-      let league = { "config": {}, "classes": [], "scoring": [], "points": [], "drivers": [], "teams": [], "rounds": [],"classchanges": [], "penalties": [] };
+      let league = { "config": {}, "classes": [], "scoring": [], "points": [], "drivers": [], "teams": [], "rounds": [], "classchanges": [], "penalties": [] };
       league.config = await jsonloader.getLeagueConfig(leagueID);
       league.classes = await jsonloader.getClasses(leagueID);
       league.scoring = await jsonloader.getScoring(leagueID);
@@ -38,13 +38,14 @@ async function loadCache() {
       league.penalties = await jsonloader.getPenalties(leagueID);
       league.classtotals = await jsonloader.getClassTotals(leagueID);
       league.teamstotals = await jsonloader.getTeamsTotals(leagueID);
+      league.protests = await jsonloader.getProtests(leagueID);
       cache[leagueID] = league;
    }));
    console.log("League Cache Loaded...")
 } //loadCache
 
 async function updateCache(leagueID) {
-   let league = { "config": {}, "classes": [], "scoring": [], "points": [],"drivers": [], "teams": [], "rounds": [], "classchanges": [], "penalties": [] };
+   let league = { "config": {}, "classes": [], "scoring": [], "points": [], "drivers": [], "teams": [], "rounds": [], "classchanges": [], "penalties": [] };
    league.config = await jsonloader.getLeagueConfig(leagueID);
    league.classes = await jsonloader.getClasses(leagueID);
    league.scoring = await jsonloader.getScoring(leagueID);
@@ -57,14 +58,37 @@ async function updateCache(leagueID) {
    league.penalties = await jsonloader.getPenalties(leagueID);
    league.classtotals = await jsonloader.getClassTotals(leagueID);
    league.teamstotals = await jsonloader.getTeamsTotals(leagueID);
+   league.protests = await jsonloader.getProtests(leagueID);
    cache[leagueID] = league;
    console.log("League Cache updated for ", leagueID)
 } //updateCache(leagueid)
 
 function getRounds(leagueID) {
-   //const rounds = {};
-   //return cache[leagueID].season;
    return cache[leagueID].rounds;
+} //getRounds
+
+function getProtestableRounds(leagueID) {
+   const rounds = cache[leagueID].rounds;
+   var protestableRounds = [];
+   const now = new Date();
+   const min_hours_cutoff = cache[leagueID].config.protest_open_after_hrs;
+   const max_hours_cutoff = min_hours_cutoff + cache[leagueID].config.protest_open_for_hrs
+   console.log(now);
+   rounds.forEach(round => {
+      let round_start_time = new Date(round.start_time);
+      let hours_since_race = (now - round_start_time) / (60 * 60 * 1000);
+      const thisRound = {
+         round_no: round.round_no,
+         track_name: round.track_name,
+         start_time: round_start_time,
+         hours_since_race: hours_since_race
+      }
+      //console.log(min_hours_cutoff,"  > ", thisRound.hours_since_race, "  <", max_hours_cutoff );
+      if ((thisRound.hours_since_race > min_hours_cutoff) && (thisRound.hours_since_race < max_hours_cutoff)) {
+         protestableRounds.push(thisRound);
+      }
+   });
+   return protestableRounds
 } //getRounds
 
 /*  old version using season construct
@@ -90,7 +114,7 @@ function getSessions(leagueID) {
    const sessions = [];
    cache[leagueID].rounds.forEach(round => {
       var subsession_counter = 0;
-      round.subsession_ids.forEach(subsession=> {
+      round.subsession_ids.forEach(subsession => {
          let thisSession = {};
          thisSession.subsession_id = subsession;
          thisSession.score_type_id = round.score_types[subsession_counter];
@@ -102,26 +126,27 @@ function getSessions(leagueID) {
    return sessions;
 } //getSessions
 
-/*
-function getScoredEvents(leagueID) {
-   const scored_events = [];
-   cache[leagueID].season.forEach(round => {
-      round.sessions.forEach(session => {
-         session.scored_events.forEach(scored_event => {
-            let thisScoredEvent = {};
-            thisScoredEvent.round_no = round.round_no;
-            thisScoredEvent.session_no = session.session_no;
-            thisScoredEvent.event_type = session.event_type;
-            thisScoredEvent.list_text = round.track_name + " : " + session.session_no + " : " + session.event_type + " : " + scored_event.score_event;
-            thisScoredEvent.subsession_id = session.subsession_id;
-            thisScoredEvent.score_event = scored_event.score_event;
-            scored_events.push(thisScoredEvent);
+
+function getScoredEvents(leagueID, round_no) {
+   var scored_events = [];
+   var subsession_counter = 0;
+   const scoring = cache[leagueID].scoring;
+   cache[leagueID].rounds.forEach(round => {
+      if ((round.round_no == round_no)  && (round.subsession_ids.length > 0)){
+         round.subsession_ids.forEach(session => {
+            session_scored_events = scoring[round.score_types[subsession_counter]].scored_events;
+            session_scored_events.forEach(scored_event => {
+               let thisScoredEvent = {};
+               thisScoredEvent.event_type = scored_event.score_event;
+               scored_events.push(thisScoredEvent);
+            });
+            subsession_counter += 1;
          });
-      });
+      }
    });
    return scored_events;
 } //getScoredEvents
- */
+
 
 //Function to login to iRacing (note password determined elsewhere)
 async function authUser() {
@@ -133,6 +158,29 @@ async function authUser() {
    //console.log("AXIOS - got headers from iRacing : ", res.headers['set-cookie']);
    return res.headers['set-cookie'];
 }
+
+async function submitProtest(leagueID, newProtest){
+   protests = await jsonloader.getProtests(leagueID);
+   newProtest.protest_id = newProtest.round_id + "-" + cache[leagueID].protests.length; 
+   newProtest.timestamp = Date.now();
+   protests.push(newProtest);
+   await jsonloader.saveProtests(leagueID,protests);
+   return protests;
+} //submitProtest
+
+
+async function submitPenalty(leagueID, newPenalty){
+  penalties = await jsonloader.getPenalties(leagueID);
+  protests = await jsonloader.getProtests(leagueID);
+  const deleteProtestIndex = protests.findIndex((protest) => protest.protest_id == newPenalty.protest_id);
+  console.log ("deleting protest : ", deleteProtestIndex);
+  /* newProtest.protest_id = newProtest.round_id + "-" + cache[leagueID].protests.length; 
+   newProtest.timestamp = Date.now();
+   protests.push(newProtest); 
+   await jsonloader.saveProtests(leagueID,protests); */
+
+   return penalties;
+} //submitProtest
 
 async function getSubsession(id, cookie) {
    //console.log ("AXIOS - fetching :",`/data/results/get?subsession_id=${id}`);
@@ -217,9 +265,12 @@ async function reCalculate(leagueID) {
       exporter.exportResultsJSON(results, "results.json"); */
 
       //Output CSV for each round
-     /* leagueData.season.forEach(round => {
-         exporter.exportRoundCSV(leagueData.season, round.round_no, driverScores);
-      }); */
+      /*leagueData.season.forEach(round => {
+          exporter.exportRoundCSV(leagueData.season, round.round_no, driverScores);
+       }); */
+       leagueData.rounds.forEach(round => {
+         exporter.exportRoundCSV2(leagueData.rounds, round.round_no, leagueData.scoring, driverScores);
+       });
 
       //Output Individual Results Table
       exporter.exportResultsJSON(classResults, './data/' + leagueID + '/classtotals.json');
@@ -252,5 +303,8 @@ exports.loadCache = loadCache;
 exports.updateCache = updateCache;
 exports.reCalculate = reCalculate;
 exports.getRounds = getRounds;
+exports.getProtestableRounds = getProtestableRounds;
 exports.getSessions = getSessions;
-//exports.getScoredEvents = getScoredEvents;
+exports.getScoredEvents = getScoredEvents;
+exports.submitProtest = submitProtest;
+exports.submitPenalty = submitPenalty;

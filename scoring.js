@@ -360,7 +360,11 @@ function applyPenalties(season, classResults, drivers, penalties) {
          //TODO : fix the class_index not down to zero
          let thisClassPositions = classResults[class_index].positions;
          let driverPenalisedIndex = thisClassPositions.findIndex(item => penalty.cust_id === item.cust_id);
-         thisClassPositions[driverPenalisedIndex].championship_penalty -= penalty.championship_points;
+         if (driverPenalisedIndex == -1) {
+            console.log("WARNING- PENALISED DRIVER NOT FOUND IN THIS EVENT");
+         } else {
+            thisClassPositions[driverPenalisedIndex].championship_penalty -= penalty.championship_points;
+         }
       }
    });
    return classResults

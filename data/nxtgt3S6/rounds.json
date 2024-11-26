@@ -31,7 +31,26 @@
       "round_no": 5,
       "track_name": "5-Catylun",
       "start_time": "2024-10-24T20:00:00Z",
-      "subsession_ids" : [],
+      "subsession_ids" : [72266038,72267987],
+      "score_types" : [0, 1]
+   },
+   {
+      "round_no": 6,
+      "track_name": "6-NurburgR",
+      "start_time": "2024-11-01T20:00:00Z",
+      "subsession_ids" : [72572146],
+      "score_types" : [2]
+   },{
+      "round_no": 7,
+      "track_name": "7-Zolder",
+      "start_time": "2024-11-08T20:00:00Z",
+      "subsession_ids" : [72729158,72731286],
+      "score_types" : [0, 1]
+   },{
+      "round_no": 8,
+      "track_name": "8-InterL",
+      "start_time": "2024-11-23T20:00:00Z",
+      "subsession_ids" : [72886344,72888278],
       "score_types" : [0, 1]
    }
 

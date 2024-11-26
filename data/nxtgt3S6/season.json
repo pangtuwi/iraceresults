@@ -45,7 +45,7 @@
    },
    {
       "round_no":2,
-      "track_name": "2-RAmerica",
+      "track_name": "2-RAmeric",
       "sessions" : [
           {
              "session_no":1, 
@@ -139,6 +139,161 @@
            "session_no": 2,
            "event_type": "Feature",
            "subsession_id": 72116154,
+           "scored_events" : [
+               {
+                   "score_event": "Feature Race Fastest Lap",
+                   "simsession_name": "RACE",
+                   "scoring_system": 1            
+               },
+               {
+                   "score_event": "Feature Race",
+                   "simsession_name": "RACE",
+                   "scoring_system": 4         
+               }
+           ]
+       }
+   ]    
+},
+{
+   "round_no":5,
+   "track_name": "5-Cataly",
+   "sessions" : [
+       {
+          "session_no":1, 
+          "event_type": "Sprint",
+           "subsession_id": 72266038,
+           "scored_events" : [
+               {
+                   "score_event": "Sprint Qualifying",
+                   "simsession_name": "QUALIFY", 
+                   "scoring_system": 0
+               },
+               {
+                   "score_event": "Sprint Race Fastest Lap",
+                   "simsession_name": "RACE",
+                   "scoring_system": 1            
+               },
+               {
+                   "score_event": "Sprint Race",
+                   "simsession_name": "RACE",
+                   "scoring_system": 3         
+               }
+           ]
+       },{
+           "session_no": 2,
+           "event_type": "Feature",
+           "subsession_id": 72267987,
+           "scored_events" : [
+               {
+                   "score_event": "Feature Race Fastest Lap",
+                   "simsession_name": "RACE",
+                   "scoring_system": 1            
+               },
+               {
+                   "score_event": "Feature Race",
+                   "simsession_name": "RACE",
+                   "scoring_system": 4         
+               }
+           ]
+       }
+   ]    
+}, 
+{
+   "round_no":6,
+   "track_name": "6-NurburgR",
+   "sessions" : [
+       {
+          "session_no":1, 
+          "event_type": "Endurance",
+           "subsession_id": 72572146,
+           "scored_events" : [
+               {
+                   "score_event": "Endurance Race Fastest Lap",
+                   "simsession_name": "RACE",
+                   "scoring_system": 2            
+               },
+               {
+                   "score_event": "Endurance Race",
+                   "simsession_name": "RACE",
+                   "scoring_system": 5         
+               }
+           ]
+       }
+   ]    
+},
+{
+   "round_no":7,
+   "track_name": "7-Zolder",
+   "sessions" : [
+       {
+          "session_no":1, 
+          "event_type": "Sprint",
+           "subsession_id": 72729158,
+           "scored_events" : [
+               {
+                   "score_event": "Sprint Qualifying",
+                   "simsession_name": "QUALIFY", 
+                   "scoring_system": 0
+               },
+               {
+                   "score_event": "Sprint Race Fastest Lap",
+                   "simsession_name": "RACE",
+                   "scoring_system": 1            
+               },
+               {
+                   "score_event": "Sprint Race",
+                   "simsession_name": "RACE",
+                   "scoring_system": 3         
+               }
+           ]
+       },{
+           "session_no": 2,
+           "event_type": "Feature",
+           "subsession_id": 72731286,
+           "scored_events" : [
+               {
+                   "score_event": "Feature Race Fastest Lap",
+                   "simsession_name": "RACE",
+                   "scoring_system": 1            
+               },
+               {
+                   "score_event": "Feature Race",
+                   "simsession_name": "RACE",
+                   "scoring_system": 4         
+               }
+           ]
+       }
+   ]    
+},
+{
+   "round_no":8,
+   "track_name": "8-InterL",
+   "sessions" : [
+       {
+          "session_no":1, 
+          "event_type": "Sprint",
+           "subsession_id": 72886344,
+           "scored_events" : [
+               {
+                   "score_event": "Sprint Qualifying",
+                   "simsession_name": "QUALIFY", 
+                   "scoring_system": 0
+               },
+               {
+                   "score_event": "Sprint Race Fastest Lap",
+                   "simsession_name": "RACE",
+                   "scoring_system": 1            
+               },
+               {
+                   "score_event": "Sprint Race",
+                   "simsession_name": "RACE",
+                   "scoring_system": 3         
+               }
+           ]
+       },{
+           "session_no": 2,
+           "event_type": "Feature",
+           "subsession_id": 72888278,
            "scored_events" : [
                {
                    "score_event": "Feature Race Fastest Lap",

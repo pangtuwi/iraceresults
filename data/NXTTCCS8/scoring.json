@@ -1,0 +1,57 @@
+[
+   {
+      "score_type": "Race 1",
+      "scored_events": [
+         {
+            "score_event": "Qualifying",
+            "simsession_name": "QUALIFY",
+            "scoring_system": 0
+         },
+         {
+            "score_event": "Fastest Lap",
+            "simsession_name": "RACE",
+            "scoring_system": 1
+         },
+         {
+            "score_event": "Race",
+            "simsession_name": "RACE",
+            "scoring_system": 2
+         },
+         {
+            "score_event": "Laps Led",
+            "simsession_name": "RACE",
+            "scoring_system": 3
+         },
+         {
+            "score_event": "Positions Gained",
+            "simsession_name": "RACE",
+            "scoring_system": 4
+         }
+      ]
+   },
+   {
+      "score_type": "Race 2",
+      "scored_events": [
+         {
+            "score_event": "Fastest Lap",
+            "simsession_name": "RACE",
+            "scoring_system": 1
+         },
+         {
+            "score_event": "Race",
+            "simsession_name": "RACE",
+            "scoring_system": 2
+         },
+         {
+            "score_event": "Laps Led",
+            "simsession_name": "RACE",
+            "scoring_system": 3
+         },
+         {
+            "score_event": "Positions Gained",
+            "simsession_name": "RACE",
+            "scoring_system": 4
+         }
+      ]
+   }
+]

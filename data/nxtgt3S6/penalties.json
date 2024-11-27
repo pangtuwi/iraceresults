@@ -324,18 +324,6 @@
       "disqualified": 0
    },
    {
-      "incident_no": 0,
-      "round_no": 9,
-      "session_no": 1,
-      "score_event": "Sprint Race",
-      "cust_id": 562993,
-      "display_name": "Kevin Smith21",
-      "positions": 0,
-      "licence_points": 0,
-      "championship_points": 50,
-      "disqualified": 0
-   },
-   {
       "incident_no": 1,
       "round_no": 8,
       "session_no": 1,
@@ -378,7 +366,7 @@
       "score_event": "Feature Race",
       "cust_id": 548231,
       "display_name": "Mark Kent",
-      "positions": 3,
+      "positions": 0,
       "licence_points": 6,
       "championship_points": 0,
       "disqualified": 0

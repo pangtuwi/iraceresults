@@ -1,0 +1,17 @@
+[
+   {
+       "classname": "Pro",
+       "classnumber": 1,
+       "position_score_by" : "overall" 
+   },
+   {
+       "classname": "Pro-Am",
+       "classnumber": 2,
+       "position_score_by" : "class"
+   },
+   {
+       "classname": "Am",
+       "classnumber": 3,
+       "position_score_by" : "class" 
+   }
+]

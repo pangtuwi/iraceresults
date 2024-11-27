@@ -1,0 +1,17 @@
+[
+   {
+      "round_no": 1,
+      "track_name": "1-Misano",
+      "start_time": "2024-11-26T20:00:00Z",
+      "score_types": [
+         0,
+         1,
+         1
+      ],
+      "subsession_ids": [
+         72998349,
+         73000350,
+         73001228
+      ]
+   }
+]

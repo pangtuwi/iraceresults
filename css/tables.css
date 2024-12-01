@@ -1,0 +1,101 @@
+     body {
+        background-color: black;
+     }
+
+     table,
+     tr,
+     th,
+     td,
+     thead,
+     tbody,
+     tfoot {
+        border: 0px solid, white;
+        border-collapse: collapse;
+        color: white;
+        text-align: center;
+        padding: 0;
+        border-spacing: 0;
+     }
+
+     .header-tr {
+        vertical-align: middle;
+        background-position: center;
+        background-size: contain;
+        background-image: url('header.png');
+     }
+
+     .header-td {
+        height: 96px;
+     }
+
+     .button-tr {
+        height: 100px;
+     }
+
+     .button-class-select {
+        font-family: "Days One", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: larger;
+        color: gray;
+        background-color: lightgray;
+        width: 40px;
+     }
+
+     .button-class-selected {
+        font-family: "Days One", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: x-large;
+        color: black;
+        background-color: yellow;
+     }
+
+     .score-table {
+        border: 0px solid, white;
+        font-family: "Days One", sans-serif;
+        font-size: small;
+        font-weight: 200;
+        font-style: normal;
+        width: 1280px;
+        margin-left: auto;
+        margin-right: auto;
+     }
+
+     .table-column-headers {
+        text-align: center;
+        vertical-align: middle;
+        font-weight: 400;
+     }
+
+     .score-td {
+        background-image: url("middlebar.png");
+        height: 72px;
+        vertical-align: middle;
+     }
+
+     .score-td-left {
+        background-image: url("leftbar.png");
+        height: 72px;
+        width: 110px;
+        vertical-align: middle;
+     }
+
+     .score-td-name {
+        background-image: url("middlebar.png");
+        height: 72px;
+        width: 200px;
+        text-align: left;
+        vertical-align: middle;
+     }
+
+     .footer-tr {
+        vertical-align: middle;
+        background-position: center;
+        background-size: contain;
+        background-image: url('footer.png');
+     }
+
+     .footer-td {
+        height: 61px;
+     }

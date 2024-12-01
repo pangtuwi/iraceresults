@@ -85,6 +85,12 @@ app.get('/:leagueid/:route', function (req, res) {
             res.cookie('leagueid', reqLeagueID);
             res.sendFile(path.join(__dirname, '/html/tables.html'));
             break;
+         case "displayconfig":
+            let displayConfig = leaguedata.getTablesDisplayConfig(reqLeagueID);
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(displayConfig));
+            break;
          case "classtotals":
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);

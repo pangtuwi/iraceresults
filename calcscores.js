@@ -635,6 +635,7 @@ async function classResultsTable(rounds, driverScores, apply_drop_scores_text, n
    let apply_drop_scores = (apply_drop_scores_text === "TRUE");
    let classesArray = [];
    let classArray = [];
+   let overallArray = [];
    let outputHeaders = ["Pos", "Name"];
    let outputLine = { "Pos": 0, "Name": "" }
    let scoreColumns = [];
@@ -695,7 +696,10 @@ async function classResultsTable(rounds, driverScores, apply_drop_scores_text, n
             newline.Drop = -1 * newline.Drop;
             newline.Total = newline.Total + newline.Drop;
          }
-         classArray.push(newline)
+         classArray.push(newline);
+
+         let cloneLine = Object.assign({}, newline);
+         overallArray.push(cloneLine);
       });
 
       //Sort
@@ -710,6 +714,17 @@ async function classResultsTable(rounds, driverScores, apply_drop_scores_text, n
       classesArray.push(classArray);
       //console.log(classArray);
    });
+
+   //Sort overallArray and add to classesArray
+   const sorterOverall = (a, b) => a.Total < b.Total ? 1 : -1;
+   overallArray.sort(sorterOverall);
+   let newPos = 0
+   overallArray.forEach(driver => {
+      newPos += 1
+      driver.Pos = newPos
+   })
+   classesArray.push(overallArray);
+
    return classesArray;
 } // ClassResultsTable
 

@@ -147,6 +147,19 @@ function getScoredEvents(leagueID, round_no) {
    return scored_events;
 } //getScoredEvents
 
+function getTablesDisplayConfig(leagueID){
+   const classes = cache[leagueID].classes;
+   const config = cache[leagueID].config;
+   var displayConfig = {"classes_to_display" : [], "display_overall_table" : 0};
+   classes.forEach(thisClass => {
+      if (thisClass.display_in_tables == 1) {
+         displayConfig.classes_to_display.push(thisClass);
+      }
+   });
+   if (config.display_overall_table == 1) displayConfig.display_overall_table = 1;
+   return displayConfig;
+} //getTablesDisplayConfig
+
 
 //Function to login to iRacing (note password determined elsewhere)
 async function authUser() {
@@ -308,3 +321,4 @@ exports.getSessions = getSessions;
 exports.getScoredEvents = getScoredEvents;
 exports.submitProtest = submitProtest;
 exports.submitPenalty = submitPenalty;
+exports.getTablesDisplayConfig = getTablesDisplayConfig;

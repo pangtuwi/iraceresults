@@ -49,8 +49,14 @@
    },{
       "round_no": 8,
       "track_name": "8-InterL",
-      "start_time": "2024-11-23T20:00:00Z",
+      "start_time": "2024-11-21T20:00:00Z",
       "subsession_ids" : [72886344,72888278],
+      "score_types" : [0, 1]
+   },{
+      "round_no": 9,
+      "track_name": "9-NurbGP",
+      "start_time": "2024-11-28T20:00:00Z",
+      "subsession_ids" : [73044981,73047081],
       "score_types" : [0, 1]
    }
 

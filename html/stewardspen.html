@@ -1,0 +1,131 @@
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="/style.css">
+   <script src="/jquery-3.7.1.js"></script>
+   <script src="/jquery.redirect.js"></script>
+   <script src="/stewardspen.js"></script>
+</head>
+
+<body>
+   <div class="title">
+      Stewarding - Race Director Penalty
+   </div>
+
+   <div class="left_wrap_wide">
+      <div class="wrapper">
+         <div class="table" >
+            
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Driver Receiving Penalty
+               </div>
+               <div class="cell" data-title="Row" id="driver_name">
+                  <div class="cell" data-title="Row"><select id="driver_select"></select>&nbsp; Filter:<input
+                     type="search" id="driver_search" /></div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Round
+               </div>
+               <div class="cell" data-title="Row">
+                  <div class="cell" data-title="Row"><select id="round_select"></select> &nbsp <span class="comment"
+                     id="round_select_comment"></span></div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Event
+               </div>
+               <div class="cell" data-title="Row" id="score_event">
+                  <div class="cell" data-title="Row"><select id="scored_event_select"></select></div>
+               </div>
+            </div>
+          
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Stewards Decision
+               </div>
+               <div class="cell" data-title="Row" > 
+                  <select id = "stewards_decision">
+                     <option>TL - Track Limits</option>
+                     <option>NFA - No further Action</option>
+                     <option>NFA - We consider that neither driver is wholly or predominantly to blame</option>
+                     <option>NFA - Incorrect details reported</option>
+                     <option>NFA - No incident found on lap and corner reported</option>
+                     <option>NFA - Incident was reported by driver not involved</option>
+                     <option>Causing a collision or the appearance of a lack of control over the  car.</option>
+                     <option>Causing a severe collision, resulting in race ending damage</option>
+                     <option>Driving in a manner incompatible with general safety </option>
+                     <option>Departing from the standard of a reasonably competent driver</option>
+                     <option>Abusive language or threat</option>
+                     <option>Forcing a slower class driver into an avoidable collision</option>
+                     <option>Ignoring blue flag conditions</option>
+                     <option>Other - see comments</option>
+                  </select>
+                  
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Post Race Position Drop
+               </div>
+               <div class="cell" data-title="Row" >
+                  <input id="penalty_positions" value="0"></input> positions
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Time Penalty
+               </div>
+               <div class="cell" data-title="Row">
+                  <input id="penalty_time_added" value="0"></input> seconds added
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Licence Points
+               </div>
+               <div class="cell" data-title="Row">
+                  <input id="penalty_licence_points" value="0"></input> points added
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Championship points
+               </div>
+               <div class="cell" data-title="Row" id="score_event">
+                  <input id="penalty_championship_points" value="0"></input> points deducted
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Disqualification
+               </div>
+               <div class="cell" data-title="Row">
+                  <select id="penalty-disqualify">
+                     <option>No</option>
+                     <option>Yes</option>
+                     </select>   
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Stewards Comments
+               </div>
+               <div class="cell" data-title="Row">
+                  <textarea id="stewards_comments" name="stewards_comments" rows="6" cols="60"></textarea>
+               </div>
+            </div>
+         </div>
+
+
+         <button id="submit_btn">submit</button>
+         <button id="cancel_btn">cancel</button>
+
+      </div>
+   </div>
+
+</body>

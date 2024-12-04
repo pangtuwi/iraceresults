@@ -89,7 +89,31 @@ function getProtestableRounds(leagueID) {
       }
    });
    return protestableRounds
-} //getRounds
+} //getProtestableRounds
+
+
+function getCompletedRounds(leagueID) {
+   const rounds = cache[leagueID].rounds;
+   var completedRounds = [];
+   const now = new Date();
+   //console.log("request for completed rounds from time : ", now);
+   rounds.forEach(round => {
+      let round_start_time = new Date(round.start_time);
+      let hours_since_race = (now - round_start_time) / (60 * 60 * 1000);
+      const thisRound = {
+         round_no: round.round_no,
+         track_name: round.track_name,
+         start_time: round_start_time,
+         hours_since_race: hours_since_race
+      }
+      //console.log(min_hours_cutoff,"  > ", thisRound.hours_since_race, "  <", max_hours_cutoff );
+      if (thisRound.hours_since_race > 0) {
+         completedRounds.push(thisRound);
+      }
+   });
+   return completedRounds
+} //getCompletedRounds
+
 
 /*  old version using season construct
 function getSessions(leagueID) {
@@ -185,15 +209,18 @@ async function submitProtest(leagueID, newProtest){
 async function submitPenalty(leagueID, newPenalty){
   penalties = await jsonloader.getPenalties(leagueID);
   protests = await jsonloader.getProtests(leagueID);
-  const deleteProtestIndex = protests.findIndex((protest) => protest.protest_id == newPenalty.protest_id);
-  console.log ("deleting protest : ", deleteProtestIndex);
-  /* newProtest.protest_id = newProtest.round_id + "-" + cache[leagueID].protests.length; 
-   newProtest.timestamp = Date.now();
-   protests.push(newProtest); 
-   await jsonloader.saveProtests(leagueID,protests); */
-
+  const resolvedProtestIndex = protests.findIndex((protest) => protest.protest_id == newPenalty.protest_id);
+  if (resolvedProtestIndex == -1){
+   console.log("No protest associated with this penalty")
+  } else {
+   console.log ("marking protest as resolved : ", resolvedProtestIndex);
+  }
+   newPenalty.penalty_id = newPenalty.round_no + "-" + cache[leagueID].penalties.length; 
+   newPenalty.timestamp = Date.now();
+   penalties.push(newPenalty);
+   await jsonloader.savePenalties(leagueID,penalties);
    return penalties;
-} //submitProtest
+} //submitPenalty
 
 async function getSubsession(id, cookie) {
    //console.log ("AXIOS - fetching :",`/data/results/get?subsession_id=${id}`);
@@ -317,6 +344,7 @@ exports.updateCache = updateCache;
 exports.reCalculate = reCalculate;
 exports.getRounds = getRounds;
 exports.getProtestableRounds = getProtestableRounds;
+exports.getCompletedRounds = getCompletedRounds;
 exports.getSessions = getSessions;
 exports.getScoredEvents = getScoredEvents;
 exports.submitProtest = submitProtest;

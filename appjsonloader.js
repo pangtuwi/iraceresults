@@ -133,6 +133,11 @@ async function saveProtests(leagueid, protests) {
    await fs.writeFile(filename, JSON.stringify(protests));
 }
 
+async function savePenalties(leagueid, penalties) {
+   let filename = './data/' + leagueid + '/penalties.json';
+   await fs.writeFile(filename, JSON.stringify(penalties));
+}
+
 exports.getLeagueConfig = getLeagueConfig;
 //exports.getSeason = getSeason; 
 exports.getRounds = getRounds;
@@ -149,3 +154,4 @@ exports.getClassTotals = getClassTotals;
 exports.getTeamsTotals = getTeamsTotals;
 exports.getProtests = getProtests;
 exports.saveProtests = saveProtests;
+exports.savePenalties = savePenalties;

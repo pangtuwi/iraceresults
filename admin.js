@@ -28,8 +28,8 @@ router.get('/:leagueid', function (req, res) {
    if (config.leagueIDs.includes(reqLeagueiD)) {
       //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league admin');
 
-         res.sendFile(path.join(__dirname, '/html/admin.html'));
-         
+      res.sendFile(path.join(__dirname, '/html/admin.html'));
+
    } else {
       res.send('Sorry, this is an unknown league.');
    }
@@ -58,12 +58,12 @@ router.get('/:leagueid/:route', function (req, res) {
          break;
 
       case "leagueid":
-            const reqLeagueiD = req.params.leagueid.toUpperCase();
-            const leagueIDObj = {"leagueid":reqLeagueiD};
-            console.log("sending leagueID: ", JSON.stringify(leagueIDObj));
-            res.setHeader("Content-Type", "application/json");
-            res.writeHead(200);
-            res.end(JSON.stringify(leagueIDObj));
+         const reqLeagueiD = req.params.leagueid.toUpperCase();
+         const leagueIDObj = { "leagueid": reqLeagueiD };
+         console.log("sending leagueID: ", JSON.stringify(leagueIDObj));
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leagueIDObj));
          break;
 
       case "protests":
@@ -77,10 +77,29 @@ router.get('/:leagueid/:route', function (req, res) {
          res.sendFile(path.join(__dirname, '/html/stewarding.html'));
          break;
 
+      case "stewardspen":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/stewardspen.html'));
+         break;
+
+      case "completedrounds":
+         //console.log ("processing request for completed rounds");
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.getCompletedRounds(reqLeagueID)));
+         break;
+
       case "classes":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classes));
+         break;
+
+      case "driverlist":
+         //console.log ("processing request for driver list");
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
          break;
 
       default:
@@ -95,6 +114,14 @@ router.post('/', function (req, res) {
 router.post('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
    switch (req.params.route) {
+
+      case "scoredevents":
+         const reqRoundNo = req.body.round_no;
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         const scoredEvents = leaguedata.getScoredEvents(reqLeagueID, reqRoundNo);
+         res.end(JSON.stringify(scoredEvents));
+         break;
 
       case "driver":
          //const thisCust_Id = Number(JSON.parse(data).cust_id);
@@ -216,6 +243,20 @@ router.post('/:leagueid/:route', function (req, res) {
             res.sendFile(path.join(__dirname, '/html/protestconf.html'));
          });
          break;
+
+      case "stewardspenalty":
+         var newPenalty = {}
+         newPenalty = JSON.parse(req.body.penalty);
+         console.log("new STEWARDS Penalty Recieved : ", newPenalty);
+         leaguedata.submitPenalty(reqLeagueID, newPenalty).then((result) => {
+            leaguedata.cache[reqLeagueID].penalties = result;
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify({ confirmation: "penalty saved successfully" }));
+            //res.sendFile(path.join(__dirname, '/html/protestconf.html'));
+         });
+         break;
+
 
       default:
          res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);

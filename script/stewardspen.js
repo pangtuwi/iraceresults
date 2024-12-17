@@ -175,7 +175,13 @@ function postPenalty(newPenalty){
    })
       .then(res => res.json())
       .then(data => {
-         console.log("received data : ", data);
+         //console.log("received data : ", data);
+         if (data.confirmation == "ok"){
+            alert("Penalty has been saved");
+         } else {
+            alert ("ERROR - Penalty not saved");
+         }
+
       });
 } //postPenalty
 

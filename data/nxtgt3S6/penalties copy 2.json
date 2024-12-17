@@ -454,5 +454,17 @@
       "licence_points": 0,
       "championship_points": 0,
       "disqualified": 1
+   },
+   {
+      "incident_no": 1,
+      "round_no": 10,
+      "session_no": 1,
+      "score_event": "Endurance Race",
+      "cust_id": 820470,
+      "display_name": "Gabriel Yilmaz",
+      "positions": 3,
+      "licence_points": 0,
+      "championship_points": 0,
+      "disqualified": 0
    }
 ]

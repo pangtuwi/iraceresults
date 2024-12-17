@@ -32,9 +32,17 @@ app.use(function (req, res, next) {
 });
 
 //Routes
-app.get('/', function (req, res) {
-   res.sendFile(path.join(__dirname, "html/index.html"));
+/*
+Dont think the below is correct.   Should route to a default page
+
+app.get('', function (req, res) {
+   res.sendFile(path.join(__dirname, "html/tables.html"));
 });
+
+app.get('/', function (req, res) {
+   res.sendFile(path.join(__dirname, "html/tables.html"));
+});
+*/
 
 app.get('/cache', function (req, res) {
    res.send(JSON.stringify(leaguedata.cache));
@@ -43,10 +51,10 @@ app.get('/cache', function (req, res) {
 // https://www.tutorialspoint.com/expressjs/expressjs_url_building.htm
 app.get('/:leagueid', function (req, res) {
    const reqLeagueiD = req.params.leagueid.toUpperCase();
+   console.log("base URL called, sending tables")
    if (config.leagueIDs.includes(reqLeagueiD)) {
-      //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league tables');
+      res.cookie('leagueid', reqLeagueiD);
       res.sendFile(path.join(__dirname, '/html/tables.html'));
-
    } else {
       res.send('Sorry, this is an unknown league.');
    }
@@ -80,11 +88,13 @@ app.get('/:leagueid/:route', function (req, res) {
             res.sendFile(path.join(__dirname, '/css/style.css'));
             break;
 
-         case "tables":
+        case "tables":
             //res.send("Tables for " + reqLeagueiD);
-            res.cookie('leagueid', reqLeagueID);
-            res.sendFile(path.join(__dirname, '/html/tables.html'));
-            break;
+            //res.cookie('leagueid', reqLeagueID);
+            //res.sendFile(path.join(__dirname, '/html/tables.html'));
+
+            res.redirect('/'+reqLeagueID);
+            break; 
          case "displayconfig":
             let displayConfig = leaguedata.getTablesDisplayConfig(reqLeagueID);
             res.setHeader("Content-Type", "application/json");

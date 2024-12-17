@@ -1,6 +1,7 @@
 var classTotals = [];
 var teamsTotals = [];
 var buttonCounter = 0;
+var baseURI = "";
 
 /*function getCookie(name) {
    // Split cookie string and get all individual name=value pairs in an array
@@ -112,7 +113,7 @@ function getClassTotals() {
    //let container = document.getElementById("container");
    //container.innerText = 'Loading....' + NG_Class
    //fetch('./'+leagueid+'/classtotals')
-   fetch('./classtotals')
+   fetch(baseURI+'classtotals')
       .then(res => res.json())
       .then(data => {
          //container.innerText = JSON.stringify(data, null, 2)
@@ -154,7 +155,7 @@ function getTeamsData(but_no) {
    toggleButtons(but_no);
    let container = document.getElementById("container");
    container.innerText = 'Loading Teams Data'
-   fetch('./teamstotals')
+   fetch(baseURI+'teamstotals')
       .then(res => res.json())
       .then(data => {
          //container.innerText = JSON.stringify(data, null, 2)
@@ -166,7 +167,8 @@ function getTeamsData(but_no) {
 function generateClassButtons() {
    //read in the Classes Available and generate necessary buttons
    //get Button container element and clear it
-   fetch('./displayconfig')
+
+   fetch(baseURI+'displayconfig')
    .then(res => res.json())
    .then(data => {
       console.log ("button display config recieved from server")
@@ -214,7 +216,7 @@ function generateClassButtons() {
       });
 
    // gets teams data from API and sets the content of #result div
-   fetch('./teamstotals')
+   fetch(baseURI+'teamstotals')
       .then(res => res.json())
       .then(data => {
          //container.innerText = JSON.stringify(data, null, 2)
@@ -267,6 +269,10 @@ $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jq
    getProtests(); */
 
    //get ClassTotals Data from Server and generate class buttons
+   baseURI = document.baseURI;
+   console.log(baseURI);
+   baseURI = baseURI.replace(/\/$|$/, '/');
+   console.log(baseURI);
    getClassTotals(); 
 
 });

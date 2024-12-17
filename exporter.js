@@ -154,7 +154,7 @@ async function exportRoundCSV(season, roundindex, driverScores){
 async function exportRoundCSV2(rounds, roundindex, scoring, driverScores){
    // New version no longer based on seasons
    const round = rounds[roundindex-1];
-   let arrayIndexes = getScoreArrayIndexesNew(rounds, scoring, roundindex);
+   let arrayIndexes = getScoreArrayIndexesNew(rounds, scoring, roundindex-1);
 
    //Set up header and array data structures
    let scoreCount = 0;
@@ -168,10 +168,10 @@ async function exportRoundCSV2(rounds, roundindex, scoring, driverScores){
       let session = scoring[round.score_types[subsessionCounter]];
       scoreCount = scoreCount + session.scored_events.length;
       session.scored_events.forEach(scored_event => {
-         let titleStr = session.score_type + "-" + scored_event.score_event
-         outputHeaders.push(titleStr)
-         outputLine[titleStr] = titleStr
-         scoreColumns.push(titleStr)
+         let titleStr = session.score_type + "-" + scored_event.score_event;
+         outputHeaders.push(titleStr);
+         outputLine[titleStr] = titleStr;
+         scoreColumns.push(titleStr);
       });
       subsessionCounter +=1;
    });
@@ -187,6 +187,8 @@ async function exportRoundCSV2(rounds, roundindex, scoring, driverScores){
    }); */
    outputHeaders.push("Total");
    outputLine.Total = 0;
+
+   console.log(outputHeaders);
 
    //Iterate through Driver Scores
    driverScores.forEach(driverClass => {
@@ -204,7 +206,8 @@ async function exportRoundCSV2(rounds, roundindex, scoring, driverScores){
             columnCounter +=1
          }
          newline.Total = lineTotal
-         outputArray.push(newline)
+         outputArray.push(newline);
+         //console.log(newline);
       });
 
       //Sort

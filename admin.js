@@ -82,6 +82,11 @@ router.get('/:leagueid/:route', function (req, res) {
          res.sendFile(path.join(__dirname, '/html/stewardspen.html'));
          break;
 
+      case "penaltylist":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/penaltylist.html'));
+         break;
+
       case "completedrounds":
          //console.log ("processing request for completed rounds");
          res.setHeader("Content-Type", "application/json");
@@ -100,6 +105,13 @@ router.get('/:leagueid/:route', function (req, res) {
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
+         break;
+
+      case "penaltylist":
+         //console.log ("processing request for penalty list");
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
          break;
 
       default:
@@ -252,7 +264,7 @@ router.post('/:leagueid/:route', function (req, res) {
             leaguedata.cache[reqLeagueID].penalties = result;
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
-            res.end(JSON.stringify({ confirmation: "penalty saved successfully" }));
+            res.end(JSON.stringify({ confirmation: "ok" }));
             //res.sendFile(path.join(__dirname, '/html/protestconf.html'));
          });
          break;

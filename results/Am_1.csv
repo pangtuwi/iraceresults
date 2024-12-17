@@ -1,9 +1,9 @@
-Pos,ID,Name,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Total
-1,668882,Costa Chatzikonstantinou,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,0
-2,1043171,Lewis Mason3,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,0
-3,541161,Jonathan Berry2,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,0
-4,659379,Josh Brown5,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,0
-5,562993,Kevin Smith21,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,0
-6,461979,Jonathan Collins3,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,0
-7,548231,Mark Kent,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,0
-8,45526,Marcel Fritsch,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,0
+Pos,ID,Name,Race 1-Qualifying,Race 1-Fastest Lap,Race 1-Race,Race 1-Laps Led,Race 1-Positions Gained,Race 2-Fastest Lap,Race 2-Race,Race 2-Laps Led,Race 2-Positions Gained,Race 3-Fastest Lap,Race 3-Race,Race 3-Laps Led,Race 3-Positions Gained,Total
+1,659379,Josh Brown5,0,0,45,0,9,5,55,0,5,0,50,0,0,169
+2,1043171,Lewis Mason3,0,0,36,0,12,0,50,0,1,0,55,0,11,165
+3,461979,Jonathan Collins3,0,0,55,0,8,0,34,0,0,0,45,0,9,151
+4,45526,Marcel Fritsch,5,0,34,0,0,0,36,0,6,5,36,0,8,130
+5,541161,Jonathan Berry2,0,0,32,0,5,0,40,0,5,0,40,0,2,124
+6,548231,Mark Kent,0,5,40,0,6,0,45,0,0,0,0,0,0,96
+7,562993,Kevin Smith21,0,0,50,0,8,0,32,0,0,0,0,0,0,90
+8,668882,Costa Chatzikonstantinou,0,0,0,0,0,0,0,0,0,0,0,0,0,0

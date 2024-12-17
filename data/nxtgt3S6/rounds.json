@@ -1,63 +1,69 @@
 [
    {
       "round_no": 1,
-      "track_name": "1-Fuji",
+      "track_name": "1-Fuj",
       "start_time": "2024-09-26T20:00:00Z",
       "subsession_ids" : [71651111,71653123],
       "score_types" : [0, 1]
    },
    {
       "round_no": 2,
-      "track_name": "2-RAmerica",
+      "track_name": "2-RAm",
       "start_time": "2024-10-03T20:00:00Z",
       "subsession_ids" : [71807404,71809380],
       "score_types" : [0, 1]
    },
    {
       "round_no": 3,
-      "track_name": "3-Monza",
+      "track_name": "3-Mon",
       "start_time": "2024-10-10T20:00:00Z",
       "subsession_ids" : [71961065],
       "score_types" : [2]
    },
    {
       "round_no": 4,
-      "track_name": "4-Suzuka",
+      "track_name": "4-Suz",
       "start_time": "2024-10-17T20:00:00Z",
       "subsession_ids" : [72114072, 72116154],
       "score_types" : [0, 1]
    },
    {
       "round_no": 5,
-      "track_name": "5-Catylun",
+      "track_name": "5-Cat",
       "start_time": "2024-10-24T20:00:00Z",
       "subsession_ids" : [72266038,72267987],
       "score_types" : [0, 1]
    },
    {
       "round_no": 6,
-      "track_name": "6-NurburgR",
+      "track_name": "6-NBR",
       "start_time": "2024-11-01T20:00:00Z",
       "subsession_ids" : [72572146],
       "score_types" : [2]
    },{
       "round_no": 7,
-      "track_name": "7-Zolder",
+      "track_name": "7-Zol",
       "start_time": "2024-11-08T20:00:00Z",
       "subsession_ids" : [72729158,72731286],
       "score_types" : [0, 1]
    },{
       "round_no": 8,
-      "track_name": "8-InterL",
+      "track_name": "8-InL",
       "start_time": "2024-11-21T20:00:00Z",
       "subsession_ids" : [72886344,72888278],
       "score_types" : [0, 1]
    },{
       "round_no": 9,
-      "track_name": "9-NurbGP",
+      "track_name": "9-NGP",
       "start_time": "2024-11-28T20:00:00Z",
       "subsession_ids" : [73044981,73047081],
       "score_types" : [0, 1]
+   },{
+      "round_no": 10,
+      "track_name": "10-Dat",
+      "start_time": "2024-12-5T20:00:00Z",
+      "subsession_ids" : [73206545],
+      "score_types" : [2]
    }
 
 ]

@@ -1,7 +1,7 @@
 [
    {
         "round_no": 1,
-        "track_name": "1-Fuji",
+        "track_name": "1-Fuj",
         "sessions" : [
             {
                "session_no":1, 
@@ -45,7 +45,7 @@
    },
    {
       "round_no":2,
-      "track_name": "2-RAmeric",
+      "track_name": "2-RAme",
       "sessions" : [
           {
              "session_no":1, 
@@ -89,7 +89,7 @@
  }, 
  {
     "round_no":3,
-    "track_name": "3-Monza",
+    "track_name": "3-Mon",
     "sessions" : [
         {
            "session_no":1, 
@@ -112,7 +112,7 @@
 },
 {
    "round_no":4,
-   "track_name": "4-Suzuka",
+   "track_name": "4-Suz",
    "sessions" : [
        {
           "session_no":1, 
@@ -156,7 +156,7 @@
 },
 {
    "round_no":5,
-   "track_name": "5-Cataly",
+   "track_name": "5-Cat",
    "sessions" : [
        {
           "session_no":1, 
@@ -200,7 +200,7 @@
 }, 
 {
    "round_no":6,
-   "track_name": "6-NurburgR",
+   "track_name": "6-NBR",
    "sessions" : [
        {
           "session_no":1, 
@@ -223,7 +223,7 @@
 },
 {
    "round_no":7,
-   "track_name": "7-Zolder",
+   "track_name": "7-Zol",
    "sessions" : [
        {
           "session_no":1, 
@@ -267,7 +267,7 @@
 },
 {
    "round_no":8,
-   "track_name": "8-InterL",
+   "track_name": "8-InL",
    "sessions" : [
        {
           "session_no":1, 
@@ -311,7 +311,7 @@
 },
 {
    "round_no":9,
-   "track_name": "9-NurbGP",
+   "track_name": "9-NGP",
    "sessions" : [
        {
           "session_no":1, 
@@ -348,6 +348,29 @@
                    "score_event": "Feature Race",
                    "simsession_name": "RACE",
                    "scoring_system": 4         
+               }
+           ]
+       }
+   ]    
+}, 
+{
+   "round_no":10,
+   "track_name": "10-Dat",
+   "sessions" : [
+       {
+          "session_no":1, 
+          "event_type": "Endurance",
+           "subsession_id": 73206545,
+           "scored_events" : [
+               {
+                   "score_event": "Endurance Race Fastest Lap",
+                   "simsession_name": "RACE",
+                   "scoring_system": 2            
+               },
+               {
+                   "score_event": "Endurance Race",
+                   "simsession_name": "RACE",
+                   "scoring_system": 5         
                }
            ]
        }

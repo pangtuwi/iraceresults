@@ -1,7 +1,8 @@
 {
    "apply_drop_scores" : "FALSE",
    "no_drop_scores_rounds" : [],
-   "class_to_add_new_drivers_to" : 4 ,
+   "class_to_add_new_drivers_to" : 4,
    "protest_open_after_hrs" : 24,
-   "protest_open_for_hrs": 96
+   "protest_open_for_hrs": 24,
+   "display_overall_table" : 1
 }

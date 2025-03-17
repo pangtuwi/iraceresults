@@ -157,11 +157,14 @@ function getScoredEvents(leagueID, round_no) {
    const scoring = cache[leagueID].scoring;
    cache[leagueID].rounds.forEach(round => {
       if ((round.round_no == round_no)  && (round.subsession_ids.length > 0)){
-         round.subsession_ids.forEach(session => {
+         round.subsession_ids.forEach((session_id, i) => {
             session_scored_events = scoring[round.score_types[subsession_counter]].scored_events;
-            session_scored_events.forEach(scored_event => {
+            session_scored_events.forEach((scored_event, j) => {
                let thisScoredEvent = {};
+               thisScoredEvent.session_id = session_id;
+               thisScoredEvent.round_session_no = i;
                thisScoredEvent.event_type = scored_event.score_event;
+               thisScoredEvent.score_event_no = j;
                scored_events.push(thisScoredEvent);
             });
             subsession_counter += 1;
@@ -205,6 +208,15 @@ async function submitProtest(leagueID, newProtest){
    return protests;
 } //submitProtest
 
+async function updateDriver(leagueID, cust_id, custData){
+   const existsDriverIndex = cache[leagueID].drivers.findIndex((driver) => driver.cust_id === cust_id);
+   if (existsDriverIndex == -1) {
+      console.log ("ERROR - COULD NOT FIND DRIVER");
+   } else {
+      cache[leagueID].drivers[existsDriverIndex] = custData;
+      jsonloader.saveDrivers(leagueID,cache[leagueID].drivers);
+   }
+} //updateDriver
 
 async function submitPenalty(leagueID, newPenalty){
   penalties = await jsonloader.getPenalties(leagueID);
@@ -349,4 +361,5 @@ exports.getSessions = getSessions;
 exports.getScoredEvents = getScoredEvents;
 exports.submitProtest = submitProtest;
 exports.submitPenalty = submitPenalty;
+exports.updateDriver = updateDriver;
 exports.getTablesDisplayConfig = getTablesDisplayConfig;

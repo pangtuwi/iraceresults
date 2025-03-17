@@ -584,13 +584,11 @@ async function calc(leagueData, seasonSessions) {
 
          var subsession_counter = 0;
          round.subsession_ids.forEach(session => {
-            //let subsession_id = session.subsession_id;
             let subsession_id = session;
             let session_results = seasonSessions[subsession_id].session_results;
             console.log(" - processing session ", subsession_id);
 
-            //session.scored_events.forEach(scoreEvent => {
-            Scoring[round.score_types[subsession_counter]].scored_events.forEach(scoreEvent => {
+            Scoring[round.score_types[subsession_counter]].scored_events.forEach((scoreEvent, score_event_no) => {
                score_event_counter++;
                console.log(" - - processing event ", scoreEvent.score_event);
                let subsession = session_results.find(item => item.simsession_name === scoreEvent.simsession_name);
@@ -602,9 +600,10 @@ async function calc(leagueData, seasonSessions) {
                   resultsSplitByClass = applyFastestLap(resultsSplitByClass);
                }
 
+               //filter all penalties to isolate those applicable to this round, subsession & event.
+               // use of OR for score_event_no allows use of index in auto penalties system
                let subsession_penalties = Penalties.filter(function (item) {
-                  //return ((item.round_no == round.round_no) && (item.session_no == session.session_no) && (item.score_event == scoreEvent.score_event))
-                  return ((item.round_no == round.round_no) && (item.session_no == subsession_counter + 1) && (item.score_event == scoreEvent.score_event))
+                  return ((item.round_no == round.round_no) && (item.session_no == subsession_counter + 1) && ((item.score_event == scoreEvent.score_event) || (item.score_event_no == score_event_no)))
                });
                console.log(" - - - found penalties for this event ", subsession_penalties.length);
                resultsAfterPositionPenalties = applyPenalties(Rounds, resultsSplitByClass, Drivers, subsession_penalties);

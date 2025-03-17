@@ -176,22 +176,21 @@ router.post('/:leagueid/:route', function (req, res) {
 
       case "moddriver":
          // var modDriver = JSON.parse(data);
-         const modDriver = req.body.cust_id;
-         if (modDriver === undefined) {
+         const modDriver = req.body;
+         if (modDriver.cust_id === undefined) {
             const errormsg = { error: "could not read driver info sent to server" };
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(errormsg));
          } else {
             modDriver.cust_id = Number(modDriver.cust_id);
-            const existsDriverIndex = drivers.findIndex((driver) => driver.cust_id === modDriver.cust_id);
+            const existsDriverIndex = leaguedata.cache[reqLeagueID].drivers.findIndex((driver) => driver.cust_id === modDriver.cust_id);
             if (existsDriverIndex == -1) {
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
                res.end(JSON.stringify({ error: "could not find matching driver in database" }));
             } else {
-               drivers[existsDriverIndex] = modDriver;
-               jsonloader.saveDrivers(drivers);
+               leaguedata.updateDriver(reqLeagueID, modDriver.cust_id, modDriver);
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
                res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));

@@ -131,7 +131,9 @@ function getScoredEvents(round_no) {
          data.forEach(event => {
             var option = document.createElement("option");
             option.text = event.event_type;
-            option.value = event.event_type;
+            //create integer as combination of session counter and score event counter
+            option.value = event.round_session_no * 100 + event.score_event_no;
+            console.log ("Adding Event : ", option.text, "   with value = ", option.value);
             scoredEventSelect.append(option);
          });
       });
@@ -143,11 +145,13 @@ function getStewardsDecision(){
 
       //penalty.protest_id = selectedProtest.protest_id;
       //penalty.round_name = selectedProtest.round_name;
-      penalty.cust_id = $("#driver_select").children("option:selected").val();
+      penalty.cust_id = parseInt($("#driver_select").children("option:selected").val());
       penalty.display_name = $("#driver_select").children("option:selected").text();
-      penalty.round_no = $("#round_select").children("option:selected").val();
+      penalty.round_no = parseInt($("#round_select").children("option:selected").val());
       penalty.round_name = $("#round_select").children("option:selected").text();
-      penalty.score_event = $("#scored_event_select").children("option:selected").val();
+      let session_event_no = $("#scored_event_select").children("option:selected").val();
+      penalty.score_event_no = session_event_no % 100;  //last two digits
+      penalty.session_no = (penalty.score_event_no-session_event_no)/100;
       penalty.stewards_decision = $("#stewards_decision").children("option:selected").text();
       penalty.time_added = parseInt($("#penalty_time_added").val());   // TO INT
       penalty.positions = parseInt($("#penalty_positions").val());    // TO INT

@@ -42,10 +42,16 @@ function objToHTMLTable(baseHTTMLFile, tableData, headerColor, callback) {
          return(`Error getting baseHTMLFile: ${err}.`);
       } else {
          //console.log("base HTML file returned");
-         let tableHeaderHTML = tableHeaderRow(tableData, headerColor);
-         let tableBodyHTML = tableRows(tableData);
-         HTMLData = HTMLData.replace('<div class="row header"><div class="cell">Data</div></div>', tableHeaderHTML);
-         HTMLData = HTMLData.replace('<div class="row"><div class="cell" data-title="Row">No data Found</div></div>', tableBodyHTML);
+         if (tableData.length == 0){
+            //HTMLData = "No Drivers currently listed";
+            HTMLData = HTMLData.replace('<div class="row header"><div class="cell">Data</div></div>', '<div class="row header">No drivers in league database </div>');
+            HTMLData = HTMLData.replace('<div class="row"><div class="cell" data-title="Row">No data Found</div></div>', "");
+         } else {
+            let tableHeaderHTML = tableHeaderRow(tableData, headerColor);
+            let tableBodyHTML = tableRows(tableData);
+            HTMLData = HTMLData.replace('<div class="row header"><div class="cell">Data</div></div>', tableHeaderHTML);
+            HTMLData = HTMLData.replace('<div class="row"><div class="cell" data-title="Row">No data Found</div></div>', tableBodyHTML);
+         }
          callback (null, HTMLData);
       }
    });

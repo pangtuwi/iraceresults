@@ -4,6 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var iRacing = require('./iracing.js');
 
 //app internal requirements
 var config = require('./appconfig.js');
@@ -202,7 +203,7 @@ router.post('/:leagueid/:route', function (req, res) {
 
       case "adddriver":
          //var newDriver = JSON.parse(data);
-         const newDriver = req.body.cust_id;
+         const newDriver = req.body;
          if (newDriver === undefined) {
             const errormsg = { error: "could not read driver info sent to server" };
             res.setHeader("Content-Type", "application/json");
@@ -210,8 +211,7 @@ router.post('/:leagueid/:route', function (req, res) {
             res.end(JSON.stringify(errormsg));
          } else {
             newDriver.cust_id = Number(newDriver.cust_id);
-            drivers.push(newDriver);
-            jsonloader.saveDrivers(drivers);
+            leaguedata.addDriver(reqLeagueID, newDriver);
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));
@@ -230,14 +230,14 @@ router.post('/:leagueid/:route', function (req, res) {
             res.end(JSON.stringify(errormsg));
          } else {
             deleteDriver.cust_id = Number(deleteDriver.cust_id);
-            const existsDriverIndex = drivers.findIndex((driver) => driver.cust_id === deleteDriver.cust_id);
+            const existsDriverIndex = leaguedata.cache[reqLeagueID].drivers.findIndex((driver) => driver.cust_id === deleteDriver.cust_id);
             if (existsDriverIndex == -1) {
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
                res.end(JSON.stringify({ error: "could not find matching driver in database" }));
             } else {
-               drivers.splice(existsDriverIndex, 1);
-               jsonloader.saveDrivers(drivers);
+               leaguedata.deleteDriver(reqLeagueID, deleteDriver.cust_id);
+            
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
                res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));

@@ -218,6 +218,18 @@ async function updateDriver(leagueID, cust_id, custData){
    }
 } //updateDriver
 
+async function addDriver (leagueID, newDriver){
+   cache[leagueID].drivers.push(newDriver);
+   jsonloader.saveDrivers(leagueID,cache[leagueID].drivers);
+} //addDriver
+
+
+async function deleteDriver (leagueID, cust_id){
+   cache[leagueID].drivers.splice(existsDriverIndex, 1);
+   jsonloader.saveDrivers(leagueID,cache[leagueID].driver);
+} //addDriver
+
+
 async function submitPenalty(leagueID, newPenalty){
   penalties = await jsonloader.getPenalties(leagueID);
   protests = await jsonloader.getProtests(leagueID);
@@ -361,5 +373,7 @@ exports.getSessions = getSessions;
 exports.getScoredEvents = getScoredEvents;
 exports.submitProtest = submitProtest;
 exports.submitPenalty = submitPenalty;
+exports.addDriver = addDriver;
+exports.deleteDriver = deleteDriver;
 exports.updateDriver = updateDriver;
 exports.getTablesDisplayConfig = getTablesDisplayConfig;

@@ -61,13 +61,34 @@ app.get('/:leagueid', function (req, res) {
 });
 
 
+app.get('/:leagueid/img/:route', function (req, res) {
+   const reqLeagueID = req.params.leagueid.toUpperCase();
+   console.log("Request recieved for static IMG file with league ID : ", reqLeagueID, " for file :", req.params.route)
+   if (config.leagueIDs.includes(reqLeagueID)) {
+      switch (req.params.route) {
+         case "header.png":
+            res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/header.png'));
+            break;
+         case "footer.png":
+            res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
+            break;   
+         default:
+            res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
+         }//switch route
+      } else {
+         res.send('Sorry, this is an unknown league.');
+      }
+   });
+   
+
 app.get('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
-
+   console.log("Request recieved for static file with league ID : ", reqLeagueID, " for file :", req.params.route)
    if (config.leagueIDs.includes(reqLeagueID)) {
       switch (req.params.route) {
          case "favicon.ico":
             res.sendFile(path.join(__dirname, '/img/favicon.ico'));
+            console.log("sending favicon from ", __dirname);
             break;
          case "bkgrnd.jpg":
             res.sendFile(path.join(__dirname, '/img/bkgrnd.jpg'));
@@ -80,6 +101,7 @@ app.get('/:leagueid/:route', function (req, res) {
             break;
          case "header.png":
             res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/header.png'));
+            console.log("sending header.png from ", __dirname);
             break;
          case "footer.png":
             res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
@@ -194,7 +216,7 @@ app.post('/:leagueid/:route', function (req, res) {
 
 // Other routes here
 app.get('*', function (req, res) {
-   res.send('Sorry, this is an invalid URL.');
+   res.send('Sorry, this is an in   URL.');
 });
 
 var server = app.listen(config.port, function () {

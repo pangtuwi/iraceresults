@@ -126,6 +126,21 @@ function getClassTotals() {
       .catch(error => console.log(error))
 } //getClassTotals
 
+
+function getLeagueImages() {
+   //console.log("getting League Images");
+   document.getElementById("header-td").style.backgroundImage = "url('"+baseURI+"img/header.png')";
+   document.getElementById("header-td").style.verticalAlign = "middle";
+   document.getElementById("header-td").style.backgroundPosition = "center";
+   document.getElementById("header-td").style.backgroundSize = "contain";
+
+   document.getElementById("footer-td").style.backgroundImage = "url('"+baseURI+"img/footer.png')";
+   document.getElementById("footer-td").style.verticalAlign = "middle";
+   document.getElementById("footer-td").style.backgroundPosition = "center";
+   document.getElementById("footer-td").style.backgroundSize = "contain";
+} //getLeagueImages
+
+
 // gets data from API and sets the content of #result div
 /*function getData(NG_Class) {
    // let leagueid = getCookie("leagueid");
@@ -273,6 +288,7 @@ $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jq
    console.log(baseURI);
    baseURI = baseURI.replace(/\/$|$/, '/');
    console.log(baseURI);
+   getLeagueImages();
    getClassTotals(); 
 
 });

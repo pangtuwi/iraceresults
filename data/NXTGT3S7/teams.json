@@ -1,1 +1,246 @@
-[]
+[
+   {
+      "team_name": "AZZ Tech Racing",
+      "drivers": [
+         {
+            "cust_id": 361745,
+            "display_name": "Jake Pitt"
+         },
+         {
+            "cust_id": 1043171,
+            "display_name": "Lewis Mason3"
+         },
+         {
+            "cust_id": 1049767,
+            "display_name": "Corey Price3"
+         }
+      ]
+   },
+   {
+      "team_name": "AZZ Tech Racing w/ Ford Mustang",
+      "drivers": [
+         {
+            "cust_id": 996524,
+            "display_name": "Gabriel Papaconstantinou"
+         },
+         {
+            "cust_id": 820470,
+            "display_name": "Gabriel Yilmaz"
+         },
+         {
+            "cust_id": 846950,
+            "display_name": "Matthew Cheverton"
+         }
+      ]
+   },
+   {
+      "team_name": "Crest Autosport",
+      "drivers": [
+         {
+            "cust_id": 395972,
+            "display_name": "Nigel Stock"
+         },
+         {
+            "cust_id": 712518,
+            "display_name": "Steven De Greveleer"
+         }
+      ]
+   },
+   {
+      "team_name": "Ecurie Col d'Oiseaux",
+      "drivers": [
+         {
+            "cust_id": 214278,
+            "display_name": "Mark Baker7"
+         },
+         {
+            "cust_id": 532447,
+            "display_name": "Paul N T Williams"
+         },
+         {
+            "cust_id": 435038,
+            "display_name": "Jochen Siegert"
+         }
+      ]
+   },
+   {
+      "team_name": "Mission R Academy",
+      "drivers": [
+         {
+            "cust_id": 1045145,
+            "display_name": "Michael Evangeli"
+         },
+         {
+            "cust_id": 1117544,
+            "display_name": "Charlie Jopson-Wood"
+         },
+         {
+            "cust_id": 1077088,
+            "display_name": "Robert Savage"
+         }
+      ]
+   },
+   {
+      "team_name": "Mission R eSports",
+      "drivers": [
+         {
+            "cust_id": 541161,
+            "display_name": "Jonathan Berry"
+         },
+         {
+            "cust_id": 869824,
+            "display_name": "Samy Ariba"
+         },
+         {
+            "cust_id": 527169,
+            "display_name": "Andy Rooney"
+         }
+      ]
+   },
+   {
+      "team_name": "Mission-R | Powered by Mauds",
+      "drivers": [
+         {
+            "cust_id": 1095068,
+            "display_name": "Adam Wilson-Weir"
+         },
+         {
+            "cust_id": 1117870,
+            "display_name": "George Stone6"
+         },
+         {
+            "cust_id": 669636,
+            "display_name": "Łukasz Sidor"
+         }
+      ]
+   },
+   {
+      "team_name": "NXTGEN Pink",
+      "drivers": [
+         {
+            "cust_id": 158246,
+            "display_name": "Gavan Gardener"
+         },
+         {
+            "cust_id": 417499,
+            "display_name": "Jamie Dorey"
+         },
+         {
+            "cust_id": 375113,
+            "display_name": "Mark Sykes"
+         }
+      ]
+   },
+   {
+      "team_name": "Quatermass Motorsport",
+      "drivers": [
+         {
+            "cust_id": 900935,
+            "display_name": "Andy Chell"
+         },
+         {
+            "cust_id": 640632,
+            "display_name": "Mike Barber"
+         },
+         {
+            "cust_id": 856565,
+            "display_name": "Harry Langford"
+         }
+      ]
+   },
+   {
+      "team_name": "Quatermass Motorsport 2",
+      "drivers": [
+         {
+            "cust_id": 880131,
+            "display_name": "Jack Pittas"
+         },
+         {
+            "cust_id": 452031,
+            "display_name": "Ben Benneyworth2"
+         },
+         {
+            "cust_id": 636532,
+            "display_name": "Simon Hunt"
+         }
+      ]
+   },
+   {
+      "team_name": "Yorkshire Mafia Racing",
+      "drivers": [
+         {
+            "cust_id": 435674,
+            "display_name": "Aaron Hobson"
+         },
+         {
+            "cust_id": 416545,
+            "display_name": "Martin Hobson"
+         },
+         {
+            "cust_id": 389317,
+            "display_name": "Steven Bird2"
+         }
+      ]
+   },
+   {
+      "team_name": "Varano Motorsport",
+      "drivers": [
+         {
+            "cust_id": 724528,
+            "display_name": "Danny Switzer"
+         }
+      ]
+   },
+   
+   {
+      "team_name": "CSA Team Woza",
+      "drivers": [
+         {
+            "cust_id": 684107,
+            "display_name": "Stephan Wessels"
+         },
+         {
+            "cust_id": 98121,
+            "display_name": "Jeffrey Kruger"
+         },
+         {
+            "cust_id": 1012459,
+            "display_name": "Kyle Oosthuizen"
+         }
+      ]
+   },
+   {
+      "team_name": "CSA Team Izzit",
+      "drivers": [
+         {
+            "cust_id": 888953,
+            "display_name": "Wesley Lewin"
+         },
+         {
+            "cust_id": 875926,
+            "display_name": "Jopie Seimons"
+         },
+         {
+            "cust_id": 717473,
+            "display_name": "Shaun F Schutte"
+         }
+      ]
+   },
+   {
+      "team_name": "CSA Team Pasop",
+      "drivers": [
+         {
+            "cust_id": 645127,
+            "display_name": "Elwyn Sykes"
+         },
+         {
+            "cust_id": 450627,
+            "display_name": "Davide Favo"
+         },
+         {
+            "cust_id": 1069108,
+            "display_name": "Jason Raaff"
+         }
+      ]
+   }
+]

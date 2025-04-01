@@ -1,0 +1,72 @@
+[   {
+   "incident_no": 4,
+   "round_no": 1,
+   "session_no": 1,
+   "score_event": "Sprint Race",
+   "cust_id": 532447,
+   "display_name": "Paul N T Williams",
+   "positions": 2,
+   "licence_points": 3,
+   "championship_points": 0,
+   "disqualified": 0
+},
+{
+   "incident_no": 6,
+   "round_no": 1,
+   "session_no": 2,
+   "score_event": "Feature Race",
+   "cust_id": 669636,
+   "display_name": "Łukasz Sidor",
+   "positions": 1,
+   "licence_points": 3,
+   "championship_points": 0,
+   "disqualified": 0
+},
+{
+   "incident_no": 7,
+   "round_no": 1,
+   "session_no": 2,
+   "score_event": "Feature Race",
+   "cust_id": 541161,
+   "display_name": "Jonathan Berry",
+   "positions": 1,
+   "licence_points": 3,
+   "championship_points": 0,
+   "disqualified": 0
+},
+{
+   "incident_no": 11,
+   "round_no": 1,
+   "session_no": 2,
+   "score_event": "Feature Race",
+   "cust_id": 876012,
+   "display_name": "Ben Altria",
+   "positions": 1,
+   "licence_points": 3,
+   "championship_points": 0,
+   "disqualified": 0
+},
+{
+   "incident_no": 12,
+   "round_no": 1,
+   "session_no": 2,
+   "score_event": "Feature Race",
+   "cust_id": 820470,
+   "display_name": "Gabriel Yilmaz",
+   "positions": 1,
+   "licence_points": 3,
+   "championship_points": 0,
+   "disqualified": 0
+},
+{
+   "incident_no": 14,
+   "round_no": 1,
+   "session_no": 2,
+   "score_event": "Feature Race",
+   "cust_id": 435674,
+   "display_name": "Aaron Hobson",
+   "positions": 1,
+   "licence_points": 3,
+   "championship_points": 0,
+   "disqualified": 0
+}]

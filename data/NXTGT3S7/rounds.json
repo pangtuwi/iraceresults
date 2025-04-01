@@ -5,4 +5,11 @@
       "start_time": "2025-03-20T20:00:00Z",
       "subsession_ids" : [75641212, 75643715],
       "score_types" : [0, 1]
+   },
+   {
+      "round_no": 2,
+      "track_name": "2-Watkins",
+      "start_time": "2025-03-27T20:00:00Z",
+      "subsession_ids" : [75817615, 75819961],
+      "score_types" : [0, 1]
    }]

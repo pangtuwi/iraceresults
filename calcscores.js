@@ -665,7 +665,7 @@ async function classResultsTable(rounds, driverScores, apply_drop_scores_text, n
       classArray = [];
       driverClass.drivers.forEach(driver => {
          let newline = utils.deepCopy(outputLine);
-         //newline.ID = driver.cust_id;
+         newline.ID = driver.cust_id;
          newline.Name = driver.display_name;
          newline.Penalties = 0;
          newline.Total = 0;
@@ -778,7 +778,7 @@ function teamsResultsTable(rounds, teams, classesArray) {
          let teamScore = 0;
          team.drivers.forEach(driver => {
             var thisDriverScore = 0;
-            let thisDriver = driversArray.find(item => item.Name === driver.display_name);
+            let thisDriver = driversArray.find(item => item.ID === driver.cust_id);
             if (thisDriver === undefined) {
                thisDriverScore = 0;
                console.log("Could not find driver ", driver.display_name, " for scoring team ", team.team_name);

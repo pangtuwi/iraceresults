@@ -596,7 +596,7 @@ async function classResultsTable(season, driverScores, apply_drop_scores_text, n
       classArray = [];
       driverClass.drivers.forEach(driver => {
          let newline = utils.deepCopy(outputLine);
-         //newline.ID = driver.cust_id;
+         newline.ID = driver.cust_id;
          newline.Name = driver.display_name;
          newline.Penalties = 0;
          newline.Total = 0;

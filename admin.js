@@ -73,6 +73,13 @@ router.get('/:leagueid/:route', function (req, res) {
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].protests));
          break;
 
+      case "unresolvedprotests":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         const unresolved = leaguedata.getUnresolvedProtests(reqLeagueID)
+         res.end(JSON.stringify(unresolved));
+         break;
+
       case "stewarding":
          res.cookie('leagueid', reqLeagueID);
          res.sendFile(path.join(__dirname, '/html/stewarding.html'));
@@ -128,7 +135,7 @@ router.post('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
    switch (req.params.route) {
 
-      case "scoredevents":
+     case "scoredevents":
          const reqRoundNo = req.body.round_no;
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
@@ -251,7 +258,9 @@ router.post('/:leagueid/:route', function (req, res) {
          console.log("new Penalty Recieved : ", newPenalty);
          leaguedata.submitPenalty(reqLeagueID, newPenalty).then((result) => {
             leaguedata.cache[reqLeagueID].penalties = result;
-            res.sendFile(path.join(__dirname, '/html/protestconf.html'));
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify({ confirmation: "Penalty submitted Successfully" }));
          });
          break;
 

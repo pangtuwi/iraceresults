@@ -107,7 +107,7 @@ function getDrivers() {
 }//getDrivers
 
 function getRounds() {
-   fetch('protestablerounds')
+   fetch('./protestablerounds')
       .then(res => res.json())
       .then(data => {
          console.log("round data received :", data);
@@ -137,6 +137,22 @@ function getRounds() {
 }//getRounds
 
 
+/*function getScoredEvents(round_no) {
+   fetch('./scoredevents',)
+      .then(res => res.json())
+      .then(data => {
+         console.log("received data : ", data);
+         var scoredEventSelect = $("#scored_event_select");
+         scoredEventSelect.empty();
+         data.forEach(event => {
+            var option = document.createElement("option");
+            option.text = event.event_type;
+            option.value = event.event_type;
+            scoredEventSelect.append(option);
+         });
+      });
+} //getScoredEvents */
+
 function getScoredEvents(round_no) {
    fetch('scoredevents', {
       method: 'POST',
@@ -155,7 +171,9 @@ function getScoredEvents(round_no) {
          data.forEach(event => {
             var option = document.createElement("option");
             option.text = event.event_type;
-            option.value = event.event_type;
+            //create integer as combination of session counter and score event counter
+            option.value = event.round_session_no * 100 + event.score_event_no;
+            console.log ("Adding Event : ", option.text, "   with value = ", option.value);
             scoredEventSelect.append(option);
          });
       });
@@ -198,8 +216,8 @@ function showConfirmationRequest() {
    const roundNo = $("#round_select").children("option:selected").val();
    const roundName = $("#round_select").children("option:selected").text();
    const event = $("#scored_event_select").children("option:selected").val();
-   const lap = $("#protest_lap").text();
-   const corner = $("#protest_corner").text();
+   const lap = $("#protest_lap").val();
+   const corner = $("#protest_corner").val();
    const driverStatement = $("#incident_description").val();
    protest = {
       protesting_driver_id: protestingDriver,
@@ -213,6 +231,7 @@ function showConfirmationRequest() {
       corner: corner,
       driver_statement: driverStatement
    }
+   console.log("protest object : ", protest);
 
    $("#protesting_driver_name").html(protest.protesting_driver_name);
    $("#protested_driver_name").html(protest.protested_driver_name);

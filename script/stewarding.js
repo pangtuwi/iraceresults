@@ -31,7 +31,7 @@ function getProtests() {
    var tableBottomHTML = '</div>'
    var tableHTML = tableTopHtml;
    var rowcounter = 0;
-   fetch('./protests')
+   fetch('./unresolvedprotests')
       .then(res => res.json())
       .then(data => {
          console.log("protests data received :", data);
@@ -75,7 +75,7 @@ function getStewardsDecision(){
       penalty.display_name = selectedProtest.protested_driver_name;
       penalty.protesting_cust_id = selectedProtest.protesting_driver_id;
       penalty.protesting_driver_name = selectedProtest.protesting_driver_name;
-      penalty.stewards_decision = $("#stewards_decision").text(); 
+      penalty.stewards_decision = $("#stewards_decision").val(); 
       penalty.time_added = parseInt($("#penalty_time_added").val());   // TO INT
       penalty.positions = parseInt($("#penalty_positions").val());    // TO INT
       penalty.licence_points = parseInt($("#penalty_licence_points").val());  // TO INT
@@ -103,9 +103,9 @@ function postPenalty(newPenalty){
       .then(res => res.json())
       .then(data => {
          console.log("received data : ", data);
+         location.reload();
       });
 } //postPenalty
-
 
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
 

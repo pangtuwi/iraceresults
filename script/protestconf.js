@@ -6,6 +6,6 @@ $(function () {  //document is ready
    $("#protest_btn").click(function () {
      
      // $.redirect("protest", protestObj);
-    window.location.href = "protest";
+    window.location.href = "../protest/";
    }); 
 });

@@ -9,6 +9,7 @@ var jsonloader = require('./appjsonloader');
 const exporter = require('./exporter');
 const { deepCopy } = require('./utils/utils');
 const fs = require('fs');
+const e = require('express');
 
 //axios setup
 const BASE_URL = 'https://members-ng.iracing.com/';
@@ -156,7 +157,7 @@ function getScoredEvents(leagueID, round_no) {
    var subsession_counter = 0;
    const scoring = cache[leagueID].scoring;
    cache[leagueID].rounds.forEach(round => {
-      if ((round.round_no == round_no)  && (round.subsession_ids.length > 0)){
+      if ((round.round_no == round_no) && (round.subsession_ids.length > 0)) {
          round.subsession_ids.forEach((session_id, i) => {
             session_scored_events = scoring[round.score_types[subsession_counter]].scored_events;
             session_scored_events.forEach((scored_event, j) => {
@@ -174,10 +175,10 @@ function getScoredEvents(leagueID, round_no) {
    return scored_events;
 } //getScoredEvents
 
-function getTablesDisplayConfig(leagueID){
+function getTablesDisplayConfig(leagueID) {
    const classes = cache[leagueID].classes;
    const config = cache[leagueID].config;
-   var displayConfig = {"classes_to_display" : [], "display_overall_table" : 0};
+   var displayConfig = { "classes_to_display": [], "display_overall_table": 0 };
    classes.forEach(thisClass => {
       if (thisClass.display_in_tables == 1) {
          displayConfig.classes_to_display.push(thisClass);
@@ -187,6 +188,22 @@ function getTablesDisplayConfig(leagueID){
    return displayConfig;
 } //getTablesDisplayConfig
 
+
+//Function to get filtered class totals (removes cust_id / ID)
+async function getFilteredClassTotals(reqLeagueID) {
+   const filteredClassTotals = [];
+   for (const classID in cache[reqLeagueID].classtotals) {
+      const classData = cache[reqLeagueID].classtotals[classID];
+      const filteredClassData = [];
+      for (const driverID in classData) {
+         const driverData = classData[driverID];
+         const { ID, ...rest } = driverData;
+         filteredClassData.push(rest);
+      }
+      filteredClassTotals.push(filteredClassData);
+   }
+   return filteredClassTotals;
+} //getFilteredClassTotals
 
 //Function to login to iRacing (note password determined elsewhere)
 async function authUser() {
@@ -199,50 +216,68 @@ async function authUser() {
    return res.headers['set-cookie'];
 }
 
-async function submitProtest(leagueID, newProtest){
-   protests = await jsonloader.getProtests(leagueID);
-   newProtest.protest_id = newProtest.round_id + "-" + cache[leagueID].protests.length; 
+async function submitProtest(leagueID, newProtest) {
+   let protests = await jsonloader.getProtests(leagueID);
+   newProtest.round_id = Number(newProtest.round_no);
+   newProtest.protesting_driver_id = Number(newProtest.protesting_driver_id);
+   newProtest.protested_driver_id = Number(newProtest.protested_driver_id);
+   newProtest.protest_id = (newProtest.round_id * 1000) + cache[leagueID].protests.length;
+   const scoredEvents = getScoredEvents(leagueID, newProtest.round_id);
+   const eventNumber = Number(newProtest.event);
+   newProtest.score_event = scoredEvents[eventNumber].event_type;
    newProtest.timestamp = Date.now();
+   newProtest.resolved = 0;
    protests.push(newProtest);
-   await jsonloader.saveProtests(leagueID,protests);
+   await jsonloader.saveProtests(leagueID, protests);
    return protests;
 } //submitProtest
 
-async function updateDriver(leagueID, cust_id, custData){
+async function updateDriver(leagueID, cust_id, custData) {
    const existsDriverIndex = cache[leagueID].drivers.findIndex((driver) => driver.cust_id === cust_id);
    if (existsDriverIndex == -1) {
-      console.log ("ERROR - COULD NOT FIND DRIVER");
+      console.log("ERROR - COULD NOT FIND DRIVER");
    } else {
       cache[leagueID].drivers[existsDriverIndex] = custData;
-      jsonloader.saveDrivers(leagueID,cache[leagueID].drivers);
+      jsonloader.saveDrivers(leagueID, cache[leagueID].drivers);
    }
 } //updateDriver
 
-async function addDriver (leagueID, newDriver){
+async function addDriver(leagueID, newDriver) {
    cache[leagueID].drivers.push(newDriver);
-   jsonloader.saveDrivers(leagueID,cache[leagueID].drivers);
+   jsonloader.saveDrivers(leagueID, cache[leagueID].drivers);
 } //addDriver
 
 
-async function deleteDriver (leagueID, cust_id){
+async function deleteDriver(leagueID, cust_id) {
    cache[leagueID].drivers.splice(existsDriverIndex, 1);
-   jsonloader.saveDrivers(leagueID,cache[leagueID].driver);
+   jsonloader.saveDrivers(leagueID, cache[leagueID].driver);
 } //addDriver
 
+function getUnresolvedProtests(leagueid) {
+   let protests = cache[leagueid].protests;
+   //Filter obj to get only unresolved protests
+   const unresolvedProtests = protests.filter(protest => protest.resolved == 0);
+   //console.log(obj);   
+   return unresolvedProtests;
+} //getUnresolvedProtests
 
-async function submitPenalty(leagueID, newPenalty){
-  penalties = await jsonloader.getPenalties(leagueID);
-  protests = await jsonloader.getProtests(leagueID);
-  const resolvedProtestIndex = protests.findIndex((protest) => protest.protest_id == newPenalty.protest_id);
-  if (resolvedProtestIndex == -1){
-   console.log("No protest associated with this penalty")
-  } else {
-   console.log ("marking protest as resolved : ", resolvedProtestIndex);
-  }
-   newPenalty.penalty_id = newPenalty.round_no + "-" + cache[leagueID].penalties.length; 
+async function submitPenalty(leagueID, newPenalty) {
+   //penalties = await jsonloader.getPenalties(leagueID);
+   //var protests = await jsonloader.getProtests(leagueID);
+   let penalties = cache[leagueID].penalties;
+   let protests = cache[leagueID].protests;
+   const resolvedProtestIndex = protests.findIndex((protest) => protest.protest_id == newPenalty.protest_id);
+   if (resolvedProtestIndex == -1) {
+      console.log("No protest associated with this penalty")
+   } else {
+      console.log("marking protest ", resolvedProtestIndex, " as resolved : ");
+      protests[resolvedProtestIndex].resolved = 1;
+      await jsonloader.saveProtests(leagueID, protests);
+   }
+   newPenalty.penalty_id = (newPenalty.round_no * 1000) + cache[leagueID].penalties.length;
    newPenalty.timestamp = Date.now();
    penalties.push(newPenalty);
-   await jsonloader.savePenalties(leagueID,penalties);
+   await jsonloader.savePenalties(leagueID, penalties);
    return penalties;
 } //submitPenalty
 
@@ -261,6 +296,8 @@ async function getSubsessionData(link) {
    const res = await axiosInstance.get(link);
    return res.data;
 }
+
+
 
 async function downloadNewSessionFiles(seasonSubSessions, leagueID) {
    console.log("in downloadNewSubSessionFiles");
@@ -332,9 +369,9 @@ async function reCalculate(leagueID) {
       /*leagueData.season.forEach(round => {
           exporter.exportRoundCSV(leagueData.season, round.round_no, driverScores);
        }); */
-       leagueData.rounds.forEach(round => {
+      leagueData.rounds.forEach(round => {
          exporter.exportRoundCSV2(leagueData.rounds, round.round_no, leagueData.scoring, driverScores);
-       });
+      });
 
       //Output Individual Results Table
       exporter.exportResultsJSON(classResults, './data/' + leagueID + '/classtotals.json');
@@ -371,6 +408,8 @@ exports.getProtestableRounds = getProtestableRounds;
 exports.getCompletedRounds = getCompletedRounds;
 exports.getSessions = getSessions;
 exports.getScoredEvents = getScoredEvents;
+exports.getFilteredClassTotals = getFilteredClassTotals;
+exports.getUnresolvedProtests = getUnresolvedProtests;
 exports.submitProtest = submitProtest;
 exports.submitPenalty = submitPenalty;
 exports.addDriver = addDriver;

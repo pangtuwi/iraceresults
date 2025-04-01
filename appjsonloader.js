@@ -126,7 +126,9 @@ async function getProtests(leagueid) {
    const obj = JSON.parse(data);
    //console.log(obj);   
    return obj;
-}
+} //getProtests
+
+
 
 async function saveProtests(leagueid, protests) {
    let filename = './data/' + leagueid + '/protests.json';

@@ -12,6 +12,7 @@ var cookieParser = require('cookie-parser');
 //my app requirements
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
 var admin = require('./admin.js');
+var protest = require('./protest.js'); 
 
 app.use(bodyParser.urlencoded({ extended: false })); //To parse URL encoded data
 app.use(bodyParser.json());//To parse json data
@@ -20,7 +21,10 @@ app.use(express.static('img'));  //to serve Static Files images
 app.use(express.static('script'));
 app.use(express.static('html'));
 app.use(express.static('css'));
+
+// Custom Routes
 app.use('/admin', admin);
+app.use('/:leagueid/protest', protest);
 
 // Preload and cache config and results for named league
 leaguedata.loadCache();
@@ -63,7 +67,7 @@ app.get('/:leagueid', function (req, res) {
 
 app.get('/:leagueid/img/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
-   console.log("Request recieved for static IMG file with league ID : ", reqLeagueID, " for file :", req.params.route)
+   console.log("Routed to /:leagueid/img/:route -  static IMG file with league ID : ", reqLeagueID, " for file :", req.params.route)
    if (config.leagueIDs.includes(reqLeagueID)) {
       switch (req.params.route) {
          case "header.png":
@@ -71,19 +75,19 @@ app.get('/:leagueid/img/:route', function (req, res) {
             break;
          case "footer.png":
             res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
-            break;   
+            break;
          default:
             res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
-         }//switch route
-      } else {
-         res.send('Sorry, this is an unknown league.');
-      }
-   });
-   
+      }//switch route
+   } else {
+      res.send('Sorry, this is an unknown league.');
+   }
+});
+
 
 app.get('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
-   console.log("Request recieved for static file with league ID : ", reqLeagueID, " for file :", req.params.route)
+   console.log("GET Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route);
    if (config.leagueIDs.includes(reqLeagueID)) {
       switch (req.params.route) {
          case "favicon.ico":
@@ -110,13 +114,13 @@ app.get('/:leagueid/:route', function (req, res) {
             res.sendFile(path.join(__dirname, '/css/style.css'));
             break;
 
-        case "tables":
+         case "tables":
             //res.send("Tables for " + reqLeagueiD);
             //res.cookie('leagueid', reqLeagueID);
             //res.sendFile(path.join(__dirname, '/html/tables.html'));
 
-            res.redirect('/'+reqLeagueID);
-            break; 
+            res.redirect('/' + reqLeagueID);
+            break;
          case "displayconfig":
             let displayConfig = leaguedata.getTablesDisplayConfig(reqLeagueID);
             res.setHeader("Content-Type", "application/json");
@@ -126,17 +130,22 @@ app.get('/:leagueid/:route', function (req, res) {
          case "classtotals":
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
-            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classtotals));
+            //const CT1 = leaguedata.getFilteredClassTotals(reqLeagueID);
+            //const CT2 = leaguedata.cache[reqLeagueID].classtotals;
+            leaguedata.getFilteredClassTotals(reqLeagueID).then((result) => {
+               res.end(JSON.stringify(result));
+            });
+            //res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classtotals));
             break;
          case "teamstotals":
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].teamstotals));
             break;
-         case "protest":
+     /*    case "protest":
             res.cookie('leagueid', reqLeagueID);
             res.sendFile(path.join(__dirname, '/html/protest.html'));
-            break;
+            break; */
          case "recalculate":
             console.log("have been asked to recalculate");
             leaguedata.reCalculate(reqLeagueID).then((result) => {
@@ -166,11 +175,7 @@ app.get('/:leagueid/:route', function (req, res) {
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.getRounds(reqLeagueID)));
             break;
-         case "protestablerounds":
-            res.setHeader("Content-Type", "application/json");
-            res.writeHead(200);
-            res.end(JSON.stringify(leaguedata.getProtestableRounds(reqLeagueID)));
-            break;
+
          case "penalties":
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
@@ -188,27 +193,13 @@ app.get('/:leagueid/:route', function (req, res) {
    }
 });
 
+
+
 app.post('/:leagueid/:route', function (req, res) {
+   console.log("POST Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route)
    const reqLeagueID = req.params.leagueid.toUpperCase();
    switch (req.params.route) {
-      case "scoredevents":
-         const reqRoundNo = req.body.round_no;
-         res.setHeader("Content-Type", "application/json");
-         res.writeHead(200);
-         const scoredEvents = leaguedata.getScoredEvents(reqLeagueID, reqRoundNo);
-         res.end(JSON.stringify(scoredEvents));
-         break;
 
-      case "protestconfirmation":
-         var newProtest = {}
-         newProtest = JSON.parse(req.body.protest);
-         //console.log("new Protest Recieved : ", newProtest);
-         leaguedata.submitProtest(reqLeagueID, newProtest).then((result) => {
-            leaguedata.cache[reqLeagueID].protests = result;
-            res.sendFile(path.join(__dirname, '/html/protestconf.html'));
-         });
-
-         break;
       default:
          res.send('UNKNOWN POST ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
    }
@@ -216,7 +207,8 @@ app.post('/:leagueid/:route', function (req, res) {
 
 // Other routes here
 app.get('*', function (req, res) {
-   res.send('Sorry, this is an in   URL.');
+   console.log("Routed to * - unknown URL");
+   res.send('Sorry, this is an unknown URL.');
 });
 
 var server = app.listen(config.port, function () {

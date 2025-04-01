@@ -3,6 +3,6 @@
    "no_drop_scores_rounds" : [10],
    "class_to_add_new_drivers_to" : 4, 
    "protest_open_after_hrs" : 24,
-   "protest_open_for_hrs": 24,
+   "protest_open_for_hrs": 1000,
    "display_overall_table" : 0
 }

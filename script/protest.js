@@ -173,6 +173,7 @@ function getScoredEvents(round_no) {
             option.text = event.event_type;
             //create integer as combination of session counter and score event counter
             option.value = event.round_session_no * 100 + event.score_event_no;
+            //option.value = event.score_event_no;
             console.log ("Adding Event : ", option.text, "   with value = ", option.value);
             scoredEventSelect.append(option);
          });

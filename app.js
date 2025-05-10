@@ -12,12 +12,13 @@ var cookieParser = require('cookie-parser');
 //my app requirements
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
 var admin = require('./admin.js');
-var protest = require('./protest.js'); 
+var protest = require('./protest.js');
+var logger = require ('./logger.js');
+
 
 app.use(bodyParser.urlencoded({ extended: false })); //To parse URL encoded data
 app.use(bodyParser.json());//To parse json data
 app.use(cookieParser());//To Parse Cookies
-app.use(express.static('img'));  //to serve Static Files images
 app.use(express.static('script'));
 app.use(express.static('html'));
 app.use(express.static('css'));
@@ -36,17 +37,6 @@ app.use(function (req, res, next) {
 });
 
 //Routes
-/*
-Dont think the below is correct.   Should route to a default page
-
-app.get('', function (req, res) {
-   res.sendFile(path.join(__dirname, "html/tables.html"));
-});
-
-app.get('/', function (req, res) {
-   res.sendFile(path.join(__dirname, "html/tables.html"));
-});
-*/
 
 app.get('/cache', function (req, res) {
    res.send(JSON.stringify(leaguedata.cache));
@@ -57,7 +47,7 @@ app.get('/:leagueid', function (req, res) {
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    console.log("base URL called, sending tables")
    if (config.leagueIDs.includes(reqLeagueiD)) {
-      res.cookie('leagueid', reqLeagueiD);
+      //res.cookie('leagueid', reqLeagueiD);
       res.sendFile(path.join(__dirname, '/html/tables.html'));
    } else {
       res.send('Sorry, this is an unknown league.');
@@ -142,12 +132,18 @@ app.get('/:leagueid/:route', function (req, res) {
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].teamstotals));
             break;
-     /*    case "protest":
-            res.cookie('leagueid', reqLeagueID);
-            res.sendFile(path.join(__dirname, '/html/protest.html'));
-            break; */
+
+         case "reload":
+            console.log("reload request recieved, loading saved files into Cache");
+            leaguedata.updateCache(reqLeagueID).then((result2) => {
+               console.log("reload of cache done - sending response");
+               res.send("reloaded Cache for " + reqLeagueID);
+            });
+            break;
+
          case "recalculate":
             console.log("have been asked to recalculate");
+            logger.clearLog(); 
             leaguedata.reCalculate(reqLeagueID).then((result) => {
                leaguedata.updateCache(reqLeagueID).then((result2) => {
                   console.log("recalculation done - sending response");
@@ -181,10 +177,27 @@ app.get('/:leagueid/:route', function (req, res) {
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
             break;
+
+         case "completedrounds":
+            //console.log ("processing request for completed rounds");
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.getCompletedRounds(reqLeagueID)));
+            break;
+
+         case "driverlist":
+            //console.log ("processing request for driver list");
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
+            break;
+
          case "penaltylist":
             //res.cookie('leagueid', reqLeagueID);
-            res.sendFile(path.join(__dirname, '/html/penalties.html'));
+            //      res.cookie('leagueid', reqLeagueID);
+            res.sendFile(path.join(__dirname, '/html/penaltylist.html'));
             break;
+
          default:
             res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
       }//switch route

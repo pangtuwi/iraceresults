@@ -5,7 +5,7 @@
    <link rel="stylesheet" href="/style.css">
    <script src="/jquery-3.7.1.js"></script>
    <script src="/jquery.redirect.js"></script>
-   <script src="/penaltylist.js"></script>
+   <script src="/loglist.js"></script>
 </head>
 
 <style>
@@ -21,8 +21,9 @@
 <body>
    <div class="header_img"></div>
    <div class="title">
-      Penalties
+      Recalculation log
    </div>
+
 
    <div class="narrow_table">
       <div class="table" id="filter_table">
@@ -40,30 +41,23 @@
       </div>
    </div>
 
+
    <div class="full_width_table">
-      <div class="table" id="penalties_displayed">
+      <div class="table" id="log_entries_table">
          <div class="row">
             <div class="cell row header blue" data-title="Row">
-               no
+               timestamp
             </div>
             <div class="cell row header blue" data-title="Row">
-               Round
+               round
             </div>
             <div class="cell row header blue" data-title="Row">
-               Event
+               driver
             </div>
             <div class="cell row header blue" data-title="Row">
-               Name
+               Detail
             </div>
-            <div class="cell row header blue" data-title="Row">
-               Lap
-            </div>
-            <div class="cell row header blue" data-title="Row">
-               Corner
-            </div>
-            <div class="cell row header blue" data-title="Row">
-               Statement
-            </div>
+          
          </div>
       </div>
    </div>

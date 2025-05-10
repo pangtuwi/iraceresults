@@ -14,7 +14,9 @@ function displayEditProtestDetails(protest_id) {
    $("#protesting_driver_name2").html(protest.protesting_driver_name);
    $("#protested_driver_name2").html(protest.protested_driver_name);
    $("#round_name").html(protest.round_name);
-   $("#event").html(protest.event);
+   $("#score_event").html(protest.score_event);
+   $("#lap").html(protest.lap);
+   $("#corner").html(protest.corner);
    $("#driver_statement").html(protest.driver_statement);
 
    var submitButton = document.getElementById("submit_btn");
@@ -65,9 +67,8 @@ function getStewardsDecision(){
    } else {
       penalty.protest_id = selectedProtest.protest_id;
       penalty.round_name = selectedProtest.round_name;
-      penalty.round_no = parseInt(selectedProtest.round_no);   //  TO INT
-      penalty.session_no = 0;                         //NEED THIS - or do I ?
-      penalty.score_event = selectedProtest.event;
+      penalty.round_no = parseInt(selectedProtest.round_no);   //  TO INT                     
+      penalty.score_event = selectedProtest.score_event;
       penalty.lap = selectedProtest.lap;
       penalty.corner = selectedProtest.corner;
       penalty.cust_id = selectedProtest.protested_driver_id;

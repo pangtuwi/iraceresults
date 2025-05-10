@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var iRacing = require('./iracing.js');
+var logger = require('./logger.js');
 
 //app internal requirements
 var config = require('./appconfig.js');
@@ -20,9 +21,8 @@ router.use(function (req, res, next) {
 //admin routes
 
 router.get('/', function (req, res) {
-   res.send('GET route on admin.');
+   res.send('You need to specify the League you wish to administer.');
 });
-
 
 router.get('/:leagueid', function (req, res) {
    const reqLeagueiD = req.params.leagueid.toUpperCase();
@@ -38,10 +38,16 @@ router.get('/:leagueid', function (req, res) {
 
 router.get('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
+   
    switch (req.params.route) {
 
       case "style.css":
          res.sendFile(path.join(__dirname, '/css/style.css'));
+         break;
+
+      case "header.png":
+         res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/header.png'));
+         console.log("sending header.png from ", __dirname);
          break;
 
       case "drivers":
@@ -95,6 +101,20 @@ router.get('/:leagueid/:route', function (req, res) {
          res.sendFile(path.join(__dirname, '/html/penaltylist.html'));
          break;
 
+      case "loglist":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/loglist.html'));
+         break;
+
+      case "recalculationlog":
+         console.log ("sending recalculation log")
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(logger.getLog()));
+         break;
+
+      
+
       case "completedrounds":
          //console.log ("processing request for completed rounds");
          res.setHeader("Content-Type", "application/json");
@@ -115,7 +135,7 @@ router.get('/:leagueid/:route', function (req, res) {
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
          break;
 
-      case "penaltylist":
+      case "penalties":
          //console.log ("processing request for penalty list");
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
@@ -276,15 +296,19 @@ router.post('/:leagueid/:route', function (req, res) {
             //res.sendFile(path.join(__dirname, '/html/protestconf.html'));
          });
          break;
-
+      
+      //send list of penlties to be resolved
+      case "penalties":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
+         break;
+         
 
       default:
          res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
    } //switch route
 });
-
-
-
 
 //export this router to use in our index.js
 module.exports = router;

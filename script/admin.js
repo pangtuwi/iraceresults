@@ -9,22 +9,19 @@ function getLeague() {
          $("#leagueid").html(leagueID);
          setMenuLinks();
       });
-}//getPenalties
+}//getLeague
 
 function setMenuLinks(){
    $("#link_drivers").attr("href", "/admin/"+leagueID+"/drivers");
    $("#link_tables").attr("href", "/"+leagueID);
    $("#link_penalty").attr("href", "/admin/"+leagueID+"/stewardspen");
    $("#link_recalculate").attr("href", "/"+leagueID+"/recalculate");
+   $("#link_reload").attr("href", "/"+leagueID+"/reload");
    $("#link_penalties").attr("href", "/admin/"+leagueID+"/penaltylist");
-
-
-   
-
+   $("#link_log").attr("href", "/admin/"+leagueID+"/loglist");
 }//setMenuLinks
 
 
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
    getLeague();
-
 });

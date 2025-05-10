@@ -10,6 +10,7 @@ const exporter = require('./exporter');
 const { deepCopy } = require('./utils/utils');
 const fs = require('fs');
 const e = require('express');
+var logger = require ('./logger.js');
 
 //axios setup
 const BASE_URL = 'https://members-ng.iracing.com/';
@@ -175,6 +176,28 @@ function getScoredEvents(leagueID, round_no) {
    return scored_events;
 } //getScoredEvents
 
+//Returns the session number for a given round and event type
+function getSessionNo(leagueID, round_no, score_event) {
+   //var scored_events = [];
+   var session_no = 0;
+   var subsession_counter = 0;
+   const scoring = cache[leagueID].scoring;
+   cache[leagueID].rounds.forEach(round => {
+      if ((round.round_no == round_no) && (round.subsession_ids.length > 0)) {
+         round.subsession_ids.forEach((session_id, i) => {
+            session_scored_events = scoring[round.score_types[subsession_counter]].scored_events;
+            session_scored_events.forEach((scored_event, j) => {
+               if (scored_event.score_event == score_event) {
+                  session_no = i+1;
+               }
+            });
+            subsession_counter += 1;
+         });
+      }
+   });
+   return session_no;
+} //getSessionNo
+
 function getTablesDisplayConfig(leagueID) {
    const classes = cache[leagueID].classes;
    const config = cache[leagueID].config;
@@ -224,7 +247,13 @@ async function submitProtest(leagueID, newProtest) {
    newProtest.protest_id = (newProtest.round_id * 1000) + cache[leagueID].protests.length;
    const scoredEvents = getScoredEvents(leagueID, newProtest.round_id);
    const eventNumber = Number(newProtest.event);
-   newProtest.score_event = scoredEvents[eventNumber].event_type;
+   //newProtest.score_event = scoredEvents[eventNumber].event_type;
+   scoredEvents.forEach((scoredEvent, i) => {
+      scoredEvent.eventNumber = scoredEvent.round_session_no *100 + scoredEvent.score_event_no;
+      if (scoredEvent.eventNumber == eventNumber) {
+         newProtest.score_event = scoredEvent.event_type;
+      }
+   });
    newProtest.timestamp = Date.now();
    newProtest.resolved = 0;
    protests.push(newProtest);
@@ -276,6 +305,7 @@ async function submitPenalty(leagueID, newPenalty) {
    }
    newPenalty.penalty_id = (newPenalty.round_no * 1000) + cache[leagueID].penalties.length;
    newPenalty.timestamp = Date.now();
+   newPenalty.session_no = getSessionNo(leagueID, newPenalty.round_no, newPenalty.score_event);
    penalties.push(newPenalty);
    await jsonloader.savePenalties(leagueID, penalties);
    return penalties;
@@ -341,16 +371,14 @@ async function downloadNewSessionFiles(seasonSubSessions, leagueID) {
 async function reCalculate(leagueID) {
    // let subsessionIdArray = [];
    try {
-      console.log("Recalculating - start by updating cache");
+      logger.log("Request for Recalculation recieved",0, 0);
       await updateCache(leagueID);
-      console.log("Cache Updated");
       var leagueData = cache[leagueID];
 
-      console.log("Checking if I have all the subsession Files");
       const session_array = getSessions(leagueID);
       const seasonSubSessions = calcscores.getSubSessionArray(session_array);
       await downloadNewSessionFiles(seasonSubSessions, leagueID);
-      console.log("Got all the files, calculating");
+      logger.log("Got all the files, calculating", 0, 0);
 
       //Calculate Scores for the season
       const driverScores = await calcscores.calc(leagueData, seasonSessions);
@@ -394,6 +422,7 @@ async function reCalculate(leagueID) {
       return classResults;
 
    } catch (e) {
+      logger.log(e, 0, 0);
       console.error(e);
    }
 

@@ -378,14 +378,25 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
          //TODO : fix the class_index not down to zero
          let thisClass = classResults[class_index].positions;
 
-         const sorter_FinishingPositionAfterPenalties = (a, b) => a.finish_position_after_penalties > b.finish_position_after_penalties ? 1 : -1;
+         //const sorter_FinishingPositionAfterPenalties = (a, b) => a.finish_position_after_penalties > b.finish_position_after_penalties ? 1 : -1;
+         const sorter_FinishingPositionAfterPenalties = function(a, b) {
+            let x = a.finish_position_in_class_after_penalties;
+            let y = b.finish_position_in_class_after_penalties;
+            if (x == -1) x = 9999;
+            if (y == -1) y = 9999;
+         
+            if (x > y) return 1
+            else if (x < y) return -1
+            else return 0;
+         } 
          thisClass = thisClass.sort(sorter_FinishingPositionAfterPenalties);
 
          // Move all drivers with finish_position_in_class_after_penalties == -1 to the end of thisClass
-         thisClass = [
+    /*     let newClassOrdered = [
             ...thisClass.filter(driver => driver.finish_position_in_class_after_penalties !== -1),
             ...thisClass.filter(driver => driver.finish_position_in_class_after_penalties === -1)
          ];
+         thisClass = newClassOrdered; */
 
          let lastPos = thisClass.length;
          let driverPenalised = thisClass.find(item => driver.cust_id === item.cust_id);
@@ -410,6 +421,7 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
             thisClass[driverPos + countPositionsAffected].finish_position_after_penalties = driverPenalised.finish_position + penalty.positions;
             thisClass[driverPos + countPositionsAffected].finish_position_in_class_after_penalties = driverPenalised.finish_position_in_class + penalty.positions;
          }
+         console.log(thisClass);
       }
 
 

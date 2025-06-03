@@ -27,6 +27,12 @@ app.use(express.static('css'));
 app.use('/admin', admin);
 app.use('/:leagueid/protest', protest);
 
+// Bugs
+// BUG : Protest numbering sequence incorrect
+// BUG : If more than one round is open for protest, the events for only the first round are shown 
+// BUG : Dividing lines are missing in scores table
+
+
 // Preload and cache config and results for named league
 leaguedata.loadCache();
 

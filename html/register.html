@@ -1,0 +1,127 @@
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="/style.css">
+   <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+   <script src="/jquery-3.7.1.js"></script>
+   <script src="/register.js"></script>
+   <script src="/jquery.redirect.js"></script>
+</head>
+
+<style>
+   .header_img {
+      height: 80px;
+      vertical-align: middle;
+      background-position: center;
+      background-size: contain;
+      background-image: url('header.png');
+   }
+</style>
+
+<body>
+   <div class="header_img"></div>
+   <div class="title" id="title">
+      LEAGUE REGISTRATION FORM
+   </div>
+
+   <div class="left_wrap" id="driver_input" style="display: block;">
+      <div class="wrapper">
+         <div class="table" id="iracing_table">
+            <div class="row header">
+               <div class="cell">iRacing Details</Details>
+               </div>
+               <div class="cell"></div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Enter iRacing Customer ID
+               </div>
+               <div class="cell" data-title="Row">
+                  <input id="cust_id_input" style="display:inline-block"></input>
+                  <button style="display: inline-block" id="find_driver_btn">find</button>
+               </div>
+            </div>
+            
+            <div class="row">
+               <div class="cell" data-title="Row">
+                  iRacing ID
+               </div>
+               <div class="cell" data-title="Row" id="iracing_cust_id">
+                  <i>no valid iRacing ID found </i>
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell" data-title="Row">
+                  iRacing Name
+               </div>
+               <div class="cell" data-title="Row" id="iracing_display_name">
+                    <i>enter your iRacing customer ID above and click find</i>
+               </div>
+            </div>
+
+         </div>
+   
+      <div class="table" id="driver details">
+         <div class="row header">
+            <div class="cell">Driver Details</Details>
+            </div>
+            <div class="cell"></div>
+         </div>
+         <div class="row">
+            <div class="cell row header blue" data-title="Row">Display Name</div>
+            <div class="cell" data-title="Row"><input type="text"  id="display_name" text="enter surname" /></div>
+         </div>
+         <div class="row">
+            <div class="cell row header blue" data-title="Row">iRating</div>
+            <div class="cell" data-title="Row"><input type="text" id="irating" text="enter lap no" /></div>
+         </div>
+         <div class="row">
+            <div class="cell row header blue" data-title="Row">Discord ID</div>
+            <div class="cell" data-title="Row"><input type="text" id="discord_id" text="enter Discord ID" /></div>
+         </div>
+
+      </div>
+
+      <div class="submit">
+         <button id="next_btn">next</button>
+
+      </div>
+   </div>
+   </div>
+
+   <div class="left_wrap" id="driver_confirmation" style="display: none;">
+      <div class="wrapper">
+         <div class="table" id="driver_confirmation_table">
+            <div class="row header">
+               <div class="cell">Registration Confirmation</div>
+            </div>
+            <div class="row">
+               <div class="cell">
+                  <p>
+                     <b>Driver Name: </b><span id="driver_name"></span><br>
+                     <b>iRacing ID : </b><span id="iracing_id"></span><br>
+                     <b>iRacing Name : </b><span id="iracing_name"></span><br>
+                     <b>iRating : </b><span id="irating"></span><br>
+                     <b>Discord ID :</b><span id="discord_id"></span><br>
+                  </p>
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell">Please confirm : <br>
+                  <input type="checkbox" id="CB1">That you are <span id="driver_name"></span></input><br>
+                  <input type="checkbox" id="CB2">That the details above are correct </span></input><br>
+                  <input type="checkbox" id="CB3">That you have read and understand the league rules</input><br>
+               </div>
+            </div>
+
+         </div>
+         <div class="submit">
+            <button id="submit_btn">Submit</button>
+            <button id="cancel_btn"> Cancel</button>
+
+         </div>
+      </div>
+   </div>
+
+</body>

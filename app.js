@@ -13,6 +13,7 @@ var cookieParser = require('cookie-parser');
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
 var admin = require('./admin.js');
 var protest = require('./protest.js');
+var register = require('./register.js');
 var logger = require ('./logger.js');
 
 
@@ -26,6 +27,7 @@ app.use(express.static('css'));
 // Custom Routes
 app.use('/admin', admin);
 app.use('/:leagueid/protest', protest);
+app.use('/:leagueid/register', register);
 
 // Bugs
 // BUG : Protest numbering sequence incorrect

@@ -1,7 +1,7 @@
 //External file requirements
 
 //Constants
-var logToConsole = true;
+var logToConsole = false;
 var eventList = [];
 
 function log (eventText, cust_id, round_no){

@@ -114,7 +114,7 @@ async function getTeamsTotals(leagueid) {
 
 async function getSubSession(leagueid, subsession_id) {
    const data = await fs.readFile('./data/' + leagueid + '/irresults/' + subsession_id + '.json', { encoding: 'utf8' });
-   console.log("Subsession" + subsession_id + " loaded from json file");
+   //console.log("Subsession" + subsession_id + " loaded from json file");
    const obj = JSON.parse(data);
    //console.log(obj);   
    return obj;

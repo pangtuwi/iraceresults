@@ -40,7 +40,7 @@ leaguedata.loadCache();
 
 //Middleware
 app.use(function (req, res, next) {
-   console.log("A request received at " + Date.now() + " for " + JSON.stringify(req.url));
+   //console.log("A request received at " + Date.now() + " for " + JSON.stringify(req.url));
    next();
 });
 
@@ -53,7 +53,7 @@ app.get('/cache', function (req, res) {
 // https://www.tutorialspoint.com/expressjs/expressjs_url_building.htm
 app.get('/:leagueid', function (req, res) {
    const reqLeagueiD = req.params.leagueid.toUpperCase();
-   console.log("base URL called, sending tables")
+   //console.log("base URL called, sending tables")
    if (config.leagueIDs.includes(reqLeagueiD)) {
       //res.cookie('leagueid', reqLeagueiD);
       res.sendFile(path.join(__dirname, '/html/tables.html'));
@@ -65,7 +65,7 @@ app.get('/:leagueid', function (req, res) {
 
 app.get('/:leagueid/img/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
-   console.log("Routed to /:leagueid/img/:route -  static IMG file with league ID : ", reqLeagueID, " for file :", req.params.route)
+   //console.log("Routed to /:leagueid/img/:route -  static IMG file with league ID : ", reqLeagueID, " for file :", req.params.route)
    if (config.leagueIDs.includes(reqLeagueID)) {
       switch (req.params.route) {
          case "header.png":
@@ -85,7 +85,7 @@ app.get('/:leagueid/img/:route', function (req, res) {
 
 app.get('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
-   console.log("GET Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route);
+   //console.log("GET Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route);
    if (config.leagueIDs.includes(reqLeagueID)) {
       switch (req.params.route) {
          case "favicon.ico":

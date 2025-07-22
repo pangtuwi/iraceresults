@@ -62,11 +62,29 @@ async function updateCache(leagueID) {
    league.teamstotals = await jsonloader.getTeamsTotals(leagueID);
    league.protests = await jsonloader.getProtests(leagueID);
    cache[leagueID] = league;
-   console.log("League Cache updated for ", leagueID)
+   //console.log("League Cache updated for ", leagueID)
 } //updateCache(leagueid)
+
+function getValidRounds(leagueID) {
+   let allRounds = cache[leagueID].rounds;
+   let validRounds = [];
+   allRounds.forEach (round => {
+      var hasValidSubsessionIds = false;
+      round.subsession_ids.forEach (subsession_id => {
+         if (subsession_id > 0) hasValidSubsessionIds = true;
+      });
+      if (hasValidSubsessionIds) {
+         validRounds.push(round);
+      }
+   });
+   //return cache[leagueID].rounds;
+   return validRounds;
+} //getValidRounds
+
 
 function getRounds(leagueID) {
    return cache[leagueID].rounds;
+ 
 } //getRounds
 
 function getProtestableRounds(leagueID) {
@@ -141,14 +159,17 @@ function getSessions(leagueID) {
    cache[leagueID].rounds.forEach(round => {
       var subsession_counter = 0;
       round.subsession_ids.forEach(subsession => {
-         let thisSession = {};
-         thisSession.subsession_id = subsession;
-         thisSession.score_type_id = round.score_types[subsession_counter];
-         thisSession.round_no = round.round_no;
-         sessions.push(thisSession);
-         subsession_counter += 1;
+         if (subsession != 0) {
+            let thisSession = {};
+            thisSession.subsession_id = subsession;
+            thisSession.score_type_id = round.score_types[subsession_counter];
+            thisSession.round_no = round.round_no;
+            sessions.push(thisSession);
+            subsession_counter += 1;
+         }
       });
    });
+   //console.log("getSessions - sessions = ", sessions);
    return sessions;
 } //getSessions
 
@@ -157,7 +178,10 @@ function getScoredEvents(leagueID, round_no) {
    var scored_events = [];
    var subsession_counter = 0;
    const scoring = cache[leagueID].scoring;
-   cache[leagueID].rounds.forEach(round => {
+   
+   //cache[leagueID].rounds.forEach(round => {
+   let validRounds = getValidRounds();
+   validRounds.forEach(round => {   
       if ((round.round_no == round_no) && (round.subsession_ids.length > 0)) {
          round.subsession_ids.forEach((session_id, i) => {
             session_scored_events = scoring[round.score_types[subsession_counter]].scored_events;
@@ -330,7 +354,7 @@ async function getSubsessionData(link) {
 
 
 async function downloadNewSessionFiles(seasonSubSessions, leagueID) {
-   console.log("in downloadNewSubSessionFiles");
+   //console.log("in downloadNewSubSessionFiles");
    let loadFromFileSubSessions = [];
    let loadFromiRacingSubSessions = [];
 
@@ -340,17 +364,17 @@ async function downloadNewSessionFiles(seasonSubSessions, leagueID) {
 
       // Check if the file or directory exists synchronously
       if (fs.existsSync(pathToFileOrDir)) {
-         console.log(`The file  '${pathToFileOrDir}' exists.`);
+         //console.log(`The file  '${pathToFileOrDir}' exists.`);
          loadFromFileSubSessions.push(subsession_id);
       } else {
-         console.log(`The file '${pathToFileOrDir}' does not exist.`);
+         //console.log(`The file '${pathToFileOrDir}' does not exist.`);
          loadFromiRacingSubSessions.push(subsession_id);
       }
    }
 
    if (loadFromFileSubSessions.length > 0) {
       for (const subsession_id of loadFromFileSubSessions) {
-         console.log("getting subsession data from File for : " + subsession_id);
+         //console.log("getting subsession data from File for : " + subsession_id);
          const obj = await jsonloader.getSubSession(leagueID, subsession_id);
          seasonSessions[subsession_id] = obj;
       }
@@ -359,7 +383,7 @@ async function downloadNewSessionFiles(seasonSubSessions, leagueID) {
    if (loadFromiRacingSubSessions.length > 0) {
       const cookie = await authUser();
       for (const subsession_id of loadFromiRacingSubSessions) {
-         console.log("getting subsession data from iRacing.com for : " + subsession_id);
+         logger.log("getting subsession data from iRacing.com for : " + subsession_id);
          const subsessiondata = await getSubsession(subsession_id, cookie);
          const obj = await getSubsessionData(subsessiondata.link);
          seasonSessions[subsession_id] = obj;
@@ -374,6 +398,7 @@ async function reCalculate(leagueID) {
       logger.log("Request for Recalculation recieved",0, 0);
       await updateCache(leagueID);
       var leagueData = cache[leagueID];
+      leagueData.rounds = getValidRounds(leagueID);
 
       const session_array = getSessions(leagueID);
       const seasonSubSessions = calcscores.getSubSessionArray(session_array);

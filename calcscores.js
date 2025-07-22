@@ -421,7 +421,7 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
             thisClass[driverPos + countPositionsAffected].finish_position_after_penalties = driverPenalised.finish_position + penalty.positions;
             thisClass[driverPos + countPositionsAffected].finish_position_in_class_after_penalties = driverPenalised.finish_position_in_class + penalty.positions;
          }
-         console.log(thisClass);
+         //console.log(thisClass);
       }
 
 
@@ -602,8 +602,10 @@ async function calc(leagueData, seasonSessions) {
 
          var subsession_counter = 0;
          round.subsession_ids.forEach(session => {
+            if (session != 0 ){
             let subsession_id = session;
             let session_results = seasonSessions[subsession_id].session_results;
+            //BUG : creation of seasonsSessions is creating a massive array of all possible subsession_ids 
             logger.log(" - processing session " + subsession_id, 0, round.round_no);
 
             Scoring[round.score_types[subsession_counter]].scored_events.forEach((scoreEvent, score_event_no) => {
@@ -640,7 +642,9 @@ async function calc(leagueData, seasonSessions) {
 
             });
             subsession_counter += 1;
-         });
+         }
+      });
+         
       }
    });
 

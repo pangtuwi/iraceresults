@@ -188,7 +188,7 @@ async function exportRoundCSV2(rounds, roundindex, scoring, driverScores){
    outputHeaders.push("Total");
    outputLine.Total = 0;
 
-   console.log(outputHeaders);
+   //console.log(outputHeaders);
 
    //Iterate through Driver Scores
    driverScores.forEach(driverClass => {
@@ -242,7 +242,7 @@ async function exportLeagueSessionJSON(leagueID, session){
    let filename = path.join(__dirname, '/data/'+leagueID+'/irresults/'+session.subsession_id + '.json');
    fs.writeFile(filename, JSON.stringify(session), (err) => {
       if (err) throw err;
-      console.log('Session saved : ', filename);
+     // console.log('Session saved : ', filename);
    });
 } //exportSessionJSON
 
@@ -250,7 +250,7 @@ async function exportResultsJSON(results, filename){
    //let filename = 'results.json'
    fs.writeFile(filename, JSON.stringify(results), (err) => {
       if (err) throw err;
-      console.log('Results saved as : ', filename);
+      //console.log('Results saved as : ', filename);
    });
 } //exportSessionJSON
 

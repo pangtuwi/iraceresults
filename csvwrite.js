@@ -8,7 +8,7 @@ async function exportCSV(filename, columns, data){
       filename = filename + '.csv'
       fs.writeFile(filename, output, (err) => {
          if (err) throw err;
-         console.log('csv saved : ', filename);
+         //console.log('csv saved : ', filename);
       });
    });
 }

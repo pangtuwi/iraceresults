@@ -1,20 +1,26 @@
 [
    {
-       "classname": "Pro",
-       "classnumber": 1,
-       "position_score_by" : "overall",
-       "display_in_tables" : 1 
+      "classname": "Gold",
+      "classnumber": 1,
+      "position_score_by": "class",
+      "display_in_tables": 1
    },
    {
-       "classname": "Pro-Am",
-       "classnumber": 2,
-       "position_score_by" : "class",
-       "display_in_tables" : 1
+      "classname": "Silver",
+      "classnumber": 2,
+      "position_score_by": "class",
+      "display_in_tables": 1
    },
    {
-       "classname": "Am",
-       "classnumber": 3,
-       "position_score_by" : "class",
-       "display_in_tables" : 1 
+      "classname": "Bronze",
+      "classnumber": 3,
+      "position_score_by": "class",
+      "display_in_tables": 1
+   },
+   {
+      "classname": "Unclassified",
+      "classnumber": 4,
+      "position_score_by": "class",
+      "display_in_tables": 1
    }
 ]

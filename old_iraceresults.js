@@ -14,7 +14,7 @@ const querystring = require('querystring');
 const serverconfig = require('./config.js');
 const editor = require('./editor.js');
 const iRacing = require('./iracing.js');
-const jsonloader = require('./jsonloader');
+const jsonloader = require('./jsonloader.js');
 
 const results = require('./calc_league.js');
 

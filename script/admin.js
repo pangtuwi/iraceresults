@@ -18,6 +18,7 @@ function setMenuLinks(){
    $("#link_recalculate").attr("href", "/"+leagueID+"/recalculate");
    $("#link_reload").attr("href", "/"+leagueID+"/reload");
    $("#link_penalties").attr("href", "/admin/"+leagueID+"/penaltylist");
+   $("#link_session").attr("href", "/admin/"+leagueID+"/session");
    $("#link_log").attr("href", "/admin/"+leagueID+"/loglist");
 }//setMenuLinks
 

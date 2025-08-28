@@ -65,7 +65,7 @@ app.get('/:leagueid', function (req, res) {
 
 app.get('/:leagueid/img/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
-   //console.log("Routed to /:leagueid/img/:route -  static IMG file with league ID : ", reqLeagueID, " for file :", req.params.route)
+   console.log("Routed to /:leagueid/img/:route -  static IMG file with league ID : ", reqLeagueID, " for file :", req.params.route)
    if (config.leagueIDs.includes(reqLeagueID)) {
       switch (req.params.route) {
          case "header.png":
@@ -85,7 +85,7 @@ app.get('/:leagueid/img/:route', function (req, res) {
 
 app.get('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
-   //console.log("GET Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route);
+   console.log("GET Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route);
    if (config.leagueIDs.includes(reqLeagueID)) {
       switch (req.params.route) {
          case "favicon.ico":
@@ -107,6 +107,9 @@ app.get('/:leagueid/:route', function (req, res) {
             break;
          case "footer.png":
             res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
+            break;
+         case "fuji.png":
+            res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/fuji.png'));
             break;
          case "style.css":
             res.sendFile(path.join(__dirname, '/css/style.css'));
@@ -170,6 +173,7 @@ app.get('/:leagueid/:route', function (req, res) {
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].protests));
             break;
          case "drivers":
+            console.log("app.js GET : Getting drivers for league ", reqLeagueID);
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
@@ -215,10 +219,9 @@ app.get('/:leagueid/:route', function (req, res) {
 });
 
 
-
 app.post('/:leagueid/:route', function (req, res) {
-   console.log("POST Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route)
    const reqLeagueID = req.params.leagueid.toUpperCase();
+   console.log("POST Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route)
    switch (req.params.route) {
 
       default:

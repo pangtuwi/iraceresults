@@ -21,8 +21,8 @@ router.use(function (req, res, next) {
 
 //protest routes
 router.get('/', function (req, res) {
+   console.log("a GET request for protest Routed to /");
    const reqLeagueID = req.baseUrl.split("/")[1].toUpperCase();
-   console.log("GET Routed to /:leagueid/protest/:route - with league ID : ", reqLeagueID, " and route :", req.params.route);
    res.cookie('leagueid', reqLeagueID);
    res.sendFile(path.join(__dirname, '/html/protest.html'));
 });
@@ -35,7 +35,7 @@ router.get('/:route', function (req, res) {
       switch (req.params.route) {
          case "header.png":
             res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/header.png'));
-            console.log("sending header.png from ", __dirname);
+            console.log("protest.js GET sending header.png from ", __dirname);
             break;
 
          case "style.css":
@@ -56,19 +56,23 @@ router.get('/:route', function (req, res) {
                  });
                  break; */
          case "drivers":
+            console.log("GET routed to protest.js : Getting drivers for league ", reqLeagueID);
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
             break;
 
          case "protestablerounds":
+            console.log("Getting protestable rounds for league ", reqLeagueID);   
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
-            res.end(JSON.stringify(leaguedata.getProtestableRounds(reqLeagueID)));
+            const protestableRounds = leaguedata.getProtestableRounds(reqLeagueID);
+            console.log("protestableRounds: ", protestableRounds);
+            res.end(JSON.stringify(protestableRounds));
             break;
 
 
-            break;
+         //  break;
       }//switch route
    } else {
       res.send('Sorry, this is an unknown league.');

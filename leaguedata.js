@@ -180,7 +180,7 @@ function getScoredEvents(leagueID, round_no) {
    const scoring = cache[leagueID].scoring;
    
    //cache[leagueID].rounds.forEach(round => {
-   let validRounds = getValidRounds();
+   let validRounds = getValidRounds(leagueID);
    validRounds.forEach(round => {   
       if ((round.round_no == round_no) && (round.subsession_ids.length > 0)) {
          round.subsession_ids.forEach((session_id, i) => {

@@ -1,0 +1,5 @@
+Edits
+
+Done:
+   2025-08-20 : First creation of NXTGT3S8 Data
+   

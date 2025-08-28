@@ -21,7 +21,7 @@ function getCookie(cname) {
 }
 
 function getDrivers() {
-   fetch('./drivers')
+   fetch('./protest/drivers')
       .then(res => res.json())
       .then(data => {
          console.log("driver data received :", data);
@@ -107,7 +107,7 @@ function getDrivers() {
 }//getDrivers
 
 function getRounds() {
-   fetch('./protestablerounds')
+   fetch('./protest/protestablerounds')
       .then(res => res.json())
       .then(data => {
          console.log("round data received :", data);
@@ -154,7 +154,12 @@ function getRounds() {
 } //getScoredEvents */
 
 function getScoredEvents(round_no) {
-   fetch('scoredevents', {
+   console.log ("Fetching Scored events for round_no: ", round_no);
+   if (!round_no) {
+      console.log("No round number provided");
+      return;
+   } else {
+   fetch('./protest/scoredevents', {
       method: 'POST',
       body: JSON.stringify({
          round_no: round_no
@@ -178,6 +183,7 @@ function getScoredEvents(round_no) {
             scoredEventSelect.append(option);
          });
       });
+   }
 } //getScoredEvents
 
 function showHideBlocks() {
@@ -282,6 +288,15 @@ $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jq
       checkIfConfirmed();
    });
 
+   $("#incident_description").on("input", function () {
+      if ($("#incident_description").val().length > 0) {
+         $("#next_btn").prop("disabled", false);
+      } else {
+         $("#next_btn").prop("disabled", true);
+      }
+      console.log("incident description changed, length = ", $("#incident_description").val().length);
+   });
+
    //var submitButton = $("#submit_btn");
    var submitButton = document.getElementById("submit_btn");
    submitButton.disabled = true;
@@ -293,7 +308,7 @@ $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jq
       const protestObj = {
          "protest": JSON.stringify(protest)
       };
-      $.redirect("protestconfirmation", protestObj);
+      $.redirect("./protest/protestconfirmation", protestObj);
    });  
 
    getDrivers();

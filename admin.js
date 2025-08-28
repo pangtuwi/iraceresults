@@ -38,7 +38,7 @@ router.get('/:leagueid', function (req, res) {
 
 router.get('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
-   
+
    switch (req.params.route) {
 
       case "style.css":
@@ -79,6 +79,12 @@ router.get('/:leagueid/:route', function (req, res) {
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].protests));
          break;
 
+      case "sessions":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.getSessions(reqLeagueID)));
+         break;
+
       case "unresolvedprotests":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
@@ -101,19 +107,24 @@ router.get('/:leagueid/:route', function (req, res) {
          res.sendFile(path.join(__dirname, '/html/penaltylist.html'));
          break;
 
+      case "session":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/session.html'));
+         break;
+
       case "loglist":
          res.cookie('leagueid', reqLeagueID);
          res.sendFile(path.join(__dirname, '/html/loglist.html'));
          break;
 
       case "recalculationlog":
-         console.log ("sending recalculation log")
+         console.log("sending recalculation log")
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(logger.getLog()));
          break;
 
-      
+
 
       case "completedrounds":
          //console.log ("processing request for completed rounds");
@@ -155,7 +166,7 @@ router.post('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
    switch (req.params.route) {
 
-     case "scoredevents":
+      case "scoredevents":
          const reqRoundNo = req.body.round_no;
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
@@ -264,7 +275,7 @@ router.post('/:leagueid/:route', function (req, res) {
                res.end(JSON.stringify({ error: "could not find matching driver in database" }));
             } else {
                leaguedata.deleteDriver(reqLeagueID, deleteDriver.cust_id);
-            
+
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
                res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));
@@ -296,14 +307,14 @@ router.post('/:leagueid/:route', function (req, res) {
             //res.sendFile(path.join(__dirname, '/html/protestconf.html'));
          });
          break;
-      
+
       //send list of penlties to be resolved
       case "penalties":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
          break;
-         
+
 
       default:
          res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);

@@ -801,7 +801,7 @@ function teamsResultsTable(rounds, teams, classesArray) {
             let thisDriver = driversArray.find(item => item.ID === driver.cust_id);
             if (thisDriver === undefined) {
                thisDriverScore = 0;
-               logger.log("ERROR : Could not find driver " + driver.display_name +" for scoring team " + team.team_name, driver.cust_id, round_no);
+               logger.log("ERROR : Could not find driver " + driver.display_name +" for scoring team " + team.team_name, driver.cust_id);
             } else {
                thisDriverScore = thisDriver[columnName];
             }

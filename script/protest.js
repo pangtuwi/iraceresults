@@ -130,28 +130,14 @@ function getRounds() {
             var thisRoundNo = roundSelect.children("option:selected").val();
             getScoredEvents(thisRoundNo);
          } else {
-            $("#round_select_comment").html("no rounds are available for protest");
+            $("#round_select_comment").html("No rounds are available for protest.  This is normally because you are outside of the time window allowed for protests");
+            NoRoundsAvailable()
+
          }
       })
       .catch(error => console.log(error))
 }//getRounds
 
-
-/*function getScoredEvents(round_no) {
-   fetch('./scoredevents',)
-      .then(res => res.json())
-      .then(data => {
-         console.log("received data : ", data);
-         var scoredEventSelect = $("#scored_event_select");
-         scoredEventSelect.empty();
-         data.forEach(event => {
-            var option = document.createElement("option");
-            option.text = event.event_type;
-            option.value = event.event_type;
-            scoredEventSelect.append(option);
-         });
-      });
-} //getScoredEvents */
 
 function getScoredEvents(round_no) {
    console.log ("Fetching Scored events for round_no: ", round_no);
@@ -208,6 +194,15 @@ function showHideBlocks() {
    }
 
 } //ShowHideBlocks
+
+function NoRoundsAvailable() {
+   var driverConfirmation = document.getElementById("driver_confirmation");  
+   driverConfirmation.style.display = "none"; 
+   var driverInput = document.getElementById("driver_input");
+   driverInput.style.display = "none";
+   var noProtestableRounds = document.getElementById("no_protestable_rounds");
+   noProtestableRounds.style.display = "block";
+}
 
 function selectRound() {
    var thisRoundNo = $(this).children("option:selected").val();

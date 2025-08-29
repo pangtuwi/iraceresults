@@ -2,10 +2,10 @@
    {
       "round_no": 1,
       "track_name": "Fuji",
-      "start_time": "2025-08-28T20:00:00Z",
+      "start_time": "2025-08-28T19:00:00Z",
       "subsession_ids": [
-         0,
-         0
+         79493731,
+         79495975
       ],
       "score_types": [
          0,

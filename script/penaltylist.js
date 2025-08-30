@@ -116,7 +116,7 @@ function getPenalties() {
    console.log("fetching penalties");
 
 
-   fetch('./penalties')
+   fetch('./penaltiesjson')
       .then(res => res.json())
       .then(data => {
          console.log("penalty list data received :", data);

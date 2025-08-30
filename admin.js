@@ -102,9 +102,9 @@ router.get('/:leagueid/:route', function (req, res) {
          res.sendFile(path.join(__dirname, '/html/stewardspen.html'));
          break;
 
-      case "penaltylist":
+      case "penalties":
          res.cookie('leagueid', reqLeagueID);
-         res.sendFile(path.join(__dirname, '/html/penaltylist.html'));
+         res.sendFile(path.join(__dirname, '/html/penalties.html'));
          break;
 
       case "session":
@@ -146,7 +146,7 @@ router.get('/:leagueid/:route', function (req, res) {
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
          break;
 
-      case "penalties":
+      case "penaltiesjson":
          //console.log ("processing request for penalty list");
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
@@ -309,7 +309,7 @@ router.post('/:leagueid/:route', function (req, res) {
          break;
 
       //send list of penlties to be resolved
-      case "penalties":
+      case "penaltiesjson":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));

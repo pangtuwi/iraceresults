@@ -40,7 +40,7 @@ function getPenalties() {
    var tableBottomHTML = '</div>'
    var tableHTML = tableTopHtml;
    var rowcounter = 0;
-   fetch('./penalties')
+   fetch('./penaltiesjson')
       .then(res => res.json())
       .then(data => {
          console.log("penalties data received :", data);

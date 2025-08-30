@@ -184,7 +184,7 @@ app.get('/:leagueid/:route', function (req, res) {
             res.end(JSON.stringify(leaguedata.getRounds(reqLeagueID)));
             break;
 
-         case "penalties":
+         case "penaltiesjson":
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
@@ -204,10 +204,10 @@ app.get('/:leagueid/:route', function (req, res) {
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
             break;
 
-         case "penaltylist":
+         case "penalties":
             //res.cookie('leagueid', reqLeagueID);
             //      res.cookie('leagueid', reqLeagueID);
-            res.sendFile(path.join(__dirname, '/html/penaltylist.html'));
+            res.sendFile(path.join(__dirname, '/html/penalties.html'));
             break;
 
          default:

@@ -7,6 +7,7 @@ var protests = {};
 var selectedProtest = {};
 
 function displayEditProtestDetails(protest_id) {
+   console.log ("Protests : ", protests);
    selectedProtest = protests.find(item => item.protest_id === protest_id);
    let protest = selectedProtest;
    console.log("you selecred protest : ", protest);
@@ -110,19 +111,19 @@ function getProtests() {
       .then(res => res.json())
       .then(data => {
          console.log("protests data received :", data);
-         var protests = data;
-         var orderedProtests = [];
+         protests = data;
+         //var orderedProtests = [];
          
          awaitAll(protests, SetListPosition)
             .then(() => {
                //console.log("About to order protests.  Protests = ", protests);
                //console.log ("orderedProtests before ordering = ", orderedProtests);
-               orderedProtests = orderProtests(protests);
+               protests = orderProtests(protests);
                //console.log("Ordered protests after ordering:", orderedProtests);
             })
             .then(() => {
                console.log("Now displaying protests");
-               orderedProtests.forEach(protest => {
+               protests.forEach(protest => {
                   var rowHTML = '<div class="row" id="' + protest.protest_id + '" >' +
                      '<div class="cell" data-title="Row">' + protest.protest_id + '</div>' +
                      '<div class="cell" data-title="Row">' + protest.round_name + '</div>' +
@@ -130,6 +131,7 @@ function getProtests() {
                      '<div class="cell" data-title="Row">' + protest.protested_driver_name + '</div>' +
                      '</div>';
                   tableHTML = tableHTML + rowHTML;
+                  console.log("Added row for protest ", protest.protest_id, " at row number ", rowcounter);
                   rowcounter += 1;
                });
                tableHTML = tableHTML + tableBottomHTML;

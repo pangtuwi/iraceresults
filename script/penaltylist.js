@@ -196,6 +196,9 @@ function displayPenalties() {
          '<div class="cell" data-title="Row">' + penalty.championship_points + '</div>' +
          '<div class="cell" data-title="Row">' + penalty.disqualified + '</div>' +
          '</div>';
+      //replace any undefined values with &nbsp;
+      rowHTML = rowHTML.replace(/undefined/g, "&nbsp;"); 
+
       tableHTML = tableHTML + rowHTML;
       rowcounter += 1;
    });

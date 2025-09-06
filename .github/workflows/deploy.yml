@@ -33,11 +33,13 @@ jobs:
 
       - name: Rsync code to droplet
         run: |
-          rsync -az --delete \
+          rsync -az \
             --exclude ".git" \
             --exclude ".github" \
+            --exclude ".vscode" \
             --exclude "node_modules" \
-            --exclude "logs" \
+            --exclude "data" \
+            --exclude "*.code-workspace" \
             ./ "$DO_USER@$DO_HOST:$DO_PATH/"
 
       - name: Run restart script on droplet

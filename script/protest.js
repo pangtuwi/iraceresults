@@ -129,6 +129,9 @@ function getRounds() {
 
             var thisRoundNo = roundSelect.children("option:selected").val();
             getScoredEvents(thisRoundNo);
+            var thisRoundName = roundSelect.children("option:selected").text();
+            updateTrackMap(thisRoundName);   
+
          } else {
             $("#round_select_comment").html("No rounds are available for protest.  This is normally because you are outside of the time window allowed for protests");
             NoRoundsAvailable()
@@ -204,9 +207,40 @@ function NoRoundsAvailable() {
    noProtestableRounds.style.display = "block";
 }
 
+function updateTrackMap(thisRoundName) {
+   console.log("Updating Track Map for Round: ", thisRoundName);
+   let reqJSON = {
+      round_name: thisRoundName
+   };
+
+   if (!thisRoundName) {
+      console.log("No round name found");
+   } else {
+      fetch('./map', {
+         method: 'POST',
+         body: JSON.stringify(reqJSON),
+         headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+         }
+      })
+         .then(res => res.blob())
+         .then(blob => {
+            const url = URL.createObjectURL(blob);
+            console.log("Track map URL: ", url);
+            trackmap.src = url;
+         });
+   }
+}
+
 function selectRound() {
+   console.log("New Round Selected");
    var thisRoundNo = $(this).children("option:selected").val();
    getScoredEvents(thisRoundNo);
+
+   var thisRoundName = $(this).children("option:selected").text();
+   console.log("Selected Round: ", thisRoundNo, " : ", thisRoundName);
+
+  updateTrackMap(thisRoundName)
 }// selectRound
 
 function showConfirmationRequest() {
@@ -260,6 +294,8 @@ $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jq
 
    var roundSelect = $("#round_select");
    roundSelect.on("change", selectRound());
+
+   var trackmap = $("#trackmap");
 
    $("#cancel_btn").on("click", function () {
       showHideBlocks();

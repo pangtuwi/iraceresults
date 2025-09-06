@@ -162,6 +162,7 @@ function getSessions(leagueID) {
          if (subsession != 0) {
             let thisSession = {};
             thisSession.subsession_id = subsession;
+            thisSession.track_name = round.track_name;
             thisSession.score_type_id = round.score_types[subsession_counter];
             thisSession.round_no = round.round_no;
             sessions.push(thisSession);
@@ -172,6 +173,15 @@ function getSessions(leagueID) {
    //console.log("getSessions - sessions = ", sessions);
    return sessions;
 } //getSessions
+
+function getSessionsDetail(leagueID) {
+   var sessions = getSessions(leagueID);
+   const scoring = cache[leagueID].scoring;
+   sessions.forEach(session => {
+      session.score_type = scoring[session.score_type_id].score_type;
+   });
+   return sessions;
+} //getSessionsDetail
 
 
 function getScoredEvents(leagueID, round_no) {
@@ -461,6 +471,7 @@ exports.getRounds = getRounds;
 exports.getProtestableRounds = getProtestableRounds;
 exports.getCompletedRounds = getCompletedRounds;
 exports.getSessions = getSessions;
+exports.getSessionsDetail = getSessionsDetail;
 exports.getScoredEvents = getScoredEvents;
 exports.getFilteredClassTotals = getFilteredClassTotals;
 exports.getUnresolvedProtests = getUnresolvedProtests;

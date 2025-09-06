@@ -82,7 +82,7 @@ router.get('/:leagueid/:route', function (req, res) {
       case "sessions":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
-         res.end(JSON.stringify(leaguedata.getSessions(reqLeagueID)));
+         res.end(JSON.stringify(leaguedata.getSessionsDetail(reqLeagueID)));
          break;
 
       case "unresolvedprotests":
@@ -123,8 +123,6 @@ router.get('/:leagueid/:route', function (req, res) {
          res.writeHead(200);
          res.end(JSON.stringify(logger.getLog()));
          break;
-
-
 
       case "completedrounds":
          //console.log ("processing request for completed rounds");

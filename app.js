@@ -14,7 +14,7 @@ var leaguedata = require('./leaguedata.js'); //was calc_league.js
 var admin = require('./admin.js');
 var protest = require('./protest.js');
 var register = require('./register.js');
-var logger = require ('./logger.js');
+var logger = require('./logger.js');
 
 
 app.use(bodyParser.urlencoded({ extended: false })); //To parse URL encoded data
@@ -108,8 +108,14 @@ app.get('/:leagueid/:route', function (req, res) {
          case "footer.png":
             res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
             break;
-         case "fuji.png":
+         /*case "fuji.png":
             res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/fuji.png'));
+            break;
+         case "rbull.png":
+            res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/rbull.png'));
+            break;*/
+         case "blank.png":
+            res.sendFile(path.join(__dirname, '/trackmaps/' + 'blank.png'));
             break;
          case "style.css":
             res.sendFile(path.join(__dirname, '/css/style.css'));
@@ -154,7 +160,7 @@ app.get('/:leagueid/:route', function (req, res) {
 
          case "recalculate":
             console.log("have been asked to recalculate");
-            logger.clearLog(); 
+            logger.clearLog();
             leaguedata.reCalculate(reqLeagueID).then((result) => {
                leaguedata.updateCache(reqLeagueID).then((result2) => {
                   console.log("recalculation done - sending response");
@@ -223,6 +229,25 @@ app.post('/:leagueid/:route', function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
    console.log("POST Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route)
    switch (req.params.route) {
+
+   case "map":
+         console.log("Processing map request");
+         console.log("Request body is ", req.body);
+         const reqTrack = req.body.round_name;
+         console.log("Requested track is ", reqTrack);
+         const availableTracks = ["Fuji", "RBull"];
+         //check if requested track is available
+         if (availableTracks.includes(reqTrack))
+         {
+            //convert reqTrack to lowercase and fetch
+            res.sendFile(path.join(__dirname, '/trackmaps/' + reqTrack.toLowerCase() + '.png'));
+         } else if (reqTrack === "none")
+         {
+            res.sendFile(path.join(__dirname, '/trackmaps/' + 'blank.png'));
+         } else {
+            res.sendFile(path.join(__dirname, '/trackmaps/' + 'nomap.png'));
+         }
+      break;
 
       default:
          res.send('UNKNOWN POST ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);

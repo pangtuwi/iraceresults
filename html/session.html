@@ -5,7 +5,6 @@
    <link rel="stylesheet" href="/style.css">
    <script src="/jquery-3.7.1.js"></script>
    <script src="/jquery.redirect.js"></script>
-   <script src="/session.js"></script>
 </head>
 
 <style>
@@ -24,26 +23,72 @@
       Sessions
    </div>
 
-   <div class="full_width_table">
-      <div class="table" id="sessions">
-         <div class="row">
-            <div class="cell row header blue" data-title="Row">
-               round
-            </div>
-            <div class="cell row header blue" data-title="Row">
-               Track
-            </div>
-            <div class="cell row header blue" data-title="Row">
-               Session No
-            </div>
-            <div class="cell row header blue" data-title="Row">
-               iRacing Session ID
-            </div>
-            <div class="cell row header blue" data-title="Row">
-               Start Time
+   <div class="left_wrap">
+      Session List
+      <div class="wrapper">
+         <div class="table" id="sessions_table">
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Round
+               </div>
+               <div class="cell row header blue" data-title="Row">
+                  Track
+               </div>
+               <div class="cell row header blue" data-title="Row">
+                  Session No
+               </div>
+               <div class="cell row header blue" data-title="Row">
+                  iRacing Session ID
+               </div>
+               <div class="cell row header blue" data-title="Row">
+                  Start Time
+               </div>
             </div>
          </div>
       </div>
    </div>
 
+   <div class="right_wrap">
+      <span id="selected_session_title">Selected Session</span>
+      <div class="wrapper">
+         <div class="table">
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Round
+               </div>
+               <div class="cell" data-title="Row" id="session_round_no">
+                  Please select a session from the table on the left
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Track
+               </div>
+               <div class="cell" data-title="Row" id="session_track">
+                  &nbsp;
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Score Type
+               </div>
+               <div class="cell" data-title="Row" id="session_score_type">
+                  &nbsp;
+               </div>
+            </div>
+            <div class="row">
+               <div class="cell row header blue" data-title="Row">
+                  Session ID
+               </div>
+               <div class="cell" data-title="Row" id="session_sesssion_id">
+                  <input id="session_id_input">&nbsp;</input>
+               </div>
+            </div>
+         </div>
+      </div>
+      <button id="save_session_btn">save</button>
+   </div>
+   </div>
+
+   <script src="/session.js"></script>
 </body>

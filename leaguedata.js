@@ -155,6 +155,7 @@ function getSessions(leagueID) {
 */
 
 function getSessions(leagueID) {
+   //Gets Live Sessions (i.e. those with SubsessionID != 0)
    const sessions = [];
    cache[leagueID].rounds.forEach(round => {
       var subsession_counter = 0;
@@ -174,8 +175,32 @@ function getSessions(leagueID) {
    return sessions;
 } //getSessions
 
+function getAllSessions(leagueID) {
+   const sessions = [];
+   cache[leagueID].rounds.forEach(round => {
+      var subsession_counter = 0;
+      round.subsession_ids.forEach(subsession => {
+  
+            let thisSession = {};
+            thisSession.subsession_id = subsession;
+            thisSession.track_name = round.track_name;
+            thisSession.subsession_counter = subsession_counter;
+            
+            //generate a unique ID for the session
+            const session_ref = Number(round.round_no) * 1000 + subsession_counter;
+            thisSession.session_ref = session_ref;
+            thisSession.score_type_id = round.score_types[subsession_counter];
+            thisSession.round_no = round.round_no;
+            sessions.push(thisSession);
+            subsession_counter += 1;
+      });
+   });
+   //console.log("getSessions - sessions = ", sessions);
+   return sessions;
+} //getSessions
+
 function getSessionsDetail(leagueID) {
-   var sessions = getSessions(leagueID);
+   var sessions = getAllSessions(leagueID);
    const scoring = cache[leagueID].scoring;
    sessions.forEach(session => {
       session.score_type = scoring[session.score_type_id].score_type;
@@ -231,6 +256,28 @@ function getSessionNo(leagueID, round_no, score_event) {
    });
    return session_no;
 } //getSessionNo
+
+
+async function updateSessionID(leagueID, modSession) {
+   const existsRoundIndex = cache[leagueID].rounds.findIndex((round) => round.round_no === modSession.round_no);
+   const rounds = cache[leagueID].rounds;
+   if (existsRoundIndex == -1) {
+      console.log("ERROR - Could not find round while updating subsession_id");
+   } else {
+         thisRound = cache[leagueID].rounds[existsRoundIndex];
+         //console.log ("found Round: ", thisRound );
+         const existsSessionID = thisRound.subsession_ids[modSession.subsession_counter];
+         //console.log ("found subsession : ", existsSessionID);
+         if (existsSessionID == NaN) {
+            console.log("ERROR - Could not find Subsession when updating subsession_id")
+         } else {
+            thisRound.subsession_ids[modSession.subsession_counter] = Number(modSession.subsession_id);
+            //console.log("Updating SessionID for Round ", existsRoundIndex, " and subsession at index ", modSession.subsession_counter, " with subsession_id :", modSession.subsession_id);
+            //console.log ("SessionID updated Successfully.  Rounds = ", cache[leagueID].rounds);
+            await jsonloader.saveRounds(leagueID, rounds);
+         }
+   }
+} //updateSession
 
 function getTablesDisplayConfig(leagueID) {
    const classes = cache[leagueID].classes;
@@ -315,6 +362,8 @@ async function deleteDriver(leagueID, cust_id) {
    cache[leagueID].drivers.splice(existsDriverIndex, 1);
    jsonloader.saveDrivers(leagueID, cache[leagueID].driver);
 } //addDriver
+
+
 
 function getUnresolvedProtests(leagueid) {
    let protests = cache[leagueid].protests;
@@ -480,4 +529,5 @@ exports.submitPenalty = submitPenalty;
 exports.addDriver = addDriver;
 exports.deleteDriver = deleteDriver;
 exports.updateDriver = updateDriver;
+exports.updateSessionID = updateSessionID;
 exports.getTablesDisplayConfig = getTablesDisplayConfig;

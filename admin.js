@@ -25,6 +25,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/:leagueid', function (req, res) {
+   console.log("Admin request for /:leagueid   :", req.params.leagueid);
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    if (config.leagueIDs.includes(reqLeagueiD)) {
       //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league admin');
@@ -279,6 +280,41 @@ router.post('/:leagueid/:route', function (req, res) {
                res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));
             }
          }
+         break;
+
+      case "updatesession":
+         const modSession = req.body;
+         if (modSession.session_ref === undefined) {
+            const errormsg = { error: "could not read session info sent to server" };
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(errormsg));
+         } else {
+            console.log("request recieved to update session: ", modSession);
+            modSession.session_ref = Number(modSession.session_ref);
+            if (leaguedata.updateSessionID(reqLeagueID, modSession)) {
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(200);
+               res.end(JSON.stringify({ confirmation: "modified session record saved successfully" }));
+            } else {
+
+            }
+            /*  modDriver.cust_id = Number(modDriver.cust_id);
+            
+            const existsDriverIndex = leaguedata.cache[reqLeagueID].drivers.findIndex((driver) => driver.cust_id === modDriver.cust_id);
+            if (existsDriverIndex == -1) {
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(200);
+               res.end(JSON.stringify({ error: "could not find matching driver in database" }));
+            } else {
+               leaguedata.updateDriver(reqLeagueID, modDriver.cust_id, modDriver);
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(200);
+               res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));
+            }
+               */
+         }
+
          break;
 
       case "penalty":

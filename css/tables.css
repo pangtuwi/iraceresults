@@ -69,20 +69,20 @@
      }
 
      .score-td {
-        background-image: url("middlebar.png");
+        background-image: url("./img/middlebar.png");
         height: 72px;
         vertical-align: middle;
      }
 
      .score-td-left {
-        background-image: url("leftbar.png");
+        background-image: url("./img/leftbar.png");
         height: 72px;
         width: 110px;
         vertical-align: middle;
      }
 
      .score-td-name {
-        background-image: url("middlebar.png");
+        background-image: url("./img/middlebar.png");
         height: 72px;
         width: 200px;
         text-align: left;
@@ -93,7 +93,7 @@
         vertical-align: middle;
         background-position: center;
         background-size: contain;
-        background-image: url('footer.png');
+        background-image: url('/img/footer.png');
      }
 
      .footer-td {

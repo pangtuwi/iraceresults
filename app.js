@@ -40,7 +40,7 @@ leaguedata.loadCache();
 
 //Middleware
 app.use(function (req, res, next) {
-   //console.log("A request received at " + Date.now() + " for " + JSON.stringify(req.url));
+   console.log("A request received at " + Date.now() + " for " + JSON.stringify(req.url));
    next();
 });
 
@@ -53,7 +53,7 @@ app.get('/cache', function (req, res) {
 // https://www.tutorialspoint.com/expressjs/expressjs_url_building.htm
 app.get('/:leagueid', function (req, res) {
    const reqLeagueiD = req.params.leagueid.toUpperCase();
-   //console.log("base URL called, sending tables")
+   console.log("base URL called, sending tables")
    if (config.leagueIDs.includes(reqLeagueiD)) {
       //res.cookie('leagueid', reqLeagueiD);
       res.sendFile(path.join(__dirname, '/html/tables.html'));
@@ -61,6 +61,23 @@ app.get('/:leagueid', function (req, res) {
       res.send('Sorry, this is an unknown league.');
    }
 });
+
+app.get('/img/:route', function (req, res) {
+   console.log("Routed to /img/:route -  static IMG file :", req.params.route)
+  
+      switch (req.params.route) {
+         case "leftbar.png":
+            res.sendFile(path.join(__dirname, '/img/leftbar.png'));
+            break;
+         case "middlebar.png":
+            res.sendFile(path.join(__dirname, '/img/middlebar.png'));
+            break;
+         default:
+            res.send('UNKNOWN ROUTE fetching /img/:route');
+      }//switch route
+});
+
+
 
 
 app.get('/:leagueid/img/:route', function (req, res) {

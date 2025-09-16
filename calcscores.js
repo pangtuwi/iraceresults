@@ -640,21 +640,24 @@ async function calc(leagueData, seasonSessions) {
                      scoredResults = applyPositionsGainedScores(resultsAfterPositionPenalties, subsession_score_array);
                   }
                   let scoresAdded = updateDriverScoreTable(scoredResults, round.round_no, score_event_counter, score_array_sizes);
-
+                  
+                  const score_event_results = { "round_no": round.round_no, "track_name": round.track_name, "score_event": scoreEvent.score_event, "results": resultsAfterPositionPenalties };
+                  fullResults.push(score_event_results);
                });
+               
                subsession_counter += 1;
             }
-
+            
          });
          //console.log("Results after Position Penalties: ", resultsAfterPositionPenalties);
-         const round_results = { "round_no": round.round_no, "track_name": round.track_name, "results": resultsAfterPositionPenalties };
-         fullResults.push(round_results);
+         //const round_results = { "round_no": round.round_no, "track_name": round.track_name, "results": resultsAfterPositionPenalties };
+         //fullResults.push(round_results);
       }
 
    });
    //console.log("Full Results: ", fullResults);
    leagueData.fullresults = fullResults;
-   console.log("League Data: ", leagueData);
+   console.log("League Data Full Results: ", leagueData.fullResults);
 
    return DriverScoreTable;
 };  //calc

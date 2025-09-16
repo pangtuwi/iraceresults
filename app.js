@@ -233,6 +233,10 @@ app.get('/:leagueid/:route', function (req, res) {
             res.sendFile(path.join(__dirname, '/html/penalties.html'));
             break;
 
+         case "irres":
+            res.sendFile(path.join(__dirname, '/html/irres.html'));
+            break;
+
          default:
             res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
       }//switch route
@@ -265,6 +269,24 @@ app.post('/:leagueid/:route', function (req, res) {
             res.sendFile(path.join(__dirname, '/trackmaps/' + 'nomap.png'));
          }
       break;
+
+      case "irresults":
+         console.log("Processing iRacing results request");
+         console.log("Request body is ", req.body);
+         const reqRoundNo = req.body.round_no;
+         const reqSessionNo = req.body.session_no;
+         console.log("Requested round number is ", reqRoundNo, " and session number is ", reqSessionNo);
+         //const reqSessionID = leaguedata.getSessionID(reqLeagueID, reqRoundNo, reqSessionNo);
+         const reqSessionID = leaguedata.cache[reqLeagueID].rounds[reqRoundNo].subsession_ids[reqSessionNo];
+
+         if (reqSessionID === 0) {
+            res.send('No such round/session');
+            return;
+         }
+       
+         //send the file
+         res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/irresults/' + reqSessionID + '.json'));
+         break;
 
       default:
          res.send('UNKNOWN POST ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);

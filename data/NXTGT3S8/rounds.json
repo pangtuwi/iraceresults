@@ -52,7 +52,7 @@
    {
       "round_no": 5,
       "track_name": "Thrux",
-      "start_time": "2025-10-02T20:00:00Z",
+      "start_time": "2025-10-02T19:00:00Z",
       "subsession_ids": [
          0,
          0
@@ -65,7 +65,7 @@
    {
       "round_no": 6,
       "track_name": "Dayt",
-      "start_time": "2025-09-10T20:00:00Z",
+      "start_time": "2025-10-09T19:00:00Z",
       "subsession_ids": [
          0
       ],
@@ -76,7 +76,7 @@
    {
       "round_no": 7,
       "track_name": "LagSeca",
-      "start_time": "2025-10-23T20:00:00Z",
+      "start_time": "2025-10-23T19:00:00Z",
       "subsession_ids": [
          0,
          0
@@ -89,7 +89,7 @@
    {
       "round_no": 8,
       "track_name": "Brands",
-      "start_time": "2025-10-30T20:00:00Z",
+      "start_time": "2025-10-30T19:00:00Z",
       "subsession_ids": [
          0,
          0

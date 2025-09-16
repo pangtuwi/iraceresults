@@ -40,6 +40,7 @@ async function loadCache() {
       league.penalties = await jsonloader.getPenalties(leagueID);
       league.classtotals = await jsonloader.getClassTotals(leagueID);
       league.teamstotals = await jsonloader.getTeamsTotals(leagueID);
+      league.fullresults = await jsonloader.getFullResults(leagueID);
       league.protests = await jsonloader.getProtests(leagueID);
       cache[leagueID] = league;
    }));
@@ -60,6 +61,7 @@ async function updateCache(leagueID) {
    league.penalties = await jsonloader.getPenalties(leagueID);
    league.classtotals = await jsonloader.getClassTotals(leagueID);
    league.teamstotals = await jsonloader.getTeamsTotals(leagueID);
+   league.fullresults = await jsonloader.getFullResults(leagueID);
    league.protests = await jsonloader.getProtests(leagueID);
    cache[leagueID] = league;
    //console.log("League Cache updated for ", leagueID)
@@ -471,16 +473,9 @@ async function reCalculate(leagueID) {
       const newDrivers = await calcscores.getNewDrivers();
 
       //Output full results JSON
-      /*
-      const results = { "season": [], "driverScores": [] };
-      results.season = leagueData.season
-      results.driverScores = driverScores;
-      exporter.exportResultsJSON(results, "results.json"); */
+      exporter.exportResultsJSON(leagueData.fullresults, './data/' + leagueID + '/fullresults.json');
 
-      //Output CSV for each round
-      /*leagueData.season.forEach(round => {
-          exporter.exportRoundCSV(leagueData.season, round.round_no, driverScores);
-       }); */
+      //Output csv results for each round
       leagueData.rounds.forEach(round => {
          exporter.exportRoundCSV2(leagueData.rounds, round.round_no, leagueData.scoring, driverScores);
       });

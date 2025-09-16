@@ -125,12 +125,6 @@ app.get('/:leagueid/:route', function (req, res) {
          case "footer.png":
             res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/footer.png'));
             break;
-         /*case "fuji.png":
-            res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/fuji.png'));
-            break;
-         case "rbull.png":
-            res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/img/rbull.png'));
-            break;*/
          case "blank.png":
             res.sendFile(path.join(__dirname, '/trackmaps/' + 'blank.png'));
             break;
@@ -139,18 +133,16 @@ app.get('/:leagueid/:route', function (req, res) {
             break;
 
          case "tables":
-            //res.send("Tables for " + reqLeagueiD);
-            //res.cookie('leagueid', reqLeagueID);
-            //res.sendFile(path.join(__dirname, '/html/tables.html'));
-
             res.redirect('/' + reqLeagueID);
             break;
+
          case "displayconfig":
             let displayConfig = leaguedata.getTablesDisplayConfig(reqLeagueID);
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(displayConfig));
             break;
+
          case "classtotals":
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
@@ -162,9 +154,18 @@ app.get('/:leagueid/:route', function (req, res) {
             //res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classtotals));
             break;
          case "teamstotals":
+            console.log("app.js GET : Getting teamstotals for league ", reqLeagueID);
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].teamstotals));
+            break;
+
+         case "fullresults":
+            console.log("app.js GET : Getting fullresults for league ", reqLeagueID);
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            console.log("Full Results are ", leaguedata.cache[reqLeagueID].fullresults);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].fullresults));
             break;
 
          case "reload":

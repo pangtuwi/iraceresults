@@ -104,6 +104,18 @@ async function getClassTotals(leagueid) {
    return obj;
 }
 
+async function getFullResults(leagueid) {
+   //load data from fullresults.json.  If file does not exist return empty object
+   try {
+      const data = await fs.readFile('./data/' + leagueid + '/fullresults.json', { encoding: 'utf8' });
+      const obj = JSON.parse(data);
+      return obj;
+   } catch (error) {
+      console.log("Error loading fullresults.json for league ", leagueid);
+      return {};
+   }
+}
+
 async function getTeamsTotals(leagueid) {
    const data = await fs.readFile('./data/' + leagueid + '/teamstotals.json', { encoding: 'utf8' });
    //console.log("Penalties Loaded from json file");
@@ -158,6 +170,7 @@ exports.getTeams = getTeams;
 exports.getSubSession = getSubSession;
 exports.getClassTotals = getClassTotals;
 exports.getTeamsTotals = getTeamsTotals;
+exports.getFullResults = getFullResults;
 exports.getProtests = getProtests;
 exports.saveProtests = saveProtests;
 exports.savePenalties = savePenalties;

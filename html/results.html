@@ -1,0 +1,64 @@
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="/style.css">
+   <script src="/jquery-3.7.1.js"></script>
+   <script src="/jquery.redirect.js"></script>
+   <script src="/results.js"></script>
+</head>
+
+<style>
+   .header_img {
+      height: 80px;
+      vertical-align: middle;
+      background-position: center;
+      background-size: contain;
+      background-image: url('header.png');
+   }
+</style>
+
+<body>
+    <div class="title">
+        Results - FEATURE STILL IN DEVELOPMENT - USE AT YOUR OWN RISK
+    </div>
+
+    <div class="narrow_table">
+        <div class="table" id="filter_table">
+            <div class="row header red">
+                <div class="cell">Select Data to Display</div>
+                <div class="cell"></div>
+            </div>
+            <div class="row">
+                <div class="cell" data-title="Row">Driver &nbsp; <select id="driver_select"></select>&nbsp;
+                    Filter:<input type="search" id="driver_search" /></div>
+
+                <div class="cell" data-title="Row">Round &nbsp; <select id="round_select"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="full_width_table">
+        <div class="table" id="penalties_displayed">
+                       <div class="row">
+                <div class="cell row header blue" data-title="cust_id">Cust ID</div>
+                <div class="cell row header blue" data-title="display_name">Name</div>
+                <div class="cell row header blue" data-title="best_lap_time">Best Lap Time</div>
+                <div class="cell row header blue" data-title="laps_complete">Laps Complete</div>
+                <div class="cell row header blue" data-title="class_interval">Class Interval</div>
+                <div class="cell row header blue" data-title="laps_lead">Laps Lead</div>
+                <div class="cell row header blue" data-title="starting_position">Starting Position</div>
+                <div class="cell row header blue" data-title="finish_position">Finish Position</div>
+                <div class="cell row header blue" data-title="finish_position_after_penalties">Finish Position After Penalties</div>
+                <div class="cell row header blue" data-title="championship_penalty">Championship Penalty</div>
+                <div class="cell row header blue" data-title="finish_position_in_class">Finish Position In Class</div>
+                <div class="cell row header blue" data-title="finished">Finished</div>
+                <div class="cell row header blue" data-title="finish_position_in_class_after_penalties">Finish Position In Class After Penalties</div>
+                <div class="cell row header blue" data-title="score">Score</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

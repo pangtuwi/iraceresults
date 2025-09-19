@@ -396,6 +396,29 @@ async function submitPenalty(leagueID, newPenalty) {
    return penalties;
 } //submitPenalty
 
+async function submitStewardsPenalty(leagueID, newPenalty) {
+   let penalties = cache[leagueID].penalties;
+   newPenalty.penalty_id = (newPenalty.round_no * 1000) + cache[leagueID].penalties.length;
+
+   newPenalty.round_id = Number(newPenalty.round_no);
+   const scoredEvents = getScoredEvents(leagueID, newPenalty.round_id);
+   const eventNumber = Number(newPenalty.event);
+   scoredEvents.forEach((scoredEvent, i) => {
+      scoredEvent.eventNumber = scoredEvent.round_session_no *100 + scoredEvent.score_event_no;
+      if (scoredEvent.eventNumber == eventNumber) {
+         newPenalty.score_event = scoredEvent.event_type;
+      }
+   });
+
+
+   newPenalty.timestamp = Date.now();
+   newPenalty.session_no = getSessionNo(leagueID, newPenalty.round_no, newPenalty.score_event);
+   console.log("Adding Stewards Penalty : ", newPenalty);
+   penalties.push(newPenalty);
+   await jsonloader.savePenalties(leagueID, penalties);
+   return penalties;
+} // submitStewardsPenalty
+
 async function getSubsession(id, cookie) {
    //console.log ("AXIOS - fetching :",`/data/results/get?subsession_id=${id}`);
    //console.log ("AXIOS - using cookie:", cookie);
@@ -521,6 +544,7 @@ exports.getFilteredClassTotals = getFilteredClassTotals;
 exports.getUnresolvedProtests = getUnresolvedProtests;
 exports.submitProtest = submitProtest;
 exports.submitPenalty = submitPenalty;
+exports.submitStewardsPenalty = submitStewardsPenalty;
 exports.addDriver = addDriver;
 exports.deleteDriver = deleteDriver;
 exports.updateDriver = updateDriver;

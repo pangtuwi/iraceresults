@@ -138,6 +138,7 @@ router.get('/:leagueid/:route', function (req, res) {
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classes));
          break;
 
+
       case "driverlist":
          //console.log ("processing request for driver list");
          res.setHeader("Content-Type", "application/json");
@@ -333,7 +334,7 @@ router.post('/:leagueid/:route', function (req, res) {
          var newPenalty = {}
          newPenalty = JSON.parse(req.body.penalty);
          console.log("new STEWARDS Penalty Recieved : ", newPenalty);
-         leaguedata.submitPenalty(reqLeagueID, newPenalty).then((result) => {
+         leaguedata.submitStewardsPenalty(reqLeagueID, newPenalty).then((result) => {
             leaguedata.cache[reqLeagueID].penalties = result;
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);

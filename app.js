@@ -64,17 +64,17 @@ app.get('/:leagueid', function (req, res) {
 
 app.get('/img/:route', function (req, res) {
    console.log("Routed to /img/:route -  static IMG file :", req.params.route)
-  
-      switch (req.params.route) {
-         case "leftbar.png":
-            res.sendFile(path.join(__dirname, '/img/leftbar.png'));
-            break;
-         case "middlebar.png":
-            res.sendFile(path.join(__dirname, '/img/middlebar.png'));
-            break;
-         default:
-            res.send('UNKNOWN ROUTE fetching /img/:route');
-      }//switch route
+
+   switch (req.params.route) {
+      case "leftbar.png":
+         res.sendFile(path.join(__dirname, '/img/leftbar.png'));
+         break;
+      case "middlebar.png":
+         res.sendFile(path.join(__dirname, '/img/middlebar.png'));
+         break;
+      default:
+         res.send('UNKNOWN ROUTE fetching /img/:route');
+   }//switch route
 });
 
 
@@ -234,8 +234,14 @@ app.get('/:leagueid/:route', function (req, res) {
             res.sendFile(path.join(__dirname, '/html/penalties.html'));
             break;
 
-         case "irres":
+   /*      case "irres":
             res.sendFile(path.join(__dirname, '/html/irres.html'));
+            break;
+*/
+
+         case "results":
+            res.cookie('leagueid', reqLeagueID);
+            res.sendFile(path.join(__dirname, '/html/results.html'));
             break;
 
          default:
@@ -252,24 +258,22 @@ app.post('/:leagueid/:route', function (req, res) {
    console.log("POST Routed to /:leagueid/:route - with league ID : ", reqLeagueID, " and route :", req.params.route)
    switch (req.params.route) {
 
-   case "map":
+      case "map":
          console.log("Processing map request");
          console.log("Request body is ", req.body);
          const reqTrack = req.body.round_name;
          console.log("Requested track is ", reqTrack);
          const availableTracks = ["Fuji", "RBull"];
          //check if requested track is available
-         if (availableTracks.includes(reqTrack))
-         {
+         if (availableTracks.includes(reqTrack)) {
             //convert reqTrack to lowercase and fetch
             res.sendFile(path.join(__dirname, '/trackmaps/' + reqTrack.toLowerCase() + '.png'));
-         } else if (reqTrack === "none")
-         {
+         } else if (reqTrack === "none") {
             res.sendFile(path.join(__dirname, '/trackmaps/' + 'blank.png'));
          } else {
             res.sendFile(path.join(__dirname, '/trackmaps/' + 'nomap.png'));
          }
-      break;
+         break;
 
       case "irresults":
          console.log("Processing iRacing results request");
@@ -284,7 +288,7 @@ app.post('/:leagueid/:route', function (req, res) {
             res.send('No such round/session');
             return;
          }
-       
+
          //send the file
          res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/irresults/' + reqSessionID + '.json'));
          break;

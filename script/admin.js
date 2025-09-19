@@ -14,7 +14,7 @@ function getLeague() {
 function setMenuLinks(){
    $("#link_drivers").attr("href", "/admin/"+leagueID+"/drivers");
    $("#link_tables").attr("href", "/"+leagueID);
-   $("#link_irresults").attr("href", "/"+leagueID+"/irres");
+   $("#link_results").attr("href", "/"+leagueID+"/results");
    $("#link_penalty").attr("href", "/admin/"+leagueID+"/stewardspen");
    $("#link_recalculate").attr("href", "/"+leagueID+"/recalculate");
    $("#link_reload").attr("href", "/"+leagueID+"/reload");

@@ -4,7 +4,7 @@
 var protests = {};
 var selectedProtest = {};
 
-
+/*
 function displayEditProtestDetails(protest_id) {
    selectedProtest = protests.find(item => item.protest_id === protest_id);
    let protest = selectedProtest;
@@ -21,7 +21,7 @@ function displayEditProtestDetails(protest_id) {
    var submitButton = document.getElementById("submit_btn");
    submitButton.disabled = true;
 } // displayEditProtestDetails
-
+*/
 
 function getDrivers() {
    fetch('./driverlist')
@@ -149,9 +149,12 @@ function getStewardsDecision(){
       penalty.display_name = $("#driver_select").children("option:selected").text();
       penalty.round_no = parseInt($("#round_select").children("option:selected").val());
       penalty.round_name = $("#round_select").children("option:selected").text();
-      let session_event_no = $("#scored_event_select").children("option:selected").val();
-      penalty.score_event_no = session_event_no % 100;  //last two digits
-      penalty.session_no = (penalty.score_event_no-session_event_no)/100;
+      
+      penalty.event = $("#scored_event_select").children("option:selected").val();
+      //penalty.score_event_no = session_event_no % 100;  //last two digits
+      //penalty.session_no = (session_event_no- penalty.score_event_no)/100;
+      //console.log ("session_event_no = ", session_event_no, "  score_event_no = ", penalty.score_event_no, "  session_no = ", penalty.session_no);
+      
       penalty.stewards_decision = $("#stewards_decision").children("option:selected").text();
       penalty.time_added = parseInt($("#penalty_time_added").val());   // TO INT
       penalty.positions = parseInt($("#penalty_positions").val());    // TO INT

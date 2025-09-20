@@ -146,12 +146,9 @@ app.get('/:leagueid/:route', function (req, res) {
          case "classtotals":
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
-            //const CT1 = leaguedata.getFilteredClassTotals(reqLeagueID);
-            //const CT2 = leaguedata.cache[reqLeagueID].classtotals;
             leaguedata.getFilteredClassTotals(reqLeagueID).then((result) => {
                res.end(JSON.stringify(result));
             });
-            //res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classtotals));
             break;
          case "teamstotals":
             console.log("app.js GET : Getting teamstotals for league ", reqLeagueID);
@@ -263,7 +260,7 @@ app.post('/:leagueid/:route', function (req, res) {
          console.log("Request body is ", req.body);
          const reqTrack = req.body.round_name;
          console.log("Requested track is ", reqTrack);
-         const availableTracks = ["Fuji", "RBull"];
+         const availableTracks = ["Fuji", "RBull", "Spa", "imola", "thrux"];  
          //check if requested track is available
          if (availableTracks.includes(reqTrack)) {
             //convert reqTrack to lowercase and fetch
@@ -273,6 +270,19 @@ app.post('/:leagueid/:route', function (req, res) {
          } else {
             res.sendFile(path.join(__dirname, '/trackmaps/' + 'nomap.png'));
          }
+         break;
+
+      case "results":
+         console.log("Processing results request");
+         console.log("Request body is ", req.body);
+         const classnumber = req.body.classnumber;
+         const track_name = req.body.track_name;
+         const cust_id = req.body.cust_id;
+         console.log("Requested classnumber is ", classnumber, " for track ", track_name, " and cust_id ", cust_id);
+         const filteredResults = leaguedata.getFilteredResults(reqLeagueID, classnumber, track_name, cust_id);
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(filteredResults));
          break;
 
       case "irresults":

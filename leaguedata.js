@@ -303,8 +303,9 @@ async function getFilteredClassTotals(reqLeagueID) {
       const filteredClassData = [];
       for (const driverID in classData) {
          const driverData = classData[driverID];
-         const { ID, ...rest } = driverData;
-         filteredClassData.push(rest);
+         //const { ID, ...rest } = driverData;
+         //filteredClassData.push(rest);
+         filteredClassData.push(driverData);
       }
       filteredClassTotals.push(filteredClassData);
    }
@@ -375,6 +376,42 @@ function getUnresolvedProtests(leagueid) {
    return unresolvedProtests;
 } //getUnresolvedProtests
 
+function getFilteredResults(leagueID, classnumber, track_name, cust_id) {
+   let fullresults = cache[leagueID].fullresults;
+   let results = [];
+
+   fullresults.forEach(result => {
+      const round_no = result.round_no;
+      const track_name = result.track_name;
+      const score_event = result.score_event;
+      result.results.forEach(classresult => {
+         const classnumber = classresult.classnumber;
+         classresult.positions.forEach(driverresult => { 
+            let thisResult = deepCopy(driverresult);
+            thisResult.round_no = round_no;
+            thisResult.track_name = track_name;
+            thisResult.score_event = score_event;
+            thisResult.classnumber = classnumber;
+            results.push(thisResult);
+         });
+      });
+   });
+
+   // Apply filtering based on the provided parameters
+   if (classnumber) {
+      results = results.filter(result => result.classnumber === classnumber);
+   }
+   if (track_name) {
+      results = results.filter(result => result.track_name === track_name);
+   }
+   if (cust_id) {
+      results = results.filter(result => result.cust_id === cust_id);
+   }
+   return results;
+} //getFilteredResults
+
+
+
 async function submitPenalty(leagueID, newPenalty) {
    //penalties = await jsonloader.getPenalties(leagueID);
    //var protests = await jsonloader.getProtests(leagueID);
@@ -410,7 +447,6 @@ async function submitStewardsPenalty(leagueID, newPenalty) {
       }
    });
 
-
    newPenalty.timestamp = Date.now();
    newPenalty.session_no = getSessionNo(leagueID, newPenalty.round_no, newPenalty.score_event);
    console.log("Adding Stewards Penalty : ", newPenalty);
@@ -434,6 +470,7 @@ async function getSubsessionData(link) {
    const res = await axiosInstance.get(link);
    return res.data;
 }
+
 
 
 
@@ -541,6 +578,7 @@ exports.getSessions = getSessions;
 exports.getSessionsDetail = getSessionsDetail;
 exports.getScoredEvents = getScoredEvents;
 exports.getFilteredClassTotals = getFilteredClassTotals;
+exports.getFilteredResults = getFilteredResults;
 exports.getUnresolvedProtests = getUnresolvedProtests;
 exports.submitProtest = submitProtest;
 exports.submitPenalty = submitPenalty;

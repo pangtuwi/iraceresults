@@ -8,7 +8,7 @@ function toggleButtons(bNo) {
    //Functon to toggle the button classes
    for (let i = 0; i < buttonCounter; i++) {
       let thisBut = document.getElementById("btn" + i);
-      console.log("toggling button no :", i, "      found button :",thisBut, "   of nobuttons =", buttonCounter);
+      //console.log("toggling button no :", i, "      found button :",thisBut, "   of nobuttons =", buttonCounter);
       if (i == bNo) {
          thisBut.classList.add("button-class-selected");
       } else {
@@ -19,7 +19,7 @@ function toggleButtons(bNo) {
 
 // Function to convert JSON data to HTML table
 function showTable(NG_Class) {
-   console.log ("running  show table ", NG_Class);
+   //console.log ("running  show table ", NG_Class);
 
    // Get the container element where the table will be inserted
    let container = document.getElementById("container");
@@ -53,7 +53,7 @@ function showTable(NG_Class) {
    cols.forEach((item) => {
       let th = document.createElement("th");
       th.innerText = item; // Set the column name as the text of the header cell
-      tr.appendChild(th); // Append the header cell to the header row
+      if (item !== "ID") tr.appendChild(th); // Append the header cell to the header row
    });
    thead.appendChild(tr); // Append the header row to the header
    table.append(tr) // Append the header to the table
@@ -93,14 +93,9 @@ function showTable(NG_Class) {
 
 // gets data from API and sets the content of #result div
 function getClassTotals() {
-   //let container = document.getElementById("container");
-   //container.innerText = 'Loading....' + NG_Class
-   //fetch('./'+leagueid+'/classtotals')
    fetch(baseURI+'classtotals')
       .then(res => res.json())
       .then(data => {
-         //container.innerText = JSON.stringify(data, null, 2)
-         //convert(data, NG_Class);
          console.log ("class totals recieved from server");
          console.log(data);
          classTotals = data;
@@ -153,7 +148,7 @@ function generateClassButtons() {
    fetch(baseURI+'displayconfig')
    .then(res => res.json())
    .then(data => {
-      console.log ("button display config recieved from server")
+      //console.log ("button display config recieved from server")
       let tr = document.getElementById("classButtons");
       tr.innerHTML = "";
       //classButtons.innerHTML = JSON.stringify(data);
@@ -163,7 +158,7 @@ function generateClassButtons() {
 
       if (data.display_overall_table == 1) {
          let classesAvailable = classTotals.length -1;
-         console.log("adding button :", 0);
+         //console.log("adding button :", 0);
          //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
          let td = document.createElement("td");
          let newButton = document.createElement("button");
@@ -175,13 +170,13 @@ function generateClassButtons() {
          td.setAttribute("width", "15%");
          td.appendChild(newButton);
          tr.appendChild(td); // Append the table cell to the table row
-         console.log ("adding button : ", td);
+         //console.log ("adding button : ", td);
          buttonCounter +=1;
       }
 
       classes_to_display.forEach(thisClass => { 
          classCounter += 1;
-         console.log("adding button :", buttonCounter);
+         //console.log("adding button :", buttonCounter);
          //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
          let td = document.createElement("td");
          let newButton = document.createElement("button");
@@ -193,7 +188,7 @@ function generateClassButtons() {
          td.setAttribute("width", "15%");
          td.appendChild(newButton);
          tr.appendChild(td); // Append the table cell to the table row
-         console.log (" button added : ", td);
+         //console.log (" button added : ", td);
          buttonCounter +=1;
       });
 
@@ -204,7 +199,7 @@ function generateClassButtons() {
          //container.innerText = JSON.stringify(data, null, 2)
          teamsTotals = data;
          //showTable(data, -1);  //-1 is a hack to use the same function
-         console.log("adding button for Teams:", -1);
+         //console.log("adding button for Teams:", -1);
          //buttonCounter +=1;
          //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
          let td = document.createElement("td");
@@ -216,7 +211,7 @@ function generateClassButtons() {
          td.setAttribute("width", "15%");
          td.appendChild(newButton);
          tr.appendChild(td); // Append the table cell to the table row
-         console.log ("adding button : ", td);
+         //console.log ("adding button : ", td);
          
       })
       .catch(error => console.log(error));
@@ -227,34 +222,13 @@ function generateClassButtons() {
 }//generateClassButtons
 
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
-   console.log ("document is ready");
-   /* old code from stewarding.js
-   $("#cancel_btn").on("click", function () {
-   });
-
-   var submitButton = document.getElementById("submit_btn");
-   submitButton.disabled = true;
-
-   $("#stewards_comments").on("change", function () {
-      submitButton.disabled = false;
-   });
-
-   $("#submit_btn").click(function () {
-      console.log("submit button clicked");
-      var thisPenalty = getStewardsDecision();
-      const penaltyObj = {
-         "penalty": JSON.stringify(thisPenalty)
-      };
-      postPenalty(penaltyObj);
-   });
-
-   getProtests(); */
+   //console.log ("document is ready");
 
    //get ClassTotals Data from Server and generate class buttons
    baseURI = document.baseURI;
-   console.log(baseURI);
+   //console.log(baseURI);
    baseURI = baseURI.replace(/\/$|$/, '/');
-   console.log(baseURI);
+   //console.log(baseURI);
    getLeagueImages();
    getClassTotals(); 
 

@@ -65,6 +65,7 @@ function showTable(NG_Class) {
       // Get the values of the current object in the JSON data
       let vals = Object.values(item);
 
+
       // Loop through the values and create table cells
       let counter = 0;
       vals.forEach((elem) => {
@@ -83,7 +84,9 @@ function showTable(NG_Class) {
          }
 
          td.innerText = elem; // Set the value as the text of the table cell
-         tr.appendChild(td); // Append the table cell to the table row
+         if (cols[counter - 1] !== "ID") tr.appendChild(td); // Append the table cell to the table row
+         //tr.appendChild(td); // Append the table cell to the table row
+
       });
       table.appendChild(tr); // Append the table row to the table
    });

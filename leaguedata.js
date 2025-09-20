@@ -440,6 +440,19 @@ async function submitPenalty(leagueID, newPenalty) {
    return penalties;
 } //submitPenalty
 
+async function deletePenalty(leagueID, penalty_id) {
+   let penalties = cache[leagueID].penalties;
+   const penaltyIndex = penalties.findIndex((penalty) => penalty.penalty_id == penalty_id);
+   if (penaltyIndex == -1) {
+      console.log("No penalty found with ID ", penalty_id);
+   } else {
+      console.log("Deleting penalty ", penaltyIndex, " with ID ", penalty_id);
+      penalties.splice(penaltyIndex, 1);
+      await jsonloader.savePenalties(leagueID, penalties);
+   }
+   return penalties;
+} //deletePenalty
+
 async function submitStewardsPenalty(leagueID, newPenalty) {
    let penalties = cache[leagueID].penalties;
    newPenalty.penalty_id = (newPenalty.round_no * 1000) + cache[leagueID].penalties.length;
@@ -447,6 +460,7 @@ async function submitStewardsPenalty(leagueID, newPenalty) {
    newPenalty.round_id = Number(newPenalty.round_no);
    const scoredEvents = getScoredEvents(leagueID, newPenalty.round_id);
    const eventNumber = Number(newPenalty.event);
+   
    scoredEvents.forEach((scoredEvent, i) => {
       scoredEvent.eventNumber = scoredEvent.round_session_no *100 + scoredEvent.score_event_no;
       if (scoredEvent.eventNumber == eventNumber) {
@@ -477,8 +491,6 @@ async function getSubsessionData(link) {
    const res = await axiosInstance.get(link);
    return res.data;
 }
-
-
 
 
 async function downloadNewSessionFiles(seasonSubSessions, leagueID) {
@@ -589,6 +601,7 @@ exports.getFilteredResults = getFilteredResults;
 exports.getUnresolvedProtests = getUnresolvedProtests;
 exports.submitProtest = submitProtest;
 exports.submitPenalty = submitPenalty;
+exports.deletePenalty = deletePenalty;
 exports.submitStewardsPenalty = submitStewardsPenalty;
 exports.addDriver = addDriver;
 exports.deleteDriver = deleteDriver;

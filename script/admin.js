@@ -18,7 +18,7 @@ function setMenuLinks(){
    $("#link_penalty").attr("href", "/admin/"+leagueID+"/stewardspen");
    $("#link_recalculate").attr("href", "/"+leagueID+"/recalculate");
    $("#link_reload").attr("href", "/"+leagueID+"/reload");
-   $("#link_penalties").attr("href", "/admin/"+leagueID+"/penalties");
+   $("#link_penalties").attr("href", "/admin/"+leagueID+"/penalties_admin");
    $("#link_session").attr("href", "/admin/"+leagueID+"/session");
    $("#link_log").attr("href", "/admin/"+leagueID+"/loglist");
 }//setMenuLinks

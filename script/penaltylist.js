@@ -170,7 +170,7 @@ function displayPenalties() {
       '<div class="cell row header blue" data-title="Row">Lap</div>' +
       '<div class="cell row header blue" data-title="Row">Corner</div>' +
       '<div class="cell row header blue" data-title="Row">Protested by</div>' +
-      '<div class="cell row header blue" data-title="Row">Statement</div>' +
+      '<div class="cell row header blue" data-title="Row">Drivers Statement</div>' +
       '<div class="cell row header blue" data-title="Row">Decision</div>' +
       '<div class="cell row header blue" data-title="Row">Comments</div>' +
       '<div class="cell row header blue" data-title="Row">Licence points</div>' +

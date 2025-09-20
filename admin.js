@@ -103,9 +103,9 @@ router.get('/:leagueid/:route', function (req, res) {
          res.sendFile(path.join(__dirname, '/html/stewardspen.html'));
          break;
 
-      case "penalties":
+      case "penalties_admin":
          res.cookie('leagueid', reqLeagueID);
-         res.sendFile(path.join(__dirname, '/html/penalties.html'));
+         res.sendFile(path.join(__dirname, '/html/penalties_admin.html'));
          break;
 
       case "session":
@@ -300,22 +300,7 @@ router.post('/:leagueid/:route', function (req, res) {
             } else {
 
             }
-            /*  modDriver.cust_id = Number(modDriver.cust_id);
-            
-            const existsDriverIndex = leaguedata.cache[reqLeagueID].drivers.findIndex((driver) => driver.cust_id === modDriver.cust_id);
-            if (existsDriverIndex == -1) {
-               res.setHeader("Content-Type", "application/json");
-               res.writeHead(200);
-               res.end(JSON.stringify({ error: "could not find matching driver in database" }));
-            } else {
-               leaguedata.updateDriver(reqLeagueID, modDriver.cust_id, modDriver);
-               res.setHeader("Content-Type", "application/json");
-               res.writeHead(200);
-               res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));
-            }
-               */
          }
-
          break;
 
       case "penalty":
@@ -343,7 +328,21 @@ router.post('/:leagueid/:route', function (req, res) {
          });
          break;
 
-      //send list of penlties to be resolved
+      case "deletepenalty":
+         var penalty_id = -1;
+         console.log("Delete Penalty Request Body : ", req.body);
+         penalty_id = JSON.parse(req.body.penalty_id);
+         console.log("Delete Penalty Recieved : ", penalty_id);
+         leaguedata.deletePenalty(reqLeagueID, penalty_id).then((result) => {
+            leaguedata.cache[reqLeagueID].penalties = result;
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify({ confirmation: "ok" }));
+         })
+         .catch(error => console.log(error));
+         break;
+
+      //send list of penalties to be resolved
       case "penaltiesjson":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);

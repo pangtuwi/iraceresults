@@ -4,24 +4,6 @@
 var protests = {};
 var selectedProtest = {};
 
-/*
-function displayEditProtestDetails(protest_id) {
-   selectedProtest = protests.find(item => item.protest_id === protest_id);
-   let protest = selectedProtest;
-   console.log("you selecred protest : ", protest);
-   $("#protest_id").html(protest.protest_id);
-   $("#protesting_driver_name").html(protest.protesting_driver_name);
-   $("#protested_driver_name").html(protest.protested_driver_name);
-   $("#protesting_driver_name2").html(protest.protesting_driver_name);
-   $("#protested_driver_name2").html(protest.protested_driver_name);
-   $("#round_name").html(protest.round_name);
-   $("#event").html(protest.event);
-   $("#driver_statement").html(protest.driver_statement);
-
-   var submitButton = document.getElementById("submit_btn");
-   submitButton.disabled = true;
-} // displayEditProtestDetails
-*/
 
 function getDrivers() {
    fetch('./driverlist')
@@ -149,8 +131,9 @@ function getStewardsDecision(){
       penalty.display_name = $("#driver_select").children("option:selected").text();
       penalty.round_no = parseInt($("#round_select").children("option:selected").val());
       penalty.round_name = $("#round_select").children("option:selected").text();
-      
+      penalty.protesting_driver_name = "Stewards";
       penalty.event = $("#scored_event_select").children("option:selected").val();
+      penalty.score_event = $("#scored_event_select").children("option:selected").text();
       //penalty.score_event_no = session_event_no % 100;  //last two digits
       //penalty.session_no = (session_event_no- penalty.score_event_no)/100;
       //console.log ("session_event_no = ", session_event_no, "  score_event_no = ", penalty.score_event_no, "  session_no = ", penalty.session_no);

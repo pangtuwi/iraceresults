@@ -83,11 +83,14 @@ function showTable(NG_Class) {
                td.classList.add("score-td");
          }
 
-         td.innerText = elem; // Set the value as the text of the table cell
-         if (cols[counter - 1] !== "ID") tr.appendChild(td); // Append the table cell to the table row
-         //tr.appendChild(td); // Append the table cell to the table row
-
-      });
+         if (cols[counter - 1] === "Name") {
+            td.innerHTML = '<a href="results?cust_id=' + item.ID + '">' + elem + '</a>';
+         } else {
+               td.innerText = elem; // Set the value as the text of the table cell
+               
+            }
+            if (cols[counter - 1] !== "ID") tr.appendChild(td); // Append the table cell to the table row
+         });
       table.appendChild(tr); // Append the table row to the table
    });
    container.appendChild(table) // Append the table to the container element
@@ -96,10 +99,10 @@ function showTable(NG_Class) {
 
 // gets data from API and sets the content of #result div
 function getClassTotals() {
-   fetch(baseURI+'classtotals')
+   fetch(baseURI + 'classtotals')
       .then(res => res.json())
       .then(data => {
-         console.log ("class totals recieved from server");
+         console.log("class totals recieved from server");
          console.log(data);
          classTotals = data;
          generateClassButtons();
@@ -110,12 +113,12 @@ function getClassTotals() {
 
 function getLeagueImages() {
    //console.log("getting League Images");
-   document.getElementById("header-td").style.backgroundImage = "url('"+baseURI+"img/header.png')";
+   document.getElementById("header-td").style.backgroundImage = "url('" + baseURI + "img/header.png')";
    document.getElementById("header-td").style.verticalAlign = "middle";
    document.getElementById("header-td").style.backgroundPosition = "center";
    document.getElementById("header-td").style.backgroundSize = "contain";
 
-   document.getElementById("footer-td").style.backgroundImage = "url('"+baseURI+"img/footer.png')";
+   document.getElementById("footer-td").style.backgroundImage = "url('" + baseURI + "img/footer.png')";
    document.getElementById("footer-td").style.verticalAlign = "middle";
    document.getElementById("footer-td").style.backgroundPosition = "center";
    document.getElementById("footer-td").style.backgroundSize = "contain";
@@ -135,7 +138,7 @@ function getTeamsData(but_no) {
    toggleButtons(but_no);
    let container = document.getElementById("container");
    container.innerText = 'Loading Teams Data'
-   fetch(baseURI+'teamstotals')
+   fetch(baseURI + 'teamstotals')
       .then(res => res.json())
       .then(data => {
          //container.innerText = JSON.stringify(data, null, 2)
@@ -148,80 +151,80 @@ function generateClassButtons() {
    //read in the Classes Available and generate necessary buttons
    //get Button container element and clear it
 
-   fetch(baseURI+'displayconfig')
-   .then(res => res.json())
-   .then(data => {
-      //console.log ("button display config recieved from server")
-      let tr = document.getElementById("classButtons");
-      tr.innerHTML = "";
-      //classButtons.innerHTML = JSON.stringify(data);
-      let classes_to_display = data.classes_to_display;
-      var classCounter = -1;
-      //var buttonsHTML = "";
-
-      if (data.display_overall_table == 1) {
-         let classesAvailable = classTotals.length -1;
-         //console.log("adding button :", 0);
-         //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
-         let td = document.createElement("td");
-         let newButton = document.createElement("button");
-         newButton.classList.add ("button_class_select");
-         newButton.id = "btn"+0;
-         //console.log ("no onclick yet");
-         newButton.setAttribute('onclick', "getTable(0,"+ classesAvailable+")");
-         newButton.innerText = "Overall"; // Set the value as the text of the table cell
-         td.setAttribute("width", "15%");
-         td.appendChild(newButton);
-         tr.appendChild(td); // Append the table cell to the table row
-         //console.log ("adding button : ", td);
-         buttonCounter +=1;
-      }
-
-      classes_to_display.forEach(thisClass => { 
-         classCounter += 1;
-         //console.log("adding button :", buttonCounter);
-         //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
-         let td = document.createElement("td");
-         let newButton = document.createElement("button");
-         newButton.classList.add ("button_class_select");
-         newButton.id = "btn"+buttonCounter;
-         //console.log ("no onclick yet");
-         newButton.setAttribute('onclick', "getTable("+buttonCounter+","+classCounter+")");
-         newButton.innerText = thisClass.classname; // Set the value as the text of the table cell
-         td.setAttribute("width", "15%");
-         td.appendChild(newButton);
-         tr.appendChild(td); // Append the table cell to the table row
-         //console.log (" button added : ", td);
-         buttonCounter +=1;
-      });
-
-   // gets teams data from API and sets the content of #result div
-   fetch(baseURI+'teamstotals')
+   fetch(baseURI + 'displayconfig')
       .then(res => res.json())
       .then(data => {
-         //container.innerText = JSON.stringify(data, null, 2)
-         teamsTotals = data;
-         //showTable(data, -1);  //-1 is a hack to use the same function
-         //console.log("adding button for Teams:", -1);
-         //buttonCounter +=1;
-         //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
-         let td = document.createElement("td");
-         let newButton = document.createElement("button");
-         newButton.classList.add ("button_class_select");
-         newButton.id = "btn"+buttonCounter;
-         newButton.setAttribute('onclick', `getTable(${buttonCounter},-1)`);
-         newButton.innerText = "Teams"; // Set the value as the text of the table cell
-         td.setAttribute("width", "15%");
-         td.appendChild(newButton);
-         tr.appendChild(td); // Append the table cell to the table row
-         //console.log ("adding button : ", td);
-         
+         //console.log ("button display config recieved from server")
+         let tr = document.getElementById("classButtons");
+         tr.innerHTML = "";
+         //classButtons.innerHTML = JSON.stringify(data);
+         let classes_to_display = data.classes_to_display;
+         var classCounter = -1;
+         //var buttonsHTML = "";
+
+         if (data.display_overall_table == 1) {
+            let classesAvailable = classTotals.length - 1;
+            //console.log("adding button :", 0);
+            //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
+            let td = document.createElement("td");
+            let newButton = document.createElement("button");
+            newButton.classList.add("button_class_select");
+            newButton.id = "btn" + 0;
+            //console.log ("no onclick yet");
+            newButton.setAttribute('onclick', "getTable(0," + classesAvailable + ")");
+            newButton.innerText = "Overall"; // Set the value as the text of the table cell
+            td.setAttribute("width", "15%");
+            td.appendChild(newButton);
+            tr.appendChild(td); // Append the table cell to the table row
+            //console.log ("adding button : ", td);
+            buttonCounter += 1;
+         }
+
+         classes_to_display.forEach(thisClass => {
+            classCounter += 1;
+            //console.log("adding button :", buttonCounter);
+            //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
+            let td = document.createElement("td");
+            let newButton = document.createElement("button");
+            newButton.classList.add("button_class_select");
+            newButton.id = "btn" + buttonCounter;
+            //console.log ("no onclick yet");
+            newButton.setAttribute('onclick', "getTable(" + buttonCounter + "," + classCounter + ")");
+            newButton.innerText = thisClass.classname; // Set the value as the text of the table cell
+            td.setAttribute("width", "15%");
+            td.appendChild(newButton);
+            tr.appendChild(td); // Append the table cell to the table row
+            //console.log (" button added : ", td);
+            buttonCounter += 1;
+         });
+
+         // gets teams data from API and sets the content of #result div
+         fetch(baseURI + 'teamstotals')
+            .then(res => res.json())
+            .then(data => {
+               //container.innerText = JSON.stringify(data, null, 2)
+               teamsTotals = data;
+               //showTable(data, -1);  //-1 is a hack to use the same function
+               //console.log("adding button for Teams:", -1);
+               //buttonCounter +=1;
+               //let tdHTML = '<td width="15%"><button class="button-class-select" id="btn'+classCounter+'" onclick="getTable('+classCounter+')">'+thisClass.classname+'</button></td>';
+               let td = document.createElement("td");
+               let newButton = document.createElement("button");
+               newButton.classList.add("button_class_select");
+               newButton.id = "btn" + buttonCounter;
+               newButton.setAttribute('onclick', `getTable(${buttonCounter},-1)`);
+               newButton.innerText = "Teams"; // Set the value as the text of the table cell
+               td.setAttribute("width", "15%");
+               td.appendChild(newButton);
+               tr.appendChild(td); // Append the table cell to the table row
+               //console.log ("adding button : ", td);
+
+            })
+            .catch(error => console.log(error));
+
       })
-      .catch(error => console.log(error));
-      
-   }) 
-   .catch(error => console.log(error))
-   
+      .catch(error => console.log(error))
+
 }//generateClassButtons
 
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
@@ -233,6 +236,6 @@ $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jq
    baseURI = baseURI.replace(/\/$|$/, '/');
    //console.log(baseURI);
    getLeagueImages();
-   getClassTotals(); 
+   getClassTotals();
 
 });

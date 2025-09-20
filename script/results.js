@@ -2,7 +2,9 @@
 var results = [];
 var results_filtered = [];
 
-function getDrivers() {
+var filter_params = {"cust_id": 0, "round_no": 0};
+
+/*function getDrivers() {
    console.log("fetching drivers");
    fetch('./driverlist')
       .then(res => res.json())
@@ -110,16 +112,18 @@ function getRounds() {
       })
       .catch(error => console.log(error))
 }//getRounds
+*/
 
 function getresults() {
    console.log("fetching results");
 
    fetch('./results', {
       method: 'POST',
-      body: JSON.stringify({
+      /*body: JSON.stringify({
          round_no: 0,
          cust_id: 532447
-      }),
+      })*/
+      body: JSON.stringify(filter_params),
       headers: {
          'Content-type': 'application/json; charset=UTF-8',
       }
@@ -135,6 +139,7 @@ function getresults() {
       });
 }//getresults
 
+/*
 function filterresults(filter_round_no, filter_cust_id) {
 
    if ((filter_round_no == 0) & (filter_cust_id == 0)) {
@@ -169,6 +174,9 @@ function setFilters() {
       filterresults(filter_round_no, filter_cust_id);
    }); //roundSelect.on change
 } //setFilters
+
+*/
+
 
 function msToTime(duration) {
     var milliseconds = parseInt((duration%1000))
@@ -255,9 +263,16 @@ function displayresults() {
 } //displayresults
 
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
-   getDrivers();
-   getRounds();
+   //getDrivers();
+   //getRounds();
+
+   // extract details from GET parameters
+   const queryString = window.location.search;
+   const urlParams = new URLSearchParams(queryString);
+   filter_params.round_no = Number(urlParams.get('round_no'));
+   filter_params.cust_id = Number(urlParams.get('cust_id'));
+   console.log("Parameters passed are ", filter_params.cust_id, filter_params.round_no);
    getresults();
-   setFilters();
+   //setFilters();
    displayresults();
 }); //document is ready

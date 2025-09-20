@@ -275,11 +275,10 @@ app.post('/:leagueid/:route', function (req, res) {
       case "results":
          console.log("Processing results request");
          console.log("Request body is ", req.body);
-         const classnumber = req.body.classnumber;
-         const track_name = req.body.track_name;
+         const round_no = req.body.round_no;
          const cust_id = req.body.cust_id;
-         console.log("Requested classnumber is ", classnumber, " for track ", track_name, " and cust_id ", cust_id);
-         const filteredResults = leaguedata.getFilteredResults(reqLeagueID, classnumber, track_name, cust_id);
+         console.log("Requested round_no is ", round_no, " and cust_id is ", cust_id);
+         const filteredResults = leaguedata.getFilteredResults(reqLeagueID, round_no, cust_id);
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(filteredResults));

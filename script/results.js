@@ -2,7 +2,7 @@
 var results = [];
 var results_filtered = [];
 
-var filter_params = {"cust_id": 0, "round_no": 0};
+var filter_params = { "cust_id": 0, "round_no": 0 };
 
 /*function getDrivers() {
    console.log("fetching drivers");
@@ -179,16 +179,16 @@ function setFilters() {
 
 
 function msToTime(duration) {
-    var milliseconds = parseInt((duration%1000))
-        , seconds = parseInt((duration/1000)%60)
-        , minutes = parseInt((duration/(1000*60))%60)
-        , hours = parseInt((duration/(1000*60*60))%24);
+   var milliseconds = parseInt((duration % 1000))
+      , seconds = parseInt((duration / 1000) % 60)
+      , minutes = parseInt((duration / (1000 * 60)) % 60)
+      , hours = parseInt((duration / (1000 * 60 * 60)) % 24);
 
-    hours = (hours < 10) ? "0" + hours : hours;
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
+   hours = (hours < 10) ? "0" + hours : hours;
+   minutes = (minutes < 10) ? "0" + minutes : minutes;
+   seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-    return  minutes + ":" + seconds + "." + milliseconds;
+   return minutes + ":" + seconds + "." + milliseconds;
 } //msToTime
 
 function checkDQ(position) {
@@ -214,22 +214,26 @@ function displayresults() {
       return;
    }
    var tableTopHtml = '<div class="row header">' +
-                '<div class="cell row header blue" data-title="cust_id">Round</div>' +
-                '<div class="cell row header blue" data-title="track_name">Track</div>' +
-                '<div class="cell row header blue" data-title="score_event">Score Event</div>' +
-                '<div class="cell row header blue" data-title="display_name">Name</div>' +
-                '<div class="cell row header blue" data-title="best_lap_time">Best Lap Time</div>' +
-                '<div class="cell row header blue" data-title="laps_complete">Laps Complete</div>' +
-                '<div class="cell row header blue" data-title="class_interval">Class Interval</div>' +
-                '<div class="cell row header blue" data-title="laps_lead">Laps Lead</div>' +
-                '<div class="cell row header blue" data-title="starting_position">Starting Position</div>' +
-                '<div class="cell row header blue" data-title="finish_position">Finish Position</div>' +
-                '<div class="cell row header blue" data-title="finish_position_after_penalties">Finish Position After Penalties</div>' +
-                '<div class="cell row header blue" data-title="championship_penalty">Championship Penalty</div>' +
-                '<div class="cell row header blue" data-title="finish_position_in_class">Finish Position In Class</div>' +
-                '<div class="cell row header blue" data-title="finished">Finished</div>' +
-                '<div class="cell row header blue" data-title="finish_position_in_class_after_penalties">Finish Position In Class After Penalties</div>' +
-                '<div class="cell row header blue" data-title="score">Score</div>' +
+      '<div class="cell row header blue" data-title="round_no">Round</div>' +
+      '<div class="cell row header blue" data-title="track_name">Track</div>' +
+      '<div class="cell row header blue" data-title="score_event">Score Event</div>' +
+      '<div class="cell row header blue" data-title="display_name">Name</div>' +
+      '<div class="cell row header blue" data-title="classname">Class</div>' +
+
+      '<div class="cell row header blue" data-title="starting_position">Starting Position</div>' +
+      '<div class="cell row header blue" data-title="finish_position">Finish Position</div>' +
+      '<div class="cell row header blue" data-title="finished">Finished</div>' +
+      '<div class="cell row header blue" data-title="finish_position_in_class">Finish Position In Class</div>' +
+      '<div class="cell row header blue" data-title="finish_position_in_class_after_penalties">Finish Position In Class After Penalties</div>' +
+
+      '<div class="cell row header blue" data-title="laps_complete">Laps Complete</div>' +
+      '<div class="cell row header blue" data-title="laps_lead">Laps Lead</div>' +
+      '<div class="cell row header blue" data-title="class_interval">Class Interval</div>' +
+      '<div class="cell row header blue" data-title="best_lap_time">Best Lap Time</div>' +
+
+      //'<div class="cell row header blue" data-title="finish_position_after_penalties">Finish Position After Penalties</div>' +
+      '<div class="cell row header blue" data-title="championship_penalty">Championship Penalty</div>' +
+      '<div class="cell row header blue" data-title="score">Score</div>' +
       '</div>';
    var tableHTML = tableTopHtml;
    var rowcounter = 0;
@@ -239,17 +243,21 @@ function displayresults() {
          '<div class="cell" data-title="Row">' + result.track_name + '</div>' +
          '<div class="cell" data-title="Row">' + result.score_event + '</div>' +
          '<div class="cell" data-title="Row">' + result.display_name + '</div>' +
-         '<div class="cell" data-title="Row">' + msToTime(result.best_lap_time/10) + '</div>' +
-         '<div class="cell" data-title="Row">' + result.laps_complete + '</div>' +
-         '<div class="cell" data-title="Row">' + msToTime(result.class_interval/10  ) + '</div>' +
-         '<div class="cell" data-title="Row">' + result.laps_lead + '</div>' +
+         '<div class="cell" data-title="Row">' + result.classname + '</div>' +
+
          '<div class="cell" data-title="Row">' + result.starting_position + '</div>' +
          '<div class="cell" data-title="Row">' + result.finish_position + '</div>' +
-         '<div class="cell" data-title="Row">' + checkDQ(result.finish_position_after_penalties) + '</div>' +
-         '<div class="cell" data-title="Row">' + result.championship_penalty + '</div>' +
+         '<div class="cell" data-title="Row">' + didFinish(result.finished) + '</div>' +
          '<div class="cell" data-title="Row">' + result.finish_position_in_class + '</div>' +
-         '<div class="cell" data-title="Row">' + didFinish(result.finished)   + '</div>' +
          '<div class="cell" data-title="Row">' + checkDQ(result.finish_position_in_class_after_penalties) + '</div>' +
+
+         '<div class="cell" data-title="Row">' + result.laps_complete + '</div>' +
+         '<div class="cell" data-title="Row">' + result.laps_lead + '</div>' +
+         '<div class="cell" data-title="Row">' + msToTime(result.class_interval / 10) + '</div>' +
+         '<div class="cell" data-title="Row">' + msToTime(result.best_lap_time / 10) + '</div>' +
+
+         // '<div class="cell" data-title="Row">' + checkDQ(result.finish_position_after_penalties) + '</div>' +
+         '<div class="cell" data-title="Row">' + result.championship_penalty + '</div>' +
          '<div class="cell" data-title="Row">' + result.score + '</div>' +
          '</div>';
       //replace any undefined values with &nbsp;

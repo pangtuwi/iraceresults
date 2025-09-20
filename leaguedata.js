@@ -366,7 +366,16 @@ async function deleteDriver(leagueID, cust_id) {
    jsonloader.saveDrivers(leagueID, cache[leagueID].driver);
 } //addDriver
 
-
+function getClassName(leagueID, classnumber) {
+   let className = "Unknown";
+   if (cache[leagueID] && cache[leagueID].classes) {
+      const classData = cache[leagueID].classes.find(cls => cls.classnumber === classnumber);
+      if (classData) {
+         className = classData.classname;
+      }
+   }
+   return className;
+}
 
 function getUnresolvedProtests(leagueid) {
    let protests = cache[leagueid].protests;
@@ -376,7 +385,7 @@ function getUnresolvedProtests(leagueid) {
    return unresolvedProtests;
 } //getUnresolvedProtests
 
-function getFilteredResults(leagueID, classnumber, track_name, cust_id) {
+function getFilteredResults(leagueID, round_no, cust_id) {
    let fullresults = cache[leagueID].fullresults;
    let results = [];
 
@@ -392,17 +401,15 @@ function getFilteredResults(leagueID, classnumber, track_name, cust_id) {
             thisResult.track_name = track_name;
             thisResult.score_event = score_event;
             thisResult.classnumber = classnumber;
+            thisResult.classname = getClassName(leagueID, classnumber);
             results.push(thisResult);
          });
       });
    });
 
    // Apply filtering based on the provided parameters
-   if (classnumber) {
-      results = results.filter(result => result.classnumber === classnumber);
-   }
-   if (track_name) {
-      results = results.filter(result => result.track_name === track_name);
+   if (round_no) {
+      results = results.filter(result => result.round_no === round_no);
    }
    if (cust_id) {
       results = results.filter(result => result.cust_id === cust_id);

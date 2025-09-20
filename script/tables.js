@@ -50,11 +50,20 @@ function showTable(NG_Class) {
 
 
    // Loop through the column names and create header cells
+   let count_round_nos = 1;
    cols.forEach((item) => {
       let th = document.createElement("th");
-      th.innerText = item; // Set the column name as the text of the header cell
+      if ((item === "Name") || (item === "Pos") || (item === "Total") || (item === "Penalties")) {
+         th.innerText = item; // Set the column name as the text of the header cell
+      } else {
+         th.innerHTML = '<a href="results?round_no=' + count_round_nos + '">' + item + '</a>';
+         count_round_nos += 1;
+       }
+      
       if (item !== "ID") tr.appendChild(th); // Append the header cell to the header row
    });
+
+
    thead.appendChild(tr); // Append the header row to the header
    table.append(tr) // Append the header to the table
 

@@ -554,10 +554,10 @@ async function reCalculate(leagueID) {
       //Output full results JSON
       exporter.exportResultsJSON(leagueData.fullresults, './data/' + leagueID + '/fullresults.json');
 
-      //Output csv results for each round
-      leagueData.rounds.forEach(round => {
+      //Output csv results for each round - uncomment to enable round by round csv output
+      /*leagueData.rounds.forEach(round => {
          exporter.exportRoundCSV2(leagueData.rounds, round.round_no, leagueData.scoring, driverScores);
-      });
+      }); */
 
       //Output Individual Results Table
       exporter.exportResultsJSON(classResults, './data/' + leagueID + '/classtotals.json');
@@ -569,9 +569,17 @@ async function reCalculate(leagueID) {
       if (leagueData.config.class_to_add_new_drivers_to != -1) {
          const DriversToSave = newDrivers.map(item => {
             const container = {};
+            console.log("Adding new driver to league : ", item.display_name);
             container.cust_id = item.cust_id;
             container.display_name = item.display_name;
-            container.classnumber = item.classnumber;
+            //check if item has originalClassNumber property (added during calc process)
+            if (item.hasOwnProperty('originalClassNumber')) {
+               container.classnumber = item.originalClassNumber;
+               console.log("Putting driver ", item.display_name, " back into class ", item.originalClassNumber); 
+            
+            } else {
+               container.classnumber = item.classnumber;
+            }
             return container;
          })
          jsonloader.saveDrivers(leagueID, DriversToSave);

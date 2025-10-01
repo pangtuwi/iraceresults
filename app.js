@@ -260,9 +260,10 @@ app.post('/:leagueid/:route', function (req, res) {
          console.log("Request body is ", req.body);
          const reqTrack = req.body.round_name;
          console.log("Requested track is ", reqTrack);
-         const availableTracks = ["Fuji", "RBull", "Spa", "imola", "thrux"];  
-         //check if requested track is available
-         if (availableTracks.includes(reqTrack)) {
+         const availableTracks = ["Fuji", "RBull", "Spa", "Imola", "Thrux"];   
+
+         //check if requested track is available (case insensitive)
+         if (availableTracks.map(track => track.toLowerCase()).includes(reqTrack.toLowerCase())) {
             //convert reqTrack to lowercase and fetch
             res.sendFile(path.join(__dirname, '/trackmaps/' + reqTrack.toLowerCase() + '.png'));
          } else if (reqTrack === "none") {

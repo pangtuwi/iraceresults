@@ -93,6 +93,12 @@ router.get('/:leagueid/:route', function (req, res) {
          res.end(JSON.stringify(unresolved));
          break;
 
+      case "allprotests":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].protests));
+         break;   
+
       case "stewarding":
          res.cookie('leagueid', reqLeagueID);
          res.sendFile(path.join(__dirname, '/html/stewarding.html'));

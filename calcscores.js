@@ -10,27 +10,6 @@ let Scoring = {};
 
 
 //Returns size of score Array required = sum of score events in all rounds
-//old verison using season construct
-/*function getScoreArraySizes(season) {
-   let total_size = 0;
-   let total_rounds = 0
-   let rounds_array = [];
-   season.forEach(round => {
-      total_rounds++;
-      let round_size = 0;
-      round.sessions.forEach(session => {
-         total_size = total_size + session.scored_events.length;
-         round_size = round_size + session.scored_events.length
-      });
-      rounds_array.push(round_size);
-   });
-   const score_size = {
-      total: total_size,
-      rounds: rounds_array
-   }
-   return score_size;
-} //getScoreArraySizes */
-
 function getScoreArraySizes(rounds, scoring) {
    let total_size = 0;
    let total_rounds = 0
@@ -587,17 +566,23 @@ async function calc(leagueData, seasonSessions) {
          var score_event_counter = 0;
 
          // Process class changes
+         console.log("Processing class changes for round ", round.round_no);
          classChanges.forEach(classChange => {
+            console.log(" - - Checking class change for driver ", classChange.cust_id, " from round ", classChange.change_from_round);
             var driver_to_move = {};
             if (classChange.change_from_round == round.round_no) {
                //take driver out of class and put in new class
+               console.log(" - - - Class change for driver ", classChange.cust_id, " to class ", classChange.new_class_number);
                DriverScoreTable.forEach(driverClassTable => {
                   driver_to_move = driverClassTable.drivers.find(item => item.cust_id === classChange.cust_id) ?? driver_to_move;
                   driverClassTable.drivers = driverClassTable.drivers.filter(x => x.cust_id !== classChange.cust_id);
                });
                DriverScoreTable[classChange.new_class_number - 1].drivers.push(driver_to_move);
                var driver = Drivers.find((item => item.cust_id === classChange.cust_id));
+               driver.originalClassNumber  = driver.classnumber;
                driver.classnumber = classChange.new_class_number;
+               console.log(" - - Driver " + driver.display_name + " moved to class " + classChange.new_class_number + " for round " + round.round_no);
+               console.log("Driver details : ", driver);
             }
          });
 

@@ -8,8 +8,11 @@ function log (eventText, cust_id, round_no){
  if (logToConsole) {
    console.log("LOGGER :", eventText);
  }
- eventList.push ({time_stamp : Date.now(), event_text : eventText, cust_id : cust_id, round_no : round_no});
- 
+ // convert Date.now() to readable timestamp
+ var time_stamp = new Date().toLocaleString();
+ // add event to list
+ eventList.push ({time_stamp : time_stamp, event_text : eventText, cust_id : cust_id, round_no : round_no});
+
 }//log
 
 function getLog () {

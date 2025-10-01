@@ -44,7 +44,7 @@ async function loadCache() {
       league.protests = await jsonloader.getProtests(leagueID);
       cache[leagueID] = league;
    }));
-   console.log("League Cache Loaded...")
+   //console.log("League Cache Loaded...")
 } //loadCache
 
 async function updateCache(leagueID) {
@@ -426,9 +426,9 @@ async function submitPenalty(leagueID, newPenalty) {
    let protests = cache[leagueID].protests;
    const resolvedProtestIndex = protests.findIndex((protest) => protest.protest_id == newPenalty.protest_id);
    if (resolvedProtestIndex == -1) {
-      console.log("No protest associated with this penalty")
+      logger.log("ERROR - No protest associated with this penalty")
    } else {
-      console.log("marking protest ", resolvedProtestIndex, " as resolved : ");
+      //console.log("marking protest ", resolvedProtestIndex, " as resolved : ");
       protests[resolvedProtestIndex].resolved = 1;
       await jsonloader.saveProtests(leagueID, protests);
    }
@@ -446,7 +446,7 @@ async function deletePenalty(leagueID, penalty_id) {
    if (penaltyIndex == -1) {
       console.log("No penalty found with ID ", penalty_id);
    } else {
-      console.log("Deleting penalty ", penaltyIndex, " with ID ", penalty_id);
+      //console.log("Deleting penalty ", penaltyIndex, " with ID ", penalty_id);
       penalties.splice(penaltyIndex, 1);
       await jsonloader.savePenalties(leagueID, penalties);
    }
@@ -470,7 +470,7 @@ async function submitStewardsPenalty(leagueID, newPenalty) {
 
    newPenalty.timestamp = Date.now();
    newPenalty.session_no = getSessionNo(leagueID, newPenalty.round_no, newPenalty.score_event);
-   console.log("Adding Stewards Penalty : ", newPenalty);
+   //console.log("Adding Stewards Penalty : ", newPenalty);
    penalties.push(newPenalty);
    await jsonloader.savePenalties(leagueID, penalties);
    return penalties;
@@ -569,13 +569,13 @@ async function reCalculate(leagueID) {
       if (leagueData.config.class_to_add_new_drivers_to != -1) {
          const DriversToSave = newDrivers.map(item => {
             const container = {};
-            console.log("Adding new driver to league : ", item.display_name);
+            //console.log("Adding new driver to league : ", item.display_name);
             container.cust_id = item.cust_id;
             container.display_name = item.display_name;
             //check if item has originalClassNumber property (added during calc process)
             if (item.hasOwnProperty('originalClassNumber')) {
                container.classnumber = item.originalClassNumber;
-               console.log("Putting driver ", item.display_name, " back into class ", item.originalClassNumber); 
+               //console.log("Putting driver ", item.display_name, " back into class ", item.originalClassNumber); 
             
             } else {
                container.classnumber = item.classnumber;

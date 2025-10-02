@@ -14,7 +14,7 @@
         "protest_id": 1000,
         "score_event": "Feature Race",
         "timestamp": 1756418056259,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 541161,
@@ -31,7 +31,7 @@
         "protest_id": 1001,
         "score_event": "Feature Race",
         "timestamp": 1756494627972,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 568604,
@@ -48,7 +48,7 @@
         "protest_id": 1002,
         "score_event": "Sprint Race",
         "timestamp": 1756494792901,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 1090079,
@@ -65,7 +65,7 @@
         "protest_id": 1003,
         "score_event": "Sprint Race",
         "timestamp": 1756495140814,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 417499,
@@ -82,7 +82,7 @@
         "protest_id": 1004,
         "score_event": "Feature Race",
         "timestamp": 1756497925372,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 417499,
@@ -99,7 +99,7 @@
         "protest_id": 1005,
         "score_event": "Feature Race",
         "timestamp": 1756498492152,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 417499,
@@ -116,7 +116,7 @@
         "protest_id": 1006,
         "score_event": "Feature Race",
         "timestamp": 1756498672456,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 19519,
@@ -133,7 +133,7 @@
         "protest_id": 1007,
         "score_event": "Feature Race",
         "timestamp": 1756499052963,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 19519,
@@ -150,7 +150,7 @@
         "protest_id": 1008,
         "score_event": "Feature Race",
         "timestamp": 1756499236986,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 19519,
@@ -167,7 +167,7 @@
         "protest_id": 1009,
         "score_event": "Feature Race",
         "timestamp": 1756499285726,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 19519,
@@ -184,7 +184,7 @@
         "protest_id": 1010,
         "score_event": "Feature Race",
         "timestamp": 1756499422904,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 710321,
@@ -201,7 +201,7 @@
         "protest_id": 1011,
         "score_event": "Feature Race",
         "timestamp": 1756501441755,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 395972,
@@ -218,7 +218,7 @@
         "protest_id": 1012,
         "score_event": "Feature Race",
         "timestamp": 1756509864294,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 1069108,
@@ -235,7 +235,7 @@
         "protest_id": 1013,
         "score_event": "Feature Race",
         "timestamp": 1756560399122,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 1069108,
@@ -252,7 +252,7 @@
         "protest_id": 1014,
         "score_event": "Feature Race",
         "timestamp": 1756560674819,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 1069108,
@@ -269,7 +269,7 @@
         "protest_id": 1015,
         "score_event": "Feature Race",
         "timestamp": 1756560785862,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 1069108,
@@ -286,7 +286,7 @@
         "protest_id": 1016,
         "score_event": "Feature Race",
         "timestamp": 1756561304336,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 1069108,
@@ -303,7 +303,7 @@
         "protest_id": 1017,
         "score_event": "Feature Race",
         "timestamp": 1756561601371,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 375113,
@@ -320,7 +320,7 @@
         "protest_id": 2018,
         "score_event": "Feature Race",
         "timestamp": 1757103287765,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 214278,
@@ -337,7 +337,7 @@
         "protest_id": 2019,
         "score_event": "Feature Race",
         "timestamp": 1757139170905,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 1095068,
@@ -354,7 +354,7 @@
         "protest_id": 2020,
         "score_event": "Feature Race",
         "timestamp": 1757159417983,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 717473,
@@ -371,7 +371,7 @@
         "protest_id": 2021,
         "score_event": "Sprint Race",
         "timestamp": 1757168095636,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 717473,
@@ -388,7 +388,7 @@
         "protest_id": 2022,
         "score_event": "Feature Race",
         "timestamp": 1757169685425,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 717473,
@@ -405,7 +405,7 @@
         "protest_id": 2023,
         "score_event": "Feature Race",
         "timestamp": 1757170686602,
-        "resolved": 1
+        "resolved": 0
     },
     {
         "protesting_driver_id": 581527,
@@ -422,6 +422,6 @@
         "protest_id": 2024,
         "score_event": "Feature Race",
         "timestamp": 1757183033754,
-        "resolved": 1
+        "resolved": 0
     }
 ]

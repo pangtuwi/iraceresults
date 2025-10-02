@@ -1,0 +1,124 @@
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="/style.css">
+   <script src="/jquery-3.7.1.js"></script>
+   <script src="/config.js"></script>
+</head>
+
+<style>
+   .header_img {
+      height: 80px;
+      vertical-align: middle;
+      background-position: center;
+      background-size: contain;
+      background-image: url('header.png');
+   }
+   .form-row {
+      margin: 15px 0;
+   }
+   .form-row label {
+      display: inline-block;
+      width: 250px;
+      font-weight: bold;
+      color: #fff;
+   }
+   .form-row input, .form-row select {
+      width: 300px;
+      padding: 5px;
+   }
+   .help-text {
+      display: block;
+      margin-left: 250px;
+      font-size: 0.9em;
+      color: #ccc;
+      margin-top: 5px;
+   }
+   .save-button {
+      margin-left: 250px;
+      margin-top: 20px;
+      padding: 10px 30px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+   }
+   .save-button:hover {
+      background-color: #45a049;
+   }
+   #status-message {
+      margin-left: 250px;
+      margin-top: 10px;
+      padding: 10px;
+      display: none;
+   }
+   .success {
+      background-color: #4CAF50;
+      color: white;
+   }
+   .error {
+      background-color: #f44336;
+      color: white;
+   }
+</style>
+
+<body>
+   <div class="header_img"></div>
+   <div class="title">
+      League Configuration Editor
+   </div>
+
+   <div style="padding: 20px;">
+      <form id="config-form">
+         <div class="form-row">
+            <label for="apply_drop_scores">Apply Drop Scores:</label>
+            <select id="apply_drop_scores" name="apply_drop_scores">
+               <option value="FALSE">FALSE</option>
+               <option value="TRUE">TRUE</option>
+            </select>
+            <span class="help-text">Whether to apply drop scores in championship calculation</span>
+         </div>
+
+         <div class="form-row">
+            <label for="no_drop_scores_rounds">No Drop Scores Rounds:</label>
+            <input type="text" id="no_drop_scores_rounds" name="no_drop_scores_rounds" placeholder="e.g., 10,11,12">
+            <span class="help-text">Comma-separated list of round numbers that cannot be dropped (e.g., 10,11,12)</span>
+         </div>
+
+         <div class="form-row">
+            <label for="class_to_add_new_drivers_to">Default Class for New Drivers:</label>
+            <input type="number" id="class_to_add_new_drivers_to" name="class_to_add_new_drivers_to">
+            <span class="help-text">Class number to assign new drivers to (-1 to disable auto-add)</span>
+         </div>
+
+         <div class="form-row">
+            <label for="protest_open_after_hrs">Protest Open After (hours):</label>
+            <input type="number" id="protest_open_after_hrs" name="protest_open_after_hrs">
+            <span class="help-text">Hours after race completion before protests can be filed</span>
+         </div>
+
+         <div class="form-row">
+            <label for="protest_open_for_hrs">Protest Open For (hours):</label>
+            <input type="number" id="protest_open_for_hrs" name="protest_open_for_hrs">
+            <span class="help-text">Number of hours protests remain open after opening</span>
+         </div>
+
+         <div class="form-row">
+            <label for="display_overall_table">Display Overall Table:</label>
+            <select id="display_overall_table" name="display_overall_table">
+               <option value="0">No</option>
+               <option value="1">Yes</option>
+            </select>
+            <span class="help-text">Show combined overall standings table (0 = No, 1 = Yes)</span>
+         </div>
+
+         <button type="submit" class="save-button">Save Configuration</button>
+         <div id="status-message"></div>
+      </form>
+   </div>
+
+</body>
+
+</html>

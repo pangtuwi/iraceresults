@@ -26,33 +26,6 @@ function displayEditProtestDetails(protest_id) {
    submitButton.disabled = true;
 } // displayEditProtestDetails
 
-/*async function SetProtestListPositions(protests) {
-   console.log("Protests before setting List positions:", protests);
-   console.log("Setting protest list positions");
-
-   await Promise.all(protests.map(protest => {
-      return fetch('./scoredevents', {
-         method: 'POST',
-         body: JSON.stringify({
-            round_no: protest.round_no
-         }),
-         headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-         }
-      })
-         .then(res => res.json())
-         .then(data => {
-            console.log("scored events data received :", data);
-            protest.listposition = protest.round_no * 100 + data.findIndex(event => event.event_type === protest.score_event);
-            console.log("Set list position for protest ", protest.protest_id, " to ", protest.listposition);
-         });
-   }))
-   .then (async () => {;
-      console.log("Protests with list positions set (inside SetProtestListPositions):", protests);
-      return protests;
-})
-
-}; */
 
 async function SetListPosition(protest) {
    return new Promise((resolve, reject) => {

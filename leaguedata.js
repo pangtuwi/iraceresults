@@ -366,6 +366,11 @@ async function deleteDriver(leagueID, cust_id) {
    jsonloader.saveDrivers(leagueID, cache[leagueID].driver);
 } //addDriver
 
+async function updateConfig(leagueID, configData) {
+   cache[leagueID].config = configData;
+   await jsonloader.saveConfig(leagueID, configData);
+} //updateConfig
+
 function getClassName(leagueID, classnumber) {
    let className = "Unknown";
    if (cache[leagueID] && cache[leagueID].classes) {
@@ -614,5 +619,6 @@ exports.submitStewardsPenalty = submitStewardsPenalty;
 exports.addDriver = addDriver;
 exports.deleteDriver = deleteDriver;
 exports.updateDriver = updateDriver;
+exports.updateConfig = updateConfig;
 exports.updateSessionID = updateSessionID;
 exports.getTablesDisplayConfig = getTablesDisplayConfig;

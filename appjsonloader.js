@@ -156,6 +156,11 @@ async function saveRounds(leagueid, rounds) {
    await fs.writeFile(filename, JSON.stringify(rounds));
 }
 
+async function saveConfig(leagueid, config) {
+   let filename = './data/' + leagueid + '/config.json';
+   await fs.writeFile(filename, JSON.stringify(config, null, 3));
+}
+
 exports.getLeagueConfig = getLeagueConfig;
 //exports.getSeason = getSeason; 
 exports.getRounds = getRounds;
@@ -175,3 +180,4 @@ exports.getProtests = getProtests;
 exports.saveProtests = saveProtests;
 exports.savePenalties = savePenalties;
 exports.saveRounds = saveRounds;
+exports.saveConfig = saveConfig;

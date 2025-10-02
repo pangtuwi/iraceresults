@@ -21,6 +21,7 @@ function setMenuLinks(){
    $("#link_penalties").attr("href", "/admin/"+leagueID+"/penalties_admin");
    $("#link_session").attr("href", "/admin/"+leagueID+"/session");
    $("#link_log").attr("href", "/admin/"+leagueID+"/loglist");
+   $("#link_config").attr("href", "/admin/"+leagueID+"/config");
 }//setMenuLinks
 
 

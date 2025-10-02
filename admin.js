@@ -159,6 +159,17 @@ router.get('/:leagueid/:route', function (req, res) {
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
          break;
 
+      case "config":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/config.html'));
+         break;
+
+      case "configjson":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].config));
+         break;
+
       default:
          res.send('UNKNOWN ADMIN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
    }//switch route
@@ -355,6 +366,26 @@ router.post('/:leagueid/:route', function (req, res) {
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
          break;
 
+      case "updateconfig":
+         const modConfig = req.body;
+         if (modConfig === undefined) {
+            const errormsg = { error: "could not read config info sent to server" };
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(errormsg));
+         } else {
+            console.log("request received to update config: ", modConfig);
+            leaguedata.updateConfig(reqLeagueID, modConfig).then((result) => {
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(200);
+               res.end(JSON.stringify({ confirmation: "Config updated successfully" }));
+            }).catch((error) => {
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(500);
+               res.end(JSON.stringify({ error: error.message }));
+            });
+         }
+         break;
 
       default:
          res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);

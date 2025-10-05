@@ -445,6 +445,36 @@ async function submitPenalty(leagueID, newPenalty) {
    return penalties;
 } //submitPenalty
 
+async function unresolveProtest(leagueID, protest_id) {
+   let protests = cache[leagueID].protests;
+   const protestIndex = protests.findIndex((protest) => protest.protest_id == protest_id);
+
+   if (protestIndex == -1) {
+      logger.log("ERROR - Protest not found with ID: " + protest_id);
+      throw new Error("Protest not found");
+   } else {
+      console.log("Marking protest ", protest_id, " as unresolved");
+      protests[protestIndex].resolved = 0;
+      await jsonloader.saveProtests(leagueID, protests);
+      return protests;
+   }
+} //unresolveProtest
+
+async function resolveProtest(leagueID, protest_id) {
+   let protests = cache[leagueID].protests;
+   const protestIndex = protests.findIndex((protest) => protest.protest_id == protest_id);
+
+   if (protestIndex == -1) {
+      logger.log("ERROR - Protest not found with ID: " + protest_id);
+      throw new Error("Protest not found");
+   } else {
+      console.log("Marking protest ", protest_id, " as resolved");
+      protests[protestIndex].resolved = 1;
+      await jsonloader.saveProtests(leagueID, protests);
+      return protests;
+   }
+} //resolveProtest
+
 async function deletePenalty(leagueID, penalty_id) {
    let penalties = cache[leagueID].penalties;
    const penaltyIndex = penalties.findIndex((penalty) => penalty.penalty_id == penalty_id);
@@ -613,6 +643,8 @@ exports.getFilteredClassTotals = getFilteredClassTotals;
 exports.getFilteredResults = getFilteredResults;
 exports.getUnresolvedProtests = getUnresolvedProtests;
 exports.submitProtest = submitProtest;
+exports.unresolveProtest = unresolveProtest;
+exports.resolveProtest = resolveProtest;
 exports.submitPenalty = submitPenalty;
 exports.deletePenalty = deletePenalty;
 exports.submitStewardsPenalty = submitStewardsPenalty;

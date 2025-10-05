@@ -100,7 +100,7 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].protests));
-         break;   
+         break;
 
       case "stewarding":
          res.cookie('leagueid', reqLeagueID);
@@ -116,6 +116,12 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.cookie('leagueid', reqLeagueID);
          res.sendFile(path.join(__dirname, '/html/penalties_admin.html'));
          break;
+
+      case "protests_admin":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/protests_admin.html'));
+         break;
+
 
       case "session":
          res.cookie('leagueid', reqLeagueID);
@@ -359,7 +365,7 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
             res.writeHead(200);
             res.end(JSON.stringify({ confirmation: "ok" }));
          })
-         .catch(error => console.log(error));
+            .catch(error => console.log(error));
          break;
 
       //send list of penalties to be resolved
@@ -388,6 +394,44 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
                res.end(JSON.stringify({ error: error.message }));
             });
          }
+         break;
+
+      case "unresolveprotest":
+         var protest_id = -1;
+         console.log("Unresolve Protest Request Body : ", req.body);
+         protest_id = JSON.parse(req.body.protest_id);
+         console.log("Unresolve Protest Received : ", protest_id);
+         leaguedata.unresolveProtest(reqLeagueID, protest_id).then((result) => {
+            leaguedata.cache[reqLeagueID].protests = result;
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify({ confirmation: "ok" }));
+         })
+            .catch(error => {
+               console.log(error);
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(500);
+               res.end(JSON.stringify({ error: error.message }));
+            });
+         break;
+
+      case "resolveprotest":
+         var protest_id = -1;
+         console.log("Resolve Protest Request Body : ", req.body);
+         protest_id = JSON.parse(req.body.protest_id);
+         console.log("Resolve Protest Received : ", protest_id);
+         leaguedata.resolveProtest(reqLeagueID, protest_id).then((result) => {
+            leaguedata.cache[reqLeagueID].protests = result;
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify({ confirmation: "ok" }));
+         })
+            .catch(error => {
+               console.log(error);
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(500);
+               res.end(JSON.stringify({ error: error.message }));
+            });
          break;
 
       default:

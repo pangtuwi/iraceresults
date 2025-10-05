@@ -1,0 +1,88 @@
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="/style.css">
+   <script src="/jquery-3.7.1.js"></script>
+   <script src="/jquery.redirect.js"></script>
+   <script src="/protests_admin.js"></script>
+</head>
+
+<style>
+   .header_img {
+      height: 80px;
+      vertical-align: middle;
+      background-position: center;
+      background-size: contain;
+      background-image: url('header.png');
+   }
+</style>
+
+<body>
+   <div class="header_img"></div>
+   <div class="title">
+      Protests Administration
+   </div>
+
+   <div class="narrow_table">
+      <div class="table" id="filter_table">
+         <div class="row header red">
+            <div class="cell">Select Data to Display</div>
+            <div class="cell"></div>
+         </div>
+         <div class="row">
+            <div class="cell" data-title="Row">Driver &nbsp; <select id="driver_select" ></select>&nbsp; Filter:<input
+                  type="search" id="driver_search" /></div>
+
+            <div class="cell" data-title="Row">Round &nbsp; <select id="round_select" ></select>
+            </div>
+         </div>
+         <div class="row">
+            <div class="cell" data-title="Row">Status &nbsp; <select id="status_select">
+               <option value="all">All Protests</option>
+               <option value="0">Unresolved Only</option>
+               <option value="1">Resolved Only</option>
+            </select>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="full_width_table">
+      <div class="table" id="protests_displayed">
+         <div class="row">
+            <div class="cell row header blue" data-title="Row">
+               ID
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Round
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Event
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Protesting Driver
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Protested Driver
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Lap
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Corner
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Driver Statement
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Status
+            </div>
+            <div class="cell row header blue" data-title="Row">
+               Action
+            </div>
+         </div>
+      </div>
+   </div>
+
+</body>

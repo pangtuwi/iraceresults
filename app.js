@@ -1,3 +1,5 @@
+// Load environment variables from .env file
+require('dotenv').config();
 
 console.log("= = = = = = NodeJS running app.js Express version of iRaceResults = = = = = =");
 
@@ -8,6 +10,7 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
 //my app requirements
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
@@ -15,14 +18,41 @@ var admin = require('./admin.js');
 var protest = require('./protest.js');
 var register = require('./register.js');
 var logger = require('./logger.js');
+var auth = require('./auth.js');
+var authRoutes = require('./authRoutes.js');
 
+// Authentication configuration
+var authConfig = {
+   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID',
+   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || 'YOUR_GOOGLE_CLIENT_SECRET',
+   GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:' + config.port + '/auth/google/callback',
+   SESSION_SECRET: process.env.SESSION_SECRET || 'iraceresults-secret-change-this-in-production'
+};
 
 app.use(bodyParser.urlencoded({ extended: false })); //To parse URL encoded data
 app.use(bodyParser.json());//To parse json data
 app.use(cookieParser());//To Parse Cookies
+
+// Session middleware (must be before passport)
+app.use(session({
+   secret: authConfig.SESSION_SECRET,
+   resave: false,
+   saveUninitialized: false,
+   cookie: {
+      secure: false, // Set to true if using HTTPS
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+   }
+}));
+
+// Initialize Passport authentication
+auth.initializePassport(app, authConfig);
+
 app.use(express.static('script'));
 app.use(express.static('html'));
 app.use(express.static('css'));
+
+// Authentication Routes
+app.use('/auth', authRoutes);
 
 // Custom Routes
 app.use('/admin', admin);

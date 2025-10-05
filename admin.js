@@ -11,8 +11,11 @@ var logger = require('./logger.js');
 var config = require('./appconfig.js');
 var editor = require('./editor2.js');  // editor2.js includes cache functionality
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
+var auth = require('./auth.js');
 
-//Admin Middleware
+//Admin Middleware - Authentication required
+router.use(auth.ensureAuthenticated);
+
 router.use(function (req, res, next) {
    console.log("An ADMIN request received at " + Date.now() + " for " + JSON.stringify(req.url));
    next();
@@ -24,7 +27,7 @@ router.get('/', function (req, res) {
    res.send('You need to specify the League you wish to administer.');
 });
 
-router.get('/:leagueid', function (req, res) {
+router.get('/:leagueid', auth.ensureAuthorizedForLeague, function (req, res) {
    console.log("Admin request for /:leagueid   :", req.params.leagueid);
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    if (config.leagueIDs.includes(reqLeagueiD)) {
@@ -37,7 +40,7 @@ router.get('/:leagueid', function (req, res) {
    }
 });
 
-router.get('/:leagueid/:route', function (req, res) {
+router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
 
    switch (req.params.route) {
@@ -179,7 +182,7 @@ router.post('/', function (req, res) {
    res.send('No POST route on admin.');
 });
 
-router.post('/:leagueid/:route', function (req, res) {
+router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
    switch (req.params.route) {
 

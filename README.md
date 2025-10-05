@@ -55,3 +55,15 @@ Each league has a folder in `/data/{LEAGUEID}/` containing:
 - Output results in `results/` subfolder
 - Web interface files in `html/`, `img/`, `css/`, and `script/` folders
 
+## Authentication
+
+The admin interface is secured with Google OAuth 2.0 authentication. Only users with email addresses listed in `/data/{leagueid}/adminusers.json` can access admin features.
+
+**Setup Instructions:** See [AUTHENTICATION_SETUP.md](AUTHENTICATION_SETUP.md) for detailed configuration instructions.
+
+**Quick Start:**
+1. Copy `.env.example` to `.env`
+2. Configure Google OAuth credentials in `.env`
+3. Add authorized admin emails to `/data/{leagueid}/adminusers.json`
+4. Access admin at `/admin/{leagueid}` (will redirect to login if not authenticated)
+

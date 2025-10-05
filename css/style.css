@@ -10,38 +10,40 @@ body {
 }
 
 .title {
-   margin: 0 auto;
-   padding-left: 10px;
-   padding-right: 10px;
-   padding-top: 10px;
-   padding-bottom: 10px;
-   color: white;
-   font-size: large;
- }
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: white;
+  font-size: large;
+}
 
- .menu {
-   margin: 0 auto;
-   padding-left: 10px;
-   padding-right: 10px;
-   padding-top: 10px;
-   padding-bottom: 20px;
-   color: white;
-   font-size: large;
- }
- 
- iframe{      
-   display: block;  /* iframes are inline by default */   
-   margin: 0px; 
-   padding: 0px; 
-   height: 90%; 
-   width: 100%;
-   border: 2px solid lightsteelblue;
-   background: lightsteelblue; /* Just for styling */
- }   
+.menu {
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  color: white;
+  font-size: large;
+}
 
- .leagueid {
-   font-weight: bold;
- }
+iframe {
+  display: block;
+  /* iframes are inline by default */
+  margin: 0px;
+  padding: 0px;
+  height: 90%;
+  width: 100%;
+  border: 2px solid lightsteelblue;
+  background: lightsteelblue;
+  /* Just for styling */
+}
+
+.leagueid {
+  font-weight: bold;
+}
 
 .wrapper {
   margin: 0 auto;
@@ -49,66 +51,68 @@ body {
   max-width: 1200px;
   color: black;
   max-height: 600px;
-  overflow-y:auto;
+  overflow-y: auto;
 }
 
 .full_width_table {
-   padding: 10px;
-   width: 98%;
-   float: left;
-   color: black;
+  padding: 10px;
+  width: 98%;
+  float: left;
+  color: black;
 }
 
 .narrow_table {
-   padding: 10px;
-   width: 50%;
-   float: left;
-   color: black;
+  padding: 10px;
+  width: 50%;
+  float: left;
+  color: black;
 }
 
 .wrapperconf {
-   margin: 0 auto;
-   padding: 20px;
-   max-width: 1200px;
-   color: white;
-   max-height: 600px;
-   overflow-y:auto;
- }
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px;
+  color: white;
+  max-height: 600px;
+  overflow-y: auto;
+}
 
 .left_wrap {
-   padding: 20px;
-   width: 55%;
-   float: left;
-   color: lightgrey;
+  padding: 20px;
+  width: 55%;
+  float: left;
+  color: lightgrey;
 }
 
 .right_wrap {
-   padding: 20px;
-   width: 35%;
-   float: left;
-   color: lightgrey;
+  padding: 20px;
+  width: 35%;
+  float: left;
+  color: lightgrey;
 }
 
 
 .left_wrap_narrow {
-   padding: 10px;
-   width: 35%;
-   float: left;
-   color: lightgrey;
+  padding: 10px;
+  width: 35%;
+  float: left;
+  color: lightgrey;
 }
 
 .right_wrap_wide {
-   padding: 10px;
-   width: 55%;
-   float: left;
-   color: lightgrey;
+  padding: 10px;
+  width: 55%;
+  float: left;
+  color: lightgrey;
 }
+
 .table {
   margin: 0 0 20px 0;
   width: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   display: table;
 }
+
 @media screen and (max-width: 580px) {
   .table {
     display: block;
@@ -139,21 +143,21 @@ body {
 }
 
 input {
-   width: 100px;
+  width: 100px;
 }
 
 a {
-   color: lightgray;
-   text-decoration: none;
- }
- 
- a:hover {
-   text-decoration: underline;
- }
- 
- a:active {
-   color: white;
- }
+  color: lightgray;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:active {
+  color: white;
+}
 
 @media screen and (max-width: 580px) {
   .row {
@@ -169,28 +173,50 @@ a {
 }
 
 .comment {
-   font-size: 12px;
-   font-style: italic;
-   padding-left: 20px;
+  font-size: 12px;
+  font-style: italic;
+  padding-left: 20px;
 }
 
 .submit {
-   text-align: right;
+  text-align: right;
 }
 
 button {
-   width: 70px;
-   float: right;
-   margin-left: 10px;
+  width: 70px;
+  float: right;
+  margin-left: 10px;
+}
+
+button:hover {
+  background-color: lightsteelblue;
+}
+
+#status-message {
+  margin-left: 250px;
+  margin-top: 10px;
+  margin-right: 250px;
+  padding: 10px;
+  display: none;
+}
+
+.success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.error {
+  background-color: #f44336;
+  color: white;
 }
 
 .menuitem {
-   width: 100px;
-   float: right;
-   text-align: center;
-   margin-left: 10px;
-   font-weight: 500;
-   font-size: medium;
+  width: 100px;
+  float: right;
+  text-align: center;
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: medium;
   color: #ffffff;
 
 }

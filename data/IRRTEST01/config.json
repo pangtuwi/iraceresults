@@ -1,4 +1,5 @@
 {
+   "league_description": "IRACERESULTS Test League 01",
    "apply_drop_scores" : "FALSE",
    "no_drop_scores_rounds" : [10],
    "class_to_add_new_drivers_to" : 4, 

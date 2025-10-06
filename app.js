@@ -80,6 +80,11 @@ app.get('/cache', function (req, res) {
    res.send(JSON.stringify(leaguedata.cache));
 });
 
+app.get('/leaguelist', function (req, res) {
+   res.send(JSON.stringify(leaguedata.getLeagueList()));
+});
+
+
 // https://www.tutorialspoint.com/expressjs/expressjs_url_building.htm
 app.get('/:leagueid', function (req, res) {
    const reqLeagueiD = req.params.leagueid.toUpperCase();

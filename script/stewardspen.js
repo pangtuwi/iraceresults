@@ -143,7 +143,7 @@ function getStewardsDecision(){
       penalty.positions = parseInt($("#penalty_positions").val());    // TO INT
       penalty.licence_points = parseInt($("#penalty_licence_points").val());  // TO INT
       penalty.championship_points = parseInt($("#penalty_championship_points").val()); // TO INT
-      if ($("#penalty_disqualified").text() == "Yes") {
+      if ($("#penalty-disqualify").children("option:selected").text() == "Yes") {
          penalty.disqualified = 1
       } else {
          penalty.disqualified = 0

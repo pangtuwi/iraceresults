@@ -301,7 +301,7 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
 
       //disqualification
       if (penalty.disqualified == 1) {
-         logger.log(" - - - Processing DISQUALIFICATION Penalty for:" + penalty.display_name, penalty.cust_id, penalty_no);
+         logger.log(" - - - Processing DISQUALIFICATION Penalty for:" + penalty.display_name, penalty.cust_id, penalty.penalty_id);
          let driver = drivers.find(item => penalty.cust_id === item.cust_id);
          let class_index = driver.classnumber - 1;
          let thisClass = classResults[class_index].positions;
@@ -368,8 +368,13 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
             else if (x < y) return -1
             else return 0;
          }
+           /*       if (penalty.penalty_id > 3999 && class_index == 0) {
+                console.log(thisClass);
+            }  */
          thisClass = thisClass.sort(sorter_FinishingPositionAfterPenalties);
-
+         if (penalty.penalty_id > 3999 && class_index == 0 && (penalty.round_no == 4)) {
+                console.log(thisClass);
+            }  
          // Move all drivers with finish_position_in_class_after_penalties == -1 to the end of thisClass
          /*     let newClassOrdered = [
                  ...thisClass.filter(driver => driver.finish_position_in_class_after_penalties !== -1),
@@ -383,12 +388,19 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
 
          if (driverPenalised.finished == 0) {
             logger.log(' - - - - ' + driver.display_name + ' did not Finish, position penalty not applied', driver.cust_id, penalty.round_no);
+            console.log(' - - - - ' + driver.display_name + ' did not Finish, position penalty not applied', driver.cust_id, penalty.round_no);
             //thisClass[driverPos].finish_position_after_penalties = -1;
             //thisClass[driverPos].finish_position_in_class_after_penalties = -1;
             //abouve not required as already set.
          } else if (driverPenalised.finish_position_in_class_after_penalties == lastPos) {
             logger.log(' - - - - ' + driver.display_name + " in last position, position penalty not applied", driver.cust_id, penalty.round_no)
+            console.log(' - - - - ' + driver.display_name + " in last position, position penalty not applied", driver.cust_id, penalty.round_no)
          } else {
+            if ((penalty.display_name == "Dominik Pester") && (penalty.round_no == 4)) {
+                console.log(thisClass);
+            }  
+
+ 
             let countPositionsAffected = Math.min(penalty.positions, lastPos - driverPos - 1);
             for (let i = driverPos; i < driverPos + countPositionsAffected; i++) {
                thisClass[i] = thisClass[i + 1];
@@ -399,8 +411,15 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
             logger.log(' - - - - ' + driver.display_name + ": Penalty of " + countPositionsAffected + " positions applied", driver.cust_id, penalty.round_no);
             thisClass[driverPos + countPositionsAffected].finish_position_after_penalties = driverPenalised.finish_position + penalty.positions;
             thisClass[driverPos + countPositionsAffected].finish_position_in_class_after_penalties = driverPenalised.finish_position_in_class + penalty.positions;
+            if (penalty.penalty_id > 3999 && class_index == 0) {
+                console.log(thisClass);
+                console.log(' - - - - ' + driver.display_name + ": Penalty of " + countPositionsAffected + " positions applied", driver.cust_id, penalty.round_no);
+            }  
          }
-         //console.log(thisClass);
+
+        /* if (penalty.display_name == "Dominik Pester") {
+            console.log(thisClass);
+         }  */
       }
 
 

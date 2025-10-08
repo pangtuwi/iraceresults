@@ -1827,10 +1827,10 @@
         "licence_points": 0,
         "championship_points": 0,
         "disqualified": 1,
-        "stewards_comments": "9x Penalty points in one race",
-        "penalty_id": 4083,
+        "stewards_comments": "9x penalty points in one Race - DQ",
+        "penalty_id": 4082,
         "round_id": 4,
-        "timestamp": 1759847705592,
+        "timestamp": 1759941100808,
         "session_no": 2
     }
 ]

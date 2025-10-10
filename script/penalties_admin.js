@@ -1,5 +1,67 @@
 var penalties = [];
 var penalties_filtered = [];
+var currentEditingPenalty = null;
+
+// Modal functions
+function showModal(title, message, type = 'info') {
+    const modal = $("#modal-overlay");
+    const icon = $("#modal-icon");
+    const titleEl = $("#modal-title");
+    const messageEl = $("#modal-message");
+    const btn = $("#modal-btn");
+
+    titleEl.text(title);
+    messageEl.text(message);
+
+    // Set icon and button style based on type
+    if (type === 'error') {
+        icon.text('❌');
+        btn.removeClass('error').addClass('error');
+    } else if (type === 'success') {
+        icon.text('✅');
+        btn.removeClass('error');
+    } else {
+        icon.text('ℹ️');
+        btn.removeClass('error');
+    }
+
+    modal.addClass('show');
+}
+
+function hideModal() {
+    $("#modal-overlay").removeClass('show');
+}
+
+// Confirmation modal functions
+function showConfirm(title, message, onConfirm, onCancel) {
+    const confirmModal = $("#confirm-modal-overlay");
+    const titleEl = $("#confirm-title");
+    const messageEl = $("#confirm-message");
+
+    titleEl.text(title);
+    messageEl.text(message);
+
+    // Remove any existing handlers to prevent multiple bindings
+    $("#confirm-yes-btn").off("click");
+    $("#confirm-no-btn").off("click");
+
+    // Set up new handlers
+    $("#confirm-yes-btn").on("click", function () {
+        hideConfirm();
+        if (onConfirm) onConfirm();
+    });
+
+    $("#confirm-no-btn").on("click", function () {
+        hideConfirm();
+        if (onCancel) onCancel();
+    });
+
+    confirmModal.addClass('show');
+}
+
+function hideConfirm() {
+    $("#confirm-modal-overlay").removeClass('show');
+}
 
 function getDrivers() {
     console.log("fetching drivers");
@@ -176,11 +238,15 @@ function deletePenalty(penalty_id) {
                 penalties = penalties.filter(penalty => penalty.penalty_id != penalty_id);
                 penalties_filtered = penalties_filtered.filter(penalty => penalty.penalty_id != penalty_id);
                 displayPenalties();
+                showModal("Success", "Penalty deleted successfully", "success");
             } else {
-                alert("There was a problem deleting the penalty");
+                showModal("Error", "There was a problem deleting the penalty", "error");
             }
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            console.log(error);
+            showModal("Error", "Failed to delete penalty: " + error, "error");
+        })
 } //delete_penalty
 
 function limitString(string = '', limit = 0) {
@@ -206,7 +272,8 @@ function displayPenalties() {
         '<div class="cell row header blue" data-title="Row">Positions</div>' +
         '<div class="cell row header blue" data-title="Row">Points</div>' +
         '<div class="cell row header blue" data-title="Row">DQ</div>' +
-        '<div class="cell row header blue" data-title="Row">ACTION</div>' +
+        '<div class="cell row header blue" data-title="Row">Edit</div>' +
+        '<div class="cell row header blue" data-title="Row">Delete</div>' +
         '</div>';
     var tableHTML = tableTopHtml;
     var rowcounter = 0;
@@ -225,6 +292,7 @@ function displayPenalties() {
             '<div class="cell" data-title="Row">' + penalty.positions + '</div>' +
             '<div class="cell" data-title="Row">' + penalty.championship_points + '</div>' +
             '<div class="cell" data-title="Row">' + penalty.disqualified + '</div>' +
+            '<div class="cell" data-title="Row" style="cursor: pointer" id="edit_penalty_' + penalty.penalty_id + '"><b>Edit</b></div>' +
             '<div class="cell" data-title="Row" style="cursor: pointer" id="delete_penalty_' + penalty.penalty_id + '"><b>Delete</b></div>' +
             '</div>';
         //replace any undefined values with &nbsp;
@@ -236,21 +304,101 @@ function displayPenalties() {
     $("#penalties_displayed").html(tableHTML);
 
     penalties_filtered.forEach(penalty => {
+        $("#edit_penalty_" + penalty.penalty_id).on("click", function () {
+            console.log("Clicked Edit for Penalty " + penalty.penalty_id);
+            showEditForm(penalty);
+        });
+
         $("#delete_penalty_" + penalty.penalty_id).on("click", function () {
-            console.log("Clicked Delete for Protest " + penalty.penalty_id);
-            // ask for confirmation before deleting
-            if (confirm("Are you sure you want to delete penalty " + penalty.penalty_id + " for " + penalty.display_name + " ?")) {
-                console.log("User confirmed deletion");
-                deletePenalty(penalty.penalty_id);
-            } else {
-                console.log("User cancelled deletion");
-                return;
-            }
-            
+            console.log("Clicked Delete for Penalty " + penalty.penalty_id);
+            // Ask for confirmation before deleting using modal
+            showConfirm(
+                "Confirm Deletion",
+                "Are you sure you want to delete penalty " + penalty.penalty_id + " for " + penalty.display_name + "?",
+                function() {
+                    // User confirmed deletion
+                    console.log("User confirmed deletion");
+                    deletePenalty(penalty.penalty_id);
+                },
+                function() {
+                    // User cancelled deletion
+                    console.log("User cancelled deletion");
+                }
+            );
         });
     });
 
 } //displayPenalties
+
+function showEditForm(penalty) {
+    currentEditingPenalty = penalty;
+
+    // Populate the form fields
+    $("#edit_display_name").text(penalty.display_name || '');
+    $("#edit_round_name").text(penalty.round_name || '');
+    $("#edit_score_event").text(penalty.score_event || '');
+    $("#edit_protesting_driver_name").text(penalty.protesting_driver_name || '');
+
+    $("#edit_lap").val(penalty.lap || '');
+    $("#edit_corner").val(penalty.corner || '');
+    $("#edit_driver_statement").val(penalty.driver_statement || '');
+    $("#edit_stewards_decision").val(penalty.stewards_decision || '');
+    $("#edit_stewards_comments").val(penalty.stewards_comments || '');
+    $("#edit_time_added").val(penalty.time_added || 0);
+    $("#edit_positions").val(penalty.positions || 0);
+    $("#edit_licence_points").val(penalty.licence_points || 0);
+    $("#edit_championship_points").val(penalty.championship_points || 0);
+    $("#edit_disqualified").val(penalty.disqualified || 0);
+
+    // Hide list view and show edit form
+    $("#penalties_list_view").hide();
+    $("#filter_table").parent().hide();
+    $("#edit_penalty_form").show();
+} //showEditForm
+
+function hideEditForm() {
+    currentEditingPenalty = null;
+
+    // Show list view and hide edit form
+    $("#edit_penalty_form").hide();
+    $("#penalties_list_view").show();
+    $("#filter_table").parent().show();
+} //hideEditForm
+
+function updatePenalty(updatedPenalty) {
+    console.log("Updating penalty ", updatedPenalty);
+    fetch('./updatepenalty', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedPenalty)
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log("Response from update penalty :", data);
+            if (data.confirmation == "ok") {
+                // Update the local penalty object
+                const penaltyIndex = penalties.findIndex(p => p.penalty_id === updatedPenalty.penalty_id);
+                if (penaltyIndex !== -1) {
+                    penalties[penaltyIndex] = updatedPenalty;
+                }
+                const filteredIndex = penalties_filtered.findIndex(p => p.penalty_id === updatedPenalty.penalty_id);
+                if (filteredIndex !== -1) {
+                    penalties_filtered[filteredIndex] = updatedPenalty;
+                }
+                hideEditForm();
+                displayPenalties();
+                showModal("Success", "Penalty updated successfully", "success");
+            } else {
+                showModal("Error", "There was a problem updating the penalty", "error");
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            showModal("Error", "Error updating penalty: " + error, "error");
+        });
+} //updatePenalty
 
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
     getDrivers();
@@ -258,4 +406,61 @@ $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jq
     getPenalties();
     setFilters();
     displayPenalties();
+
+    // Cancel edit button handler
+    $("#cancel_edit_btn").on("click", function () {
+        hideEditForm();
+    });
+
+    // Modal close button handler
+    $("#modal-btn").on("click", function () {
+        hideModal();
+    });
+
+    // Close modal when clicking overlay
+    $("#modal-overlay").on("click", function (e) {
+        if (e.target === this) {
+            hideModal();
+        }
+    });
+
+    // Close confirm modal when clicking overlay
+    $("#confirm-modal-overlay").on("click", function (e) {
+        if (e.target === this) {
+            hideConfirm();
+        }
+    });
+
+    // Save penalty button handler
+    $("#save_penalty_btn").on("click", function () {
+        if (!currentEditingPenalty) {
+            showModal("Error", "No penalty is being edited", "error");
+            return;
+        }
+
+        // Gather updated penalty data
+        var updatedPenalty = {
+            penalty_id: currentEditingPenalty.penalty_id,
+            cust_id: currentEditingPenalty.cust_id,
+            display_name: currentEditingPenalty.display_name,
+            round_no: currentEditingPenalty.round_no,
+            round_name: currentEditingPenalty.round_name,
+            score_event: currentEditingPenalty.score_event,
+            session_no: currentEditingPenalty.session_no,
+            protesting_driver_name: currentEditingPenalty.protesting_driver_name,
+            lap: $("#edit_lap").val(),
+            corner: $("#edit_corner").val(),
+            driver_statement: $("#edit_driver_statement").val(),
+            stewards_decision: $("#edit_stewards_decision").val(),
+            stewards_comments: $("#edit_stewards_comments").val(),
+            time_added: parseInt($("#edit_time_added").val()) || 0,
+            positions: parseInt($("#edit_positions").val()) || 0,
+            licence_points: parseInt($("#edit_licence_points").val()) || 0,
+            championship_points: parseInt($("#edit_championship_points").val()) || 0,
+            disqualified: parseInt($("#edit_disqualified").val()) || 0,
+            timestamp: currentEditingPenalty.timestamp
+        };
+
+        updatePenalty(updatedPenalty);
+    });
 }); //document is ready

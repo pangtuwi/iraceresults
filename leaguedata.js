@@ -475,6 +475,20 @@ async function resolveProtest(leagueID, protest_id) {
    }
 } //resolveProtest
 
+async function updatePenalty(leagueID, updatedPenalty) {
+   let penalties = cache[leagueID].penalties;
+   const penaltyIndex = penalties.findIndex((penalty) => penalty.penalty_id == updatedPenalty.penalty_id);
+   if (penaltyIndex == -1) {
+      logger.log("ERROR - Penalty not found with ID: " + updatedPenalty.penalty_id);
+      throw new Error("Penalty not found");
+   } else {
+      console.log("Updating penalty ", updatedPenalty.penalty_id);
+      penalties[penaltyIndex] = updatedPenalty;
+      await jsonloader.savePenalties(leagueID, penalties);
+      return penalties;
+   }
+} //updatePenalty
+
 async function deletePenalty(leagueID, penalty_id) {
    let penalties = cache[leagueID].penalties;
    const penaltyIndex = penalties.findIndex((penalty) => penalty.penalty_id == penalty_id);
@@ -646,6 +660,7 @@ exports.submitProtest = submitProtest;
 exports.unresolveProtest = unresolveProtest;
 exports.resolveProtest = resolveProtest;
 exports.submitPenalty = submitPenalty;
+exports.updatePenalty = updatePenalty;
 exports.deletePenalty = deletePenalty;
 exports.submitStewardsPenalty = submitStewardsPenalty;
 exports.addDriver = addDriver;

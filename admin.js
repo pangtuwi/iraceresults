@@ -354,6 +354,29 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
          });
          break;
 
+      case "updatepenalty":
+         const updatedPenalty = req.body;
+         console.log("Update Penalty Request Body : ", updatedPenalty);
+         if (!updatedPenalty.penalty_id) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "penalty_id is required" }));
+            return;
+         }
+         leaguedata.updatePenalty(reqLeagueID, updatedPenalty).then((result) => {
+            leaguedata.cache[reqLeagueID].penalties = result;
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify({ confirmation: "ok" }));
+         })
+            .catch(error => {
+               console.log(error);
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(500);
+               res.end(JSON.stringify({ error: error.message }));
+            });
+         break;
+
       case "deletepenalty":
          var penalty_id = -1;
          console.log("Delete Penalty Request Body : ", req.body);

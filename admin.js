@@ -12,6 +12,7 @@ var config = require('./appconfig.js');
 var editor = require('./editor2.js');  // editor2.js includes cache functionality
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
 var auth = require('./auth.js');
+var discord = require('./discord.js');
 
 //Admin Middleware - Authentication required
 router.use(auth.ensureAuthenticated);
@@ -177,6 +178,21 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].config));
+         break;
+
+      case "discordtablesupdated":
+         console.log("Request received to notify Discord that tables have been updated");
+         discord.sendWebhookMessage("Tables have been updated : http://iraceresults.co.uk/"+reqLeagueID+"/").then((result) => {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify({ confirmation: "ok" }));
+         })
+            .catch(error => {
+               console.log(error);
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(500);
+               res.end(JSON.stringify({ error: error.message }));
+            });
          break;
 
       default:
@@ -456,6 +472,25 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
                res.end(JSON.stringify({ error: error.message }));
             });
          break;
+
+      case "discordmessage":
+         var message = "";
+         console.log("Discord Message Request Body : ", req.body);
+         message = req.body.message;
+         console.log("Discord Message Received : ", message);
+         discord.sendWebhookMessage(message).then((result) => {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify({ confirmation: "ok" }));
+         })
+            .catch(error => {
+               console.log(error);
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(500);
+               res.end(JSON.stringify({ error: error.message }));
+            });
+         break;
+
 
       default:
          res.send('UNKNOWN ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);

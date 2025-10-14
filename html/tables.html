@@ -21,7 +21,12 @@ https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascr
       <table class = "score-table" >
          <tr class="header-tr">
             <td id="header-td", class = "header-td"; colspan="100%"></td>
-         </tr> 
+         </tr>
+         <tr class="recalc-info-tr" id="recalc-info-tr" style="display: none;">
+            <td colspan="100%" class="recalc-info-td">
+               <div id="recalc-info" class="recalc-info"></div>
+            </td>
+         </tr>
          <tr class="button-tr" id="classButtons">
             <td width="15%"><button class="button-class-select" id="btn0" onclick="getData(0)"> Gold/Pro</button></td>
             <td width="15%"><button class="button-class-select" id="btn1" onclick="getData(1)"> Silver/P-Am</button></td>

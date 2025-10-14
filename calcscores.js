@@ -372,9 +372,9 @@ function applyPenalties(rounds, classResults, drivers, penalties) {
                 console.log(thisClass);
             }  */
          thisClass = thisClass.sort(sorter_FinishingPositionAfterPenalties);
-         if (penalty.penalty_id > 3999 && class_index == 0 && (penalty.round_no == 4)) {
+         /*(if (penalty.penalty_id > 3999 && class_index == 0 && (penalty.round_no == 4)) {
                 console.log(thisClass);
-            }  
+            }  */
          // Move all drivers with finish_position_in_class_after_penalties == -1 to the end of thisClass
          /*     let newClassOrdered = [
                  ...thisClass.filter(driver => driver.finish_position_in_class_after_penalties !== -1),

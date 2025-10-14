@@ -161,6 +161,33 @@ async function saveConfig(leagueid, config) {
    await fs.writeFile(filename, JSON.stringify(config, null, 3));
 }
 
+async function getRecalculations(leagueid) {
+   try {
+      const data = await fs.readFile('./data/' + leagueid + '/recalculations.json', { encoding: 'utf8' });
+      const obj = JSON.parse(data);
+      return obj;
+   } catch (error) {
+      // If file doesn't exist, return empty array
+      if (error.code === 'ENOENT') {
+         return [];
+      }
+      throw error;
+   }
+}
+
+async function saveRecalculation(leagueid, recalcEntry) {
+   let filename = './data/' + leagueid + '/recalculations.json';
+
+   // Get existing recalculations
+   let recalculations = await getRecalculations(leagueid);
+
+   // Add new entry to the beginning (most recent first)
+   recalculations.unshift(recalcEntry);
+
+   // Save updated array
+   await fs.writeFile(filename, JSON.stringify(recalculations, null, 3));
+}
+
 exports.getLeagueConfig = getLeagueConfig;
 //exports.getSeason = getSeason; 
 exports.getRounds = getRounds;
@@ -181,3 +208,5 @@ exports.saveProtests = saveProtests;
 exports.savePenalties = savePenalties;
 exports.saveRounds = saveRounds;
 exports.saveConfig = saveConfig;
+exports.getRecalculations = getRecalculations;
+exports.saveRecalculation = saveRecalculation;

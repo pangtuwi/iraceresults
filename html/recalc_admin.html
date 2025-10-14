@@ -1,0 +1,75 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/jquery-3.7.1.js"></script>
+    <script src="/recalc_admin.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<style>
+    .form-row {
+        margin: 15px 0;
+    }
+
+    .form-row label {
+        display: inline-block;
+        width: 250px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .form-row input {
+        width: 400px;
+        padding: 5px;   
+    }
+
+    .form-row select {
+        width: 100px;
+        padding: 5px;
+    }
+
+    .help-text {
+        display: block;
+        margin-left: 250px;
+        font-size: 0.9em;
+        color: #ccc;
+        margin-top: 5px;
+    }
+</style>
+
+<body>
+    <div class="title">
+        Recalculate : League Tables Recalculation
+    </div>
+
+    <div style="padding: 20px;">
+        <form id="recalculation-form">
+
+            <div class="form-row">
+                <label for="reason_for_recalculation">Reason for recalculation:</label>
+                <input type="text" width="400px" id="reason_for_recalculation" name="reason_for_recalculation" maxlength="200" required>
+                <span class="help-text">Why the recalculation was necessary, i.e. "Including penalties from
+                    Daytona"</span>
+            </div>
+
+
+            <div class="form-row">
+                <label for="post_to_discord">Post to Discord:</label>
+                <select id="post_to_discord" name="post_to_discord">
+                    <option value="FALSE">FALSE</option>
+                    <option value="TRUE">TRUE</option>
+                </select>
+                <span class="help-text">Whether to post updates to Discord</span>
+            </div>
+
+
+            <button type="submit" style="width: 120px;">Recalculate</button>
+            <div id="status-message"></div>
+        </form>
+    </div>
+
+</body>
+
+</html>

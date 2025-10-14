@@ -236,6 +236,26 @@ function generateClassButtons() {
 
 }//generateClassButtons
 
+function getLastRecalculation() {
+   fetch(baseURI + 'lastrecalc')
+      .then(res => res.json())
+      .then(data => {
+         if (data && data.formattedDate) {
+            const recalcInfo = document.getElementById('recalc-info');
+            const recalcRow = document.getElementById('recalc-info-tr');
+
+            recalcInfo.innerHTML =
+               'Tables last updated at ' + data.formattedDate + ' by ' + data.userDisplayName +
+               (data.reason && data.reason !== "No reason given" ? ' &nbsp; &nbsp; Reason for Update: ' + data.reason : '');
+
+            recalcRow.style.display = '';
+         }
+      })
+      .catch(error => {
+         console.log('Error fetching last recalculation:', error);
+      });
+}
+
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
    //console.log ("document is ready");
 
@@ -246,5 +266,6 @@ $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jq
    //console.log(baseURI);
    getLeagueImages();
    getClassTotals();
+   getLastRecalculation();
 
 });

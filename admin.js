@@ -18,9 +18,30 @@ var discord = require('./discord.js');
 router.use(auth.ensureAuthenticated);
 
 router.use(function (req, res, next) {
-   console.log("An ADMIN request received at " + Date.now() + " for " + JSON.stringify(req.url));
+   //console.log("An ADMIN request received at " + Date.now() + " for " + JSON.stringify(req.url));
    next();
 });
+
+// Helper function to format date and time in readable format
+// Returns format like "9:45pm on Tuesday 14th of October"
+function formatDateTimeReadable(date) {
+   const day = date.getDate();
+   const suffix = (day === 1 || day === 21 || day === 31) ? 'st' : (day === 2 || day === 22) ? 'nd' : (day === 3 || day === 23) ? 'rd' : 'th';
+
+   const hours = date.getHours();
+   const minutes = date.getMinutes();
+   const ampm = hours >= 12 ? 'pm' : 'am';
+   const displayHours = hours % 12 || 12;
+   const displayMinutes = minutes.toString().padStart(2, '0');
+   const timeString = displayHours + ':' + displayMinutes + ampm;
+
+   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+   const dayName = dayNames[date.getDay()];
+   const monthName = monthNames[date.getMonth()];
+
+   return timeString + ' on ' + dayName + ' ' + day + suffix + ' of ' + monthName;
+}
 
 //admin routes
 
@@ -29,7 +50,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/:leagueid', auth.ensureAuthorizedForLeague, function (req, res) {
-   console.log("Admin request for /:leagueid   :", req.params.leagueid);
+   //console.log("Admin request for /:leagueid   :", req.params.leagueid);
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    if (config.leagueIDs.includes(reqLeagueiD)) {
       //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league admin');
@@ -123,6 +144,11 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.sendFile(path.join(__dirname, '/html/protests_admin.html'));
          break;
 
+      case "recalc_admin":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/recalc_admin.html'));
+         break;   
+
 
       case "session":
          res.cookie('leagueid', reqLeagueID);
@@ -182,7 +208,7 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
 
       case "discordtablesupdated":
          console.log("Request received to notify Discord that tables have been updated");
-         discord.sendWebhookMessage("Tables have been updated : http://iraceresults.co.uk/"+reqLeagueID+"/").then((result) => {
+         discord.sendWebhookMessage("Tables have been updated : http://iraceresults.co.uk/" + reqLeagueID + "/").then((result) => {
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify({ confirmation: "ok" }));
@@ -489,6 +515,59 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
                res.writeHead(500);
                res.end(JSON.stringify({ error: error.message }));
             });
+         break;
+
+      case "recalculate":
+         console.log("have been asked to recalculate");
+         console.log("Recalculate Message Request Body : ", req.body);
+         const reason_for_recalculation = req.body.reason_for_recalculation;
+         const post_to_discord = req.body.post_to_discord;
+         const recalcTimestamp = new Date();
+
+         logger.log("Recalculation requested by " + req.user.displayName + " (" + req.user.email + ")");
+         //console.log("Recalculation requested by " + req.user.displayName + " (" + req.user.email + ")");
+         if (reason_for_recalculation && reason_for_recalculation.length > 0) {
+            logger.log("Reason for recalculation: " + reason_for_recalculation);
+         }
+
+         // Save recalculation log entry
+         const recalcEntry = {
+            timestamp: recalcTimestamp.toISOString(),
+            formattedDate: formatDateTimeReadable(recalcTimestamp),
+            userDisplayName: req.user.displayName,
+            userEmail: req.user.email,
+            reason: reason_for_recalculation || "No reason given"
+         };
+
+         var jsonloader = require('./appjsonloader');
+         jsonloader.saveRecalculation(reqLeagueID, recalcEntry).catch((error) => {
+            logger.log("Error saving recalculation log: " + error.message);
+         });
+
+         if (post_to_discord && post_to_discord === "TRUE") {
+            const formattedDate = formatDateTimeReadable(recalcTimestamp);
+
+            discord.sendWebhookMessage("Tables updated at " + formattedDate + " by " + req.user.displayName + 
+               " \n Updated tables  can be found at http://iraceresults.co.uk/" + reqLeagueID + "/" +
+               (reason_for_recalculation && reason_for_recalculation.length > 0 ? ". \n Reason for Update: " + reason_for_recalculation : ". No reason given.")).catch((error) => {
+               logger.log("Error sending Discord notification of recalculation: " + error.message);
+            });
+         }
+    
+         logger.clearLog();
+         leaguedata.reCalculate(reqLeagueID).then((result) => {
+            leaguedata.updateCache(reqLeagueID).then((result2) => {
+               console.log("recalculation done - sending response");
+               const recalcJSONMessage = {
+                  confirmation: "recalculated " + reqLeagueID,
+                  formattedDate: formatDateTimeReadable(recalcTimestamp),
+                  userDisplayName: req.user.displayName,
+                  userEmail: req.user.email,
+                  reason: reason_for_recalculation || "No reason given"
+               };
+               res.send(JSON.stringify(recalcJSONMessage));
+            });
+         });
          break;
 
 

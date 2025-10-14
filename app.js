@@ -208,16 +208,6 @@ app.get('/:leagueid/:route', function (req, res) {
             });
             break;
 
-         case "recalculate":
-            console.log("have been asked to recalculate");
-            logger.clearLog();
-            leaguedata.reCalculate(reqLeagueID).then((result) => {
-               leaguedata.updateCache(reqLeagueID).then((result2) => {
-                  console.log("recalculation done - sending response");
-                  res.send("recalculated " + reqLeagueID + '<br> <a href = "tables"> Reload Tables </a>');
-               });
-            });
-            break;
          case "classes":
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
@@ -258,6 +248,20 @@ app.get('/:leagueid/:route', function (req, res) {
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].drivers));
+            break;
+
+         case "lastrecalc":
+            //console.log ("processing request for last recalculation");
+            const jsonloader = require('./appjsonloader');
+            jsonloader.getRecalculations(reqLeagueID).then((recalculations) => {
+               res.setHeader("Content-Type", "application/json");
+               res.writeHead(200);
+               // Return only the most recent entry (first in array)
+               res.end(JSON.stringify(recalculations[0] || null));
+            }).catch((error) => {
+               res.statusCode = 500;
+               res.end(`Error getting recalculation data: ${error.message}`);
+            });
             break;
 
          case "penalties":

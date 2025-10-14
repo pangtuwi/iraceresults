@@ -30,7 +30,7 @@ function setMenuLinks(){
    $("#link_tables").attr("href", "/"+leagueID+"/");
    $("#link_protests").attr("href", "/admin/"+leagueID+"/protests_admin");
    $("#link_penalty").attr("href", "/admin/"+leagueID+"/stewardspen");
-   $("#link_recalculate").attr("href", "/"+leagueID+"/recalculate");
+   $("#link_recalculate").attr("href", "/admin/"+leagueID+"/recalc_admin");
    $("#link_reload").attr("href", "/"+leagueID+"/reload");
    $("#link_penalties").attr("href", "/admin/"+leagueID+"/penalties_admin");
    $("#link_session").attr("href", "/admin/"+leagueID+"/session");

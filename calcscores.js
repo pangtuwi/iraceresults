@@ -866,8 +866,80 @@ function getNewDrivers() {
 //ToDo : Class moves for Drivers
 
 //exports.getSubSessionList = getSubSessionList;
+// Calculate licence points from penalties for each driver
+function licencePointsTable(rounds, drivers, penalties, classes) {
+   logger.log("Calculating Licence Points Table");
+
+   // Initialize licence points arrays for each class (similar to classtotals.json structure)
+   let licencePointsArrays = [];
+   for (let classIndex = 0; classIndex < classes.length; classIndex++) {
+      licencePointsArrays[classIndex] = [];
+   }
+
+   // Create an object to track licence points for each driver
+   let driverLicencePoints = {};
+
+   // Initialize driver licence points with round columns
+   drivers.forEach(driver => {
+      driverLicencePoints[driver.cust_id] = {
+         Pos: 0,
+         Name: driver.display_name,
+         ID: driver.cust_id,
+         Total: 0
+      };
+
+      // Add a column for each round (use track_name from rounds)
+      rounds.forEach(round => {
+         if (round.track_name) {
+            driverLicencePoints[driver.cust_id][round.track_name] = 0;
+         }
+      });
+   });
+
+   // Iterate through all penalties and sum licence points
+   penalties.forEach(penalty => {
+      if (penalty.cust_id && penalty.licence_points && penalty.licence_points > 0) {
+         const driverRecord = driverLicencePoints[penalty.cust_id];
+         if (driverRecord) {
+            // Add to the specific round column
+            if (penalty.round_name && driverRecord[penalty.round_name] !== undefined) {
+               driverRecord[penalty.round_name] += penalty.licence_points;
+            }
+            // Add to total
+            driverRecord.Total += penalty.licence_points;
+         }
+      }
+   });
+
+   // Convert to array and sort by class, then by total licence points (descending)
+   drivers.forEach(driver => {
+      const driverData = driverLicencePoints[driver.cust_id];
+      const classIndex = driver.classnumber - 1;
+
+      if (classIndex >= 0 && classIndex < licencePointsArrays.length) {
+         licencePointsArrays[classIndex].push(driverData);
+      }
+   });
+
+   // Sort each class by Total (descending) and add position numbers
+   licencePointsArrays.forEach(classArray => {
+      classArray.sort((a, b) => b.Total - a.Total);
+
+      // Add position numbers
+      let position = 1;
+      classArray.forEach(driver => {
+         driver.Pos = position;
+         position++;
+      });
+   });
+
+   logger.log("Licence Points Table Calculated");
+   return licencePointsArrays;
+} //licencePointsTable
+
 exports.getSubSessionArray = getSubSessionArray;
 exports.calc = calc;
 exports.classResultsTable = classResultsTable;
 exports.teamsResultsTable = teamsResultsTable;
 exports.getNewDrivers = getNewDrivers;
+exports.licencePointsTable = licencePointsTable;

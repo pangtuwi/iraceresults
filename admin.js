@@ -147,8 +147,12 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
       case "recalc_admin":
          res.cookie('leagueid', reqLeagueID);
          res.sendFile(path.join(__dirname, '/html/recalc_admin.html'));
-         break;   
+         break;
 
+      case "licencepoints_admin":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/licencepoints_admin.html'));
+         break;
 
       case "session":
          res.cookie('leagueid', reqLeagueID);
@@ -193,6 +197,13 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].penalties));
+         break;
+
+      case "licencepoints":
+         console.log("processing request for licence points");
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].licencepoints));
          break;
 
       case "config":

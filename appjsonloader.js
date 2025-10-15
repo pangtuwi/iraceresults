@@ -97,11 +97,22 @@ async function getPenalties(leagueid) {
 }
 
 async function getClassTotals(leagueid) {
-   const data = await fs.readFile('./data/' + leagueid + '/classtotals.json', { encoding: 'utf8' });
-   //console.log("Penalties Loaded from json file");
-   const obj = JSON.parse(data);
-   //console.log(obj);   
-   return obj;
+   try {
+      const data = await fs.readFile('./data/' + leagueid + '/classtotals.json', { encoding: 'utf8' });
+      //console.log("Class Totals Loaded from json file");
+      const obj = JSON.parse(data);
+      //console.log(obj);
+      return obj;
+   } catch (error) {
+      if (error.code === 'ENOENT') {
+         console.log("classtotals.json not found for league ", leagueid, " - creating empty file");
+         const emptyArray = [];
+         let filename = './data/' + leagueid + '/classtotals.json';
+         await fs.writeFile(filename, JSON.stringify(emptyArray));
+         return emptyArray;
+      }
+      throw error;
+   }
 }
 
 async function getFullResults(leagueid) {
@@ -120,8 +131,27 @@ async function getTeamsTotals(leagueid) {
    const data = await fs.readFile('./data/' + leagueid + '/teamstotals.json', { encoding: 'utf8' });
    //console.log("Penalties Loaded from json file");
    const obj = JSON.parse(data);
-   //console.log(obj);   
+   //console.log(obj);
    return obj;
+}
+
+async function getLicencePoints(leagueid) {
+   try {
+      const data = await fs.readFile('./data/' + leagueid + '/licencepoints.json', { encoding: 'utf8' });
+      //console.log("Licence Points Loaded from json file");
+      const obj = JSON.parse(data);
+      //console.log(obj);
+      return obj;
+   } catch (error) {
+      if (error.code === 'ENOENT') {
+         console.log("licencepoints.json not found for league ", leagueid, " - creating empty file");
+         const emptyArray = [];
+         let filename = './data/' + leagueid + '/licencepoints.json';
+         await fs.writeFile(filename, JSON.stringify(emptyArray));
+         return emptyArray;
+      }
+      throw error;
+   }
 }
 
 async function getSubSession(leagueid, subsession_id) {
@@ -202,6 +232,7 @@ exports.getTeams = getTeams;
 exports.getSubSession = getSubSession;
 exports.getClassTotals = getClassTotals;
 exports.getTeamsTotals = getTeamsTotals;
+exports.getLicencePoints = getLicencePoints;
 exports.getFullResults = getFullResults;
 exports.getProtests = getProtests;
 exports.saveProtests = saveProtests;

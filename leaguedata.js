@@ -40,6 +40,7 @@ async function loadCache() {
       league.penalties = await jsonloader.getPenalties(leagueID);
       league.classtotals = await jsonloader.getClassTotals(leagueID);
       league.teamstotals = await jsonloader.getTeamsTotals(leagueID);
+      league.licencepoints = await jsonloader.getLicencePoints(leagueID);
       league.fullresults = await jsonloader.getFullResults(leagueID);
       league.protests = await jsonloader.getProtests(leagueID);
       cache[leagueID] = league;
@@ -48,7 +49,7 @@ async function loadCache() {
 } //loadCache
 
 async function updateCache(leagueID) {
-   let league = { "config": {}, "classes": [], "scoring": [], "points": [], "drivers": [], "teams": [], "rounds": [], "classchanges": [], "penalties": [] };
+   let league = { "config": {}, "classes": [], "scoring": [], "points": [], "drivers": [], "teams": [], "rounds": [], "classchanges": [], "penalties": [], "licencepoints": [] };
    league.config = await jsonloader.getLeagueConfig(leagueID);
    league.classes = await jsonloader.getClasses(leagueID);
    league.scoring = await jsonloader.getScoring(leagueID);
@@ -61,6 +62,7 @@ async function updateCache(leagueID) {
    league.penalties = await jsonloader.getPenalties(leagueID);
    league.classtotals = await jsonloader.getClassTotals(leagueID);
    league.teamstotals = await jsonloader.getTeamsTotals(leagueID);
+   league.licencepoints = await jsonloader.getLicencePoints(leagueID);
    league.fullresults = await jsonloader.getFullResults(leagueID);
    league.protests = await jsonloader.getProtests(leagueID);
    cache[leagueID] = league;
@@ -613,6 +615,10 @@ async function reCalculate(leagueID) {
 
       //Output Teams Results Table
       exporter.exportResultsJSON(teamsResults, "./data/" + leagueID + "/teamstotals.json");
+
+      //Calculate and Output Licence Points Table
+      const licencePoints = await calcscores.licencePointsTable(leagueData.rounds, leagueData.drivers, leagueData.penalties, leagueData.classes);
+      exporter.exportResultsJSON(licencePoints, './data/' + leagueID + '/licencepoints.json');
 
       //Save new Drivers File if updated
       if (leagueData.config.class_to_add_new_drivers_to != -1) {

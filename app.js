@@ -192,6 +192,13 @@ app.get('/:leagueid/:route', function (req, res) {
             res.end(JSON.stringify(leaguedata.cache[reqLeagueID].teamstotals));
             break;
 
+         case "licencepoints":
+            console.log("app.js GET : Getting licencepoints for league ", reqLeagueID);
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].licencepoints));
+            break;
+
          case "fullresults":
             console.log("app.js GET : Getting fullresults for league ", reqLeagueID);
             res.setHeader("Content-Type", "application/json");

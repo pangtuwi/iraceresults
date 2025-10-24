@@ -99,6 +99,16 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.end(JSON.stringify(leagueIDObj));
          break;
 
+
+      case "leaguename":
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         const reply = { leagueid: reqLeagueID, leaguename: leaguedata.cache[reqLeagueID].config.league_name };
+         console.log("Sending league name reply :", reply);
+         res.end(JSON.stringify(reply));
+         break;
+
+
       case "protests":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
@@ -558,13 +568,13 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
          if (post_to_discord && post_to_discord === "TRUE") {
             const formattedDate = formatDateTimeReadable(recalcTimestamp);
 
-            discord.sendWebhookMessage("Tables updated at " + formattedDate + " by " + req.user.displayName + 
+            discord.sendWebhookMessage("Tables updated at " + formattedDate + " by " + req.user.displayName +
                " \n Updated tables  can be found at http://iraceresults.co.uk/" + reqLeagueID + "/" +
                (reason_for_recalculation && reason_for_recalculation.length > 0 ? ". \n Reason for Update: " + reason_for_recalculation : ". No reason given.")).catch((error) => {
-               logger.log("Error sending Discord notification of recalculation: " + error.message);
-            });
+                  logger.log("Error sending Discord notification of recalculation: " + error.message);
+               });
          }
-    
+
          logger.clearLog();
          leaguedata.reCalculate(reqLeagueID).then((result) => {
             leaguedata.updateCache(reqLeagueID).then((result2) => {

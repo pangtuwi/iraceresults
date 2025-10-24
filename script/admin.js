@@ -1,12 +1,12 @@
-var leagueID = "XXXXX";
+var leagueName = "XXXXX";
 
-function getLeague() {
-   fetch('./leagueid')
+function getLeagueName() {
+   fetch('./leaguename')
       .then(res => res.json())
       .then(data => {
-         console.log("leagueid data received :", data);
-         leagueID = data.leagueid;
-         $("#leagueid").html(leagueID);
+         console.log("league name received :", data);
+         leagueName = data.leaguename;
+         $("#leagueid").html(leagueName);
          setMenuLinks();
       });
 }//getLeague
@@ -41,6 +41,7 @@ function setMenuLinks(){
 
 
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
-   getLeague();
+   console.log("Admin page ready");
+   getLeagueName();
    getUserInfo();
 });

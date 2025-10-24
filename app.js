@@ -171,6 +171,21 @@ app.get('/:leagueid/:route', function (req, res) {
             res.redirect('/' + reqLeagueID);
             break;
 
+         // Return league name
+         case "leaguename":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            const reply = { leagueid: reqLeagueID, leaguename: leaguedata.cache[reqLeagueID].config.league_name };
+            console.log("Sending league name reply :", reply);
+            res.end(JSON.stringify(reply));
+            break;
+
+         case "leagueid":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].config.league_name));
+            break;
+
          case "displayconfig":
             let displayConfig = leaguedata.getTablesDisplayConfig(reqLeagueID);
             res.setHeader("Content-Type", "application/json");

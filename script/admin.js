@@ -1,15 +1,17 @@
 var leagueName = "XXXXX";
+var leagueID = "YYYYY";
 
-function getLeagueName() {
+function getLeagueDetails() {
    fetch('./leaguename')
       .then(res => res.json())
       .then(data => {
          console.log("league name received :", data);
          leagueName = data.leaguename;
          $("#leagueid").html(leagueName);
+         leagueID = data.leagueid;
          setMenuLinks();
       });
-}//getLeague
+}//getLeagueDetails
 
 function getUserInfo() {
    fetch('/auth/status')
@@ -42,6 +44,6 @@ function setMenuLinks(){
 
 $(function () {  //document is ready    see  https://www.w3schools.com/jquery/jquery_syntax.asp
    console.log("Admin page ready");
-   getLeagueName();
+   getLeagueDetails();
    getUserInfo();
 });

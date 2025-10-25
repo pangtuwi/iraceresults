@@ -364,6 +364,56 @@ app.post('/:leagueid/:route', function (req, res) {
          res.sendFile(path.join(__dirname, '/data/' + reqLeagueID + '/irresults/' + reqSessionID + '.json'));
          break;
 
+      case "driverclass":
+         console.log("Processing driver class request");
+         console.log("Request body is ", req.body);
+         const custId = Number(req.body.cust_id);
+         const forRound = req.body.round_no ? Number(req.body.round_no) : null;
+
+         // Find driver's original class from drivers cache
+         const driver = leaguedata.cache[reqLeagueID].drivers.find(d => d.cust_id === custId);
+
+         if (!driver) {
+            res.status(404).json({
+               error: 'Driver not found',
+               cust_id: custId
+            });
+            return;
+         }
+
+         // Start with original class
+         let currentClass = driver.classnumber;
+
+         // Check for any class changes
+         const classChanges = leaguedata.cache[reqLeagueID].classchanges.filter(
+            change => change.cust_id === custId
+         );
+
+         if (classChanges.length > 0) {
+            // Sort class changes by round number
+            const sortedChanges = classChanges.sort((a, b) => a.change_from_round - b.change_from_round);
+
+            // Apply class changes up to the specified round (or all if no round specified)
+            sortedChanges.forEach(change => {
+               if (forRound === null || change.change_from_round <= forRound) {
+                  currentClass = change.new_class_number;
+               }
+            });
+         }
+
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify({
+            cust_id: custId,
+            display_name: driver.display_name,
+            original_class: driver.classnumber,
+            current_class: currentClass,
+            class_changes_applied: classChanges.filter(
+               change => forRound === null || change.change_from_round <= forRound
+            )
+         }));
+         break;
+
       default:
          res.send('UNKNOWN POST ROUTE : The leagueid you specified is ' + reqLeagueID + " and the route requested is :" + req.params.route);
    }

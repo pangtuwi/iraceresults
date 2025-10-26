@@ -18,7 +18,10 @@ function getDrivers() {
 
          data.forEach(driver => {
             var option1 = document.createElement("option");
-            option1.text = driver.display_name;
+            // Use custom display name if available, otherwise use iRacing name
+            option1.text = (driver.custom_display_name && driver.custom_display_name.trim())
+               ? driver.custom_display_name
+               : driver.display_name;
             option1.value = driver.cust_id;
             driver_select.add(option1);
          });

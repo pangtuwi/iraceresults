@@ -282,11 +282,12 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
                      var newDriver = {
                         cust_id: tempDriver.cust_id,
                         display_name: tempDriver.display_name,
+                        custom_display_name: '',
                         classnumber: 1
                      };
                      console.log("new Driver is :", newDriver);
                   } else {
-                     var newDriver = { cust_id: thisCust_Id, display_name: "cust_id not found in iR Database", classnumber: 1 };
+                     var newDriver = { cust_id: thisCust_Id, display_name: "cust_id not found in iR Database", custom_display_name: '', classnumber: 1 };
                      console.log("new Driver is :", newDriver);
                   }
                   console.log("new Driver is :", newDriver);

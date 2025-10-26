@@ -8,7 +8,8 @@ const deleteDriverButton = document.getElementById('delete_driver_btn');
 const custIdInput = document.getElementById('cust_id_input');
 const driverClassSelect = document.getElementById('driver_class_select');
 const driverCustId = document.getElementById('driver_cust_id');
-const driverDisplayName = document.getElementById('driver_display_name');
+const driverIracingName = document.getElementById('driver_iracing_name');
+const driverCustomName = document.getElementById('driver_custom_name');
 const selectedDriverTitle = document.getElementById('selected_driver_title');
 
 var currentDriver = {};
@@ -22,6 +23,12 @@ driverClassSelect.addEventListener('change', _ => {
    currentDriver.classnumber = driverClassSelect.selectedIndex+1;
 });
 
+driverCustomName.addEventListener('input', _ => {
+   selectedDriverTitle.innerHTML = "Selected Driver - custom name modified, click save to update league database."
+   if (lastAction == 1) saveDriverButton.disabled = false;
+   currentDriver.custom_display_name = driverCustomName.value;
+});
+
 newDriverButton.addEventListener('click', async _ => {
    lastAction = 2;
    newDriverButton.disabled = true;
@@ -29,7 +36,8 @@ newDriverButton.addEventListener('click', async _ => {
    saveDriverButton.disabled = true;
    deleteDriverButton.disabled = true;
    driverCustId.innerHTML = "";
-   driverDisplayName.innerHTML = "";
+   driverIracingName.innerHTML = "";
+   driverCustomName.value = "";
    driverClassSelect.selectedIndex = 0;
    findDriverButton.style.display = "inline";
    custIdInput.style.display = "inline";
@@ -119,11 +127,12 @@ function displayEditDriverDetails(cust_id) {
          addDriverButton.disabled = (lastAction == 1);
          deleteDriverButton.disabled = (lastAction != 1);
          saveDriverButton.disabled = true;
-         
+
          currentDriver = data;
-      
+
          driverCustId.innerHTML = data.cust_id;
-         driverDisplayName.innerHTML = data.display_name;
+         driverIracingName.innerHTML = data.display_name;
+         driverCustomName.value = data.custom_display_name || '';
          driverClassSelect.selectedIndex = data.classnumber - 1;
 
          if (lastAction == 2) {

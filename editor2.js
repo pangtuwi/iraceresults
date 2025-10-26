@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
+const utils = require('./utils/utils');
 
 function tableHeaderRow(tableData, headerColor){
    let cols = Object.keys(tableData[0]);
@@ -62,9 +63,17 @@ function objToHTMLTable(baseHTTMLFile, tableData, headerColor, callback) {
    var drivers = leaguedata.cache[leagueID].drivers;
    var filteredDrivers = drivers;
    if (driverClass != -1) filteredDrivers = drivers.filter(o => o.classnumber == driverClass);
-   objToHTMLTable("drivers.html", filteredDrivers, "blue", function(err, data){
+
+   // Transform drivers to use custom display name and exclude custom_display_name field
+   var displayDrivers = filteredDrivers.map(driver => ({
+      cust_id: driver.cust_id,
+      display_name: utils.getDriverDisplayName(driver),
+      classnumber: driver.classnumber
+   }));
+
+   objToHTMLTable("drivers.html", displayDrivers, "blue", function(err, data){
       callback(null, data);
-   });   
+   });
  } //getDriversHTML
 
  function getPenaltiesHTML(round, callback){

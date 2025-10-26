@@ -32,12 +32,17 @@ function getDrivers() {
          const protesting_driver_select = document.getElementById('protesting_driver_select');
          const protested_driver_select = document.getElementById('protested_driver_select');
          data.forEach(driver => {
+            // Use custom display name if available, otherwise use iRacing name
+            const displayName = (driver.custom_display_name && driver.custom_display_name.trim())
+               ? driver.custom_display_name
+               : driver.display_name;
+
             var option1 = document.createElement("option");
-            option1.text = driver.display_name;
+            option1.text = displayName;
             option1.value = driver.cust_id;
             protesting_driver_select.add(option1);
             var option2 = document.createElement("option");
-            option2.text = driver.display_name;
+            option2.text = displayName;
             option2.value = driver.cust_id;
             protested_driver_select.add(option2);
          });

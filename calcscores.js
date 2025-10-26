@@ -118,6 +118,7 @@ function createClassResultsArray(leagueconfig, results, classes, score_event_typ
          let newDriver = {};
          newDriver.cust_id = result.cust_id;
          newDriver.display_name = result.display_name;
+         newDriver.custom_display_name = ''; // Will use iRacing name unless admin sets custom name
          newDriver.classnumber = leagueconfig.class_to_add_new_drivers_to;
 
          if (leagueconfig.class_to_add_new_drivers_to != -1) {
@@ -139,7 +140,7 @@ function createClassResultsArray(leagueconfig, results, classes, score_event_typ
          let classIndex = classResults.findIndex(item => item.classnumber === thisDriver.classnumber);
          let newPositionResult = new Object();
          newPositionResult.cust_id = result.cust_id;
-         newPositionResult.display_name = result.display_name;
+         newPositionResult.display_name = utils.getDriverDisplayName(thisDriver);
          newPositionResult.best_lap_time = result.best_lap_time;
          newPositionResult.laps_complete = result.laps_complete;
          newPositionResult.class_interval = result.class_interval;
@@ -705,7 +706,7 @@ async function classResultsTable(rounds, driverScores, apply_drop_scores_text, n
       driverClass.drivers.forEach(driver => {
          let newline = utils.deepCopy(outputLine);
          newline.ID = driver.cust_id;
-         newline.Name = driver.display_name;
+         newline.Name = utils.getDriverDisplayName(driver);
          newline.Penalties = 0;
          newline.Total = 0;
          arrayIndexes.forEach(function (iS, columnCounter) {  //indexSet
@@ -799,12 +800,16 @@ function teamsResultsTable(rounds, teams, classesArray) {
    teams.forEach(function (team, i) {
       let newline = utils.deepCopy(outputLine);
       newline["Team Name"] = team.team_name;
-      newline["Driver 1"] = team.drivers[0].display_name;
+      // Look up driver from Drivers array to get custom display name
+      let driver1 = Drivers.find(d => d.cust_id === team.drivers[0].cust_id);
+      newline["Driver 1"] = driver1 ? utils.getDriverDisplayName(driver1) : team.drivers[0].display_name;
       if (team.drivers.length > 1) {
-         newline["Driver 2"] = team.drivers[1].display_name;
+         let driver2 = Drivers.find(d => d.cust_id === team.drivers[1].cust_id);
+         newline["Driver 2"] = driver2 ? utils.getDriverDisplayName(driver2) : team.drivers[1].display_name;
       }
       if (team.drivers.length > 2) {
-         newline["Driver 3"] = team.drivers[2].display_name;
+         let driver3 = Drivers.find(d => d.cust_id === team.drivers[2].cust_id);
+         newline["Driver 3"] = driver3 ? utils.getDriverDisplayName(driver3) : team.drivers[2].display_name;
       }
       teamsTable.push(newline);
    });
@@ -883,7 +888,7 @@ function licencePointsTable(rounds, drivers, penalties, classes) {
    drivers.forEach(driver => {
       driverLicencePoints[driver.cust_id] = {
          Pos: 0,
-         Name: driver.display_name,
+         Name: utils.getDriverDisplayName(driver),
          ID: driver.cust_id,
          Total: 0
       };

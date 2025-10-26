@@ -64,10 +64,11 @@ function objToHTMLTable(baseHTTMLFile, tableData, headerColor, callback) {
    var filteredDrivers = drivers;
    if (driverClass != -1) filteredDrivers = drivers.filter(o => o.classnumber == driverClass);
 
-   // Transform drivers to use custom display name and exclude custom_display_name field
+   // Transform drivers to show both iRacing name and custom name
    var displayDrivers = filteredDrivers.map(driver => ({
       cust_id: driver.cust_id,
-      display_name: utils.getDriverDisplayName(driver),
+      iracing_display_name: driver.display_name,
+      custom_display_name: driver.custom_display_name || '',
       classnumber: driver.classnumber
    }));
 

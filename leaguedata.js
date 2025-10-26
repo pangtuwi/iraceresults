@@ -627,11 +627,18 @@ async function reCalculate(leagueID) {
             //console.log("Adding new driver to league : ", item.display_name);
             container.cust_id = item.cust_id;
             container.display_name = item.display_name;
+
+            // Preserve custom_display_name if the driver already exists
+            const existingDriver = leagueData.drivers.find(d => d.cust_id === item.cust_id);
+            if (existingDriver && existingDriver.custom_display_name) {
+               container.custom_display_name = existingDriver.custom_display_name;
+            }
+
             //check if item has originalClassNumber property (added during calc process)
             if (item.hasOwnProperty('originalClassNumber')) {
                container.classnumber = item.originalClassNumber;
-               //console.log("Putting driver ", item.display_name, " back into class ", item.originalClassNumber); 
-            
+               //console.log("Putting driver ", item.display_name, " back into class ", item.originalClassNumber);
+
             } else {
                container.classnumber = item.classnumber;
             }

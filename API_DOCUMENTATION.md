@@ -261,6 +261,65 @@ Retrieves iRacing session results file.
 
 ---
 
+#### driverclass
+Determines a driver's current class by applying class changes from the classchanges.json file.
+
+**Request Body:**
+```json
+{
+  "cust_id": "number",
+  "round_no": "number (optional)"
+}
+```
+
+**Parameters:**
+- `cust_id` (required): Driver's customer ID
+- `round_no` (optional): Specific round number to check class at that point in the season. If omitted, returns the driver's latest class after applying all changes.
+
+**Response:**
+- Content-Type: `application/json`
+- Body: Driver class information object
+
+**Success Response (200):**
+```json
+{
+  "cust_id": 19519,
+  "display_name": "Dirk Wagner",
+  "original_class": 2,
+  "current_class": 3,
+  "class_changes_applied": [
+    {
+      "cust_id": 19519,
+      "display_name": "Dirk Wagner",
+      "new_class_number": 3,
+      "change_from_round": 4
+    }
+  ]
+}
+```
+
+**Error Response (404):**
+```json
+{
+  "error": "Driver not found",
+  "cust_id": 99999
+}
+```
+
+**Behavior:**
+1. Retrieves the driver's original class from drivers.json (via cache)
+2. Finds all class changes for the driver in classchanges.json (via cache)
+3. Sorts class changes by round number
+4. Applies changes chronologically up to the specified round (or all changes if no round specified)
+5. Returns complete class history information
+
+**Use Cases:**
+- Get a driver's current class: `{"cust_id": 12345}`
+- Get a driver's class at a specific round: `{"cust_id": 12345, "round_no": 5}`
+- Useful for calculating points with correct class assignments during mid-season class changes
+
+---
+
 ## Middleware Routes
 
 ### Protest Routes

@@ -1,1 +1,126 @@
-[{"round_no":1,"track_name":"Fuji","start_time":"2025-08-28T19:00:00Z","subsession_ids":[79493731,79495975],"score_types":[0,1]},{"round_no":2,"track_name":"RBull","start_time":"2025-09-04T19:00:00Z","subsession_ids":[79661607,79663920],"score_types":[0,1]},{"round_no":3,"track_name":"Spa","start_time":"2025-09-18T19:00:00Z","subsession_ids":[79916790],"score_types":[2]},{"round_no":4,"track_name":"Imola","start_time":"2025-09-25T19:00:00Z","subsession_ids":[80086068,80088349],"score_types":[0,1]},{"round_no":5,"track_name":"Thrux","start_time":"2025-10-02T19:00:00Z","subsession_ids":[80251508,80253624],"score_types":[0,1]},{"round_no":6,"track_name":"Dayt","start_time":"2025-10-09T19:00:00Z","subsession_ids":[80414581],"score_types":[2]},{"round_no":7,"track_name":"LagSeca","start_time":"2025-10-23T19:00:00Z","subsession_ids":[80736709,80738767],"score_types":[0,1]},{"round_no":8,"track_name":"Brands","start_time":"2025-10-30T19:00:00Z","subsession_ids":[0,0],"score_types":[0,1]},{"round_no":9,"track_name":"Nurb","start_time":"2025-11-06T20:00:00Z","subsession_ids":[0,0],"score_types":[0,1]},{"round_no":10,"track_name":"Sebr","start_time":"2025-11-13T20:00:00Z","subsession_ids":[0],"score_types":[2]}]
+[
+    {
+        "round_no": 1,
+        "track_name": "Fuji",
+        "start_time": "2025-08-28T19:00:00Z",
+        "subsession_ids": [
+            79493731,
+            79495975
+        ],
+        "score_types": [
+            0,
+            1
+        ]
+    },
+    {
+        "round_no": 2,
+        "track_name": "RBull",
+        "start_time": "2025-09-04T19:00:00Z",
+        "subsession_ids": [
+            79661607,
+            79663920
+        ],
+        "score_types": [
+            0,
+            1
+        ]
+    },
+    {
+        "round_no": 3,
+        "track_name": "Spa",
+        "start_time": "2025-09-18T19:00:00Z",
+        "subsession_ids": [
+            79916790
+        ],
+        "score_types": [
+            2
+        ]
+    },
+    {
+        "round_no": 4,
+        "track_name": "Imola",
+        "start_time": "2025-09-25T19:00:00Z",
+        "subsession_ids": [
+            80086068,
+            80088349
+        ],
+        "score_types": [
+            0,
+            1
+        ]
+    },
+    {
+        "round_no": 5,
+        "track_name": "Thrux",
+        "start_time": "2025-10-02T19:00:00Z",
+        "subsession_ids": [
+            80251508,
+            80253624
+        ],
+        "score_types": [
+            0,
+            1
+        ]
+    },
+    {
+        "round_no": 6,
+        "track_name": "Dayt",
+        "start_time": "2025-10-09T19:00:00Z",
+        "subsession_ids": [
+            80414581
+        ],
+        "score_types": [
+            2
+        ]
+    },
+    {
+        "round_no": 7,
+        "track_name": "LagSeca",
+        "start_time": "2025-10-23T19:00:00Z",
+        "subsession_ids": [
+            80736709,
+            80738767
+        ],
+        "score_types": [
+            0,
+            1
+        ]
+    },
+    {
+        "round_no": 8,
+        "track_name": "Brands",
+        "start_time": "2025-10-30T20:00:00Z",
+        "subsession_ids": [
+            0,
+            0
+        ],
+        "score_types": [
+            0,
+            1
+        ]
+    },
+    {
+        "round_no": 9,
+        "track_name": "Nurb",
+        "start_time": "2025-11-06T20:00:00Z",
+        "subsession_ids": [
+            0,
+            0
+        ],
+        "score_types": [
+            0,
+            1
+        ]
+    },
+    {
+        "round_no": 10,
+        "track_name": "Sebr",
+        "start_time": "2025-11-13T20:00:00Z",
+        "subsession_ids": [
+            0
+        ],
+        "score_types": [
+            2
+        ]
+    }
+]

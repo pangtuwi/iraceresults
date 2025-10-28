@@ -98,17 +98,35 @@ function initializePassport(app, authConfig) {
    app.use(passport.session());
 }
 
+// Helper function to check if request is from iframe
+function isIframeRequest(req) {
+   // Check if request has X-Requested-With header (AJAX/Fetch requests)
+   // or if the referer contains the admin page
+   const referer = req.get('Referer') || '';
+   return referer.includes('/admin/');
+}
+
 // Middleware to check if user is authenticated
 function ensureAuthenticated(req, res, next) {
    if (req.isAuthenticated()) {
       return next();
    }
+
+   // If request is from iframe, return error page instead of redirecting
+   if (isIframeRequest(req)) {
+      return res.status(401).sendFile(path.join(__dirname, 'html', 'auth_error.html'));
+   }
+
    res.redirect('/auth/login');
 }
 
 // Middleware to check if user is authorized for specific league
 function ensureAuthorizedForLeague(req, res, next) {
    if (!req.isAuthenticated()) {
+      // If request is from iframe, return error page instead of redirecting
+      if (isIframeRequest(req)) {
+         return res.status(401).sendFile(path.join(__dirname, 'html', 'auth_error.html'));
+      }
       return res.redirect('/auth/login');
    }
 

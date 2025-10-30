@@ -116,14 +116,20 @@ async function getClassTotals(leagueid) {
 }
 
 async function getFullResults(leagueid) {
-   //load data from fullresults.json.  If file does not exist return empty object
+   //load data from fullresults.json.  If file does not exist create it with empty array
    try {
       const data = await fs.readFile('./data/' + leagueid + '/fullresults.json', { encoding: 'utf8' });
       const obj = JSON.parse(data);
       return obj;
    } catch (error) {
-      console.log("Error loading fullresults.json for league ", leagueid);
-      return {};
+      if (error.code === 'ENOENT') {
+         console.log("fullresults.json not found for league ", leagueid, " - creating empty file");
+         const emptyArray = [];
+         let filename = './data/' + leagueid + '/fullresults.json';
+         await fs.writeFile(filename, JSON.stringify(emptyArray));
+         return emptyArray;
+      }
+      throw error;
    }
 }
 

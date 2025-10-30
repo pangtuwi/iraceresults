@@ -1,5 +1,5 @@
 const port = process.argv[2] || 4000;
-const leagueIDs = ["NXTPROS5", "NXTGT3S6", "NXTGT3S7", "NXTGT3S8", "IRRTEST01"];
+const leagueIDs = ["NXTPROS5", "NXTGT3S6", "NXTGT3S7", "NXTGT3S8", "IRRTEST01", "NXTMX5CP"];
 
 console.log("Server config loaded");
 

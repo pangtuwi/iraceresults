@@ -1,5 +1,0 @@
-Edits
-
-Done:
-   2025-03-19 : First creation of NXTGT3S7 Data
-   

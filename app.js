@@ -171,6 +171,11 @@ app.get('/:leagueid/:route', function (req, res) {
             res.redirect('/' + reqLeagueID);
             break;
 
+         case "licence":
+            res.cookie('leagueid', reqLeagueID);
+            res.sendFile(path.join(__dirname, '/html/licence.html'));
+            break;
+
          // Return league name
          case "leaguename":
             res.setHeader("Content-Type", "application/json");
@@ -287,15 +292,14 @@ app.get('/:leagueid/:route', function (req, res) {
             break;
 
          case "penalties":
-            //res.cookie('leagueid', reqLeagueID);
-            //      res.cookie('leagueid', reqLeagueID);
             res.sendFile(path.join(__dirname, '/html/penalties.html'));
             break;
 
-   /*      case "irres":
-            res.sendFile(path.join(__dirname, '/html/irres.html'));
+         case "licencepoints":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].licencepoints));
             break;
-*/
 
          case "results":
             res.cookie('leagueid', reqLeagueID);
@@ -321,7 +325,7 @@ app.post('/:leagueid/:route', function (req, res) {
          console.log("Request body is ", req.body);
          const reqTrack = req.body.round_name;
          console.log("Requested track is ", reqTrack);
-         const availableTracks = ["Fuji", "RBull", "Spa", "Imola", "Thrux", "Dayt", "LagSeca", "Brands", "NurbGP, "];   
+         const availableTracks = ["Fuji", "RBull", "Spa", "Imola", "Thrux", "Dayt", "LagSeca", "Brands", "NurbGP, "];
 
          //check if requested track is available (case insensitive)
          if (availableTracks.map(track => track.toLowerCase()).includes(reqTrack.toLowerCase())) {

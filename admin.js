@@ -350,25 +350,22 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
 
       case "deletedriver":
          //var deleteDriver = JSON.parse(data);
-         const deleteDriver = req.body.cust_id;
-         if (deleteDriver === undefined) {
+         const deleteCustId = Number(req.body.cust_id);
+         if (deleteCustId === undefined || isNaN(deleteCustId)) {
             const errormsg = { error: "could not read driver info sent to server" };
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(errormsg));
          } else {
-            deleteDriver.cust_id = Number(deleteDriver.cust_id);
-            const existsDriverIndex = leaguedata.cache[reqLeagueID].drivers.findIndex((driver) => driver.cust_id === deleteDriver.cust_id);
-            if (existsDriverIndex == -1) {
+            const deleteSuccess = leaguedata.deleteDriver(reqLeagueID, deleteCustId);
+            if (!deleteSuccess) {
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
                res.end(JSON.stringify({ error: "could not find matching driver in database" }));
             } else {
-               leaguedata.deleteDriver(reqLeagueID, deleteDriver.cust_id);
-
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
-               res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));
+               res.end(JSON.stringify({ confirmation: "driver deleted successfully" }));
             }
          }
          break;

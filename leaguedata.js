@@ -364,9 +364,15 @@ async function addDriver(leagueID, newDriver) {
 
 
 async function deleteDriver(leagueID, cust_id) {
+   const existsDriverIndex = cache[leagueID].drivers.findIndex((driver) => driver.cust_id === cust_id);
+   if (existsDriverIndex === -1) {
+      console.log("ERROR - COULD NOT FIND DRIVER TO DELETE");
+      return false;
+   }
    cache[leagueID].drivers.splice(existsDriverIndex, 1);
-   jsonloader.saveDrivers(leagueID, cache[leagueID].driver);
-} //addDriver
+   jsonloader.saveDrivers(leagueID, cache[leagueID].drivers);
+   return true;
+} //deleteDriver
 
 async function updateConfig(leagueID, configData) {
    cache[leagueID].config = configData;

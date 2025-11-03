@@ -229,7 +229,7 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
 
       case "discordtablesupdated":
          console.log("Request received to notify Discord that tables have been updated");
-         discord.sendWebhookMessage("Tables have been updated : http://iraceresults.co.uk/" + reqLeagueID + "/").then((result) => {
+         discord.sendWebhookMessage(leaguedata.cache[reqLeagueID].config.DISCORD_WEBHOOK_URL, "Tables have been updated : http://iraceresults.co.uk/" + reqLeagueID + "/").then((result) => {
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify({ confirmation: "ok" }));
@@ -523,7 +523,7 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
          console.log("Discord Message Request Body : ", req.body);
          message = req.body.message;
          console.log("Discord Message Received : ", message);
-         discord.sendWebhookMessage(message).then((result) => {
+         discord.sendWebhookMessage(leaguedata.cache[reqLeagueID].config.DISCORD_WEBHOOK_URL, message).then((result) => {
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify({ confirmation: "ok" }));
@@ -566,7 +566,7 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
          if (post_to_discord && post_to_discord === "TRUE") {
             const formattedDate = formatDateTimeReadable(recalcTimestamp);
 
-            discord.sendWebhookMessage("Tables updated at " + formattedDate + " by " + req.user.displayName +
+            discord.sendWebhookMessage(leaguedata.cache[reqLeagueID].config.DISCORD_WEBHOOK_URL, "Tables updated at " + formattedDate + " by " + req.user.displayName +
                " \n Updated tables  can be found at http://iraceresults.co.uk/" + reqLeagueID + "/" +
                (reason_for_recalculation && reason_for_recalculation.length > 0 ? ". \n Reason for Update: " + reason_for_recalculation : ". No reason given.")).catch((error) => {
                   logger.log("Error sending Discord notification of recalculation: " + error.message);

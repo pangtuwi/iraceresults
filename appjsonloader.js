@@ -187,6 +187,11 @@ async function savePenalties(leagueid, penalties) {
    await fs.writeFile(filename, JSON.stringify(penalties));
 }
 
+async function saveClassChanges(leagueid, classchanges) {
+   let filename = './data/' + leagueid + '/classchanges.json';
+   await fs.writeFile(filename, JSON.stringify(classchanges));
+}
+
 async function saveRounds(leagueid, rounds) {
    let filename = './data/' + leagueid + '/rounds.json';
    await fs.writeFile(filename, JSON.stringify(rounds));
@@ -225,7 +230,7 @@ async function saveRecalculation(leagueid, recalcEntry) {
 }
 
 exports.getLeagueConfig = getLeagueConfig;
-//exports.getSeason = getSeason; 
+//exports.getSeason = getSeason;
 exports.getRounds = getRounds;
 exports.getScoring = getScoring;
 exports.getPoints = getPoints;
@@ -233,6 +238,7 @@ exports.getDrivers = getDrivers;
 exports.saveDrivers = saveDrivers;
 exports.getClasses = getClasses;
 exports.getClassChanges = getClassChanges;
+exports.saveClassChanges = saveClassChanges;
 exports.getPenalties = getPenalties;
 exports.getTeams = getTeams;
 exports.getSubSession = getSubSession;

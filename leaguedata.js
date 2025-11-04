@@ -374,6 +374,36 @@ async function deleteDriver(leagueID, cust_id) {
    return true;
 } //deleteDriver
 
+async function addClassChange(leagueID, newClassChange) {
+   cache[leagueID].classchanges.push(newClassChange);
+   await jsonloader.saveClassChanges(leagueID, cache[leagueID].classchanges);
+} //addClassChange
+
+async function updateClassChange(leagueID, index, updatedClassChange) {
+   if (index < 0 || index >= cache[leagueID].classchanges.length) {
+      console.log("ERROR - INVALID CLASS CHANGE INDEX");
+      return false;
+   }
+   cache[leagueID].classchanges[index] = {
+      cust_id: updatedClassChange.cust_id,
+      display_name: updatedClassChange.display_name,
+      new_class_number: updatedClassChange.new_class_number,
+      change_from_round: updatedClassChange.change_from_round
+   };
+   await jsonloader.saveClassChanges(leagueID, cache[leagueID].classchanges);
+   return true;
+} //updateClassChange
+
+async function deleteClassChange(leagueID, index) {
+   if (index < 0 || index >= cache[leagueID].classchanges.length) {
+      console.log("ERROR - INVALID CLASS CHANGE INDEX");
+      return false;
+   }
+   cache[leagueID].classchanges.splice(index, 1);
+   await jsonloader.saveClassChanges(leagueID, cache[leagueID].classchanges);
+   return true;
+} //deleteClassChange
+
 async function updateConfig(leagueID, configData) {
    cache[leagueID].config = configData;
    await jsonloader.saveConfig(leagueID, configData);
@@ -685,6 +715,9 @@ exports.submitStewardsPenalty = submitStewardsPenalty;
 exports.addDriver = addDriver;
 exports.deleteDriver = deleteDriver;
 exports.updateDriver = updateDriver;
+exports.addClassChange = addClassChange;
+exports.updateClassChange = updateClassChange;
+exports.deleteClassChange = deleteClassChange;
 exports.updateConfig = updateConfig;
 exports.updateSessionID = updateSessionID;
 exports.getTablesDisplayConfig = getTablesDisplayConfig;

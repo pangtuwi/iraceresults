@@ -109,6 +109,13 @@ iframe {
   color: lightgrey;
 }
 
+.left_wrap_wide {
+  padding: 10px;
+  width: 55%;
+  float: left;
+  color: lightgrey;
+}
+
 .right_wrap_wide {
   padding: 10px;
   width: 55%;

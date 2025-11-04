@@ -29,6 +29,7 @@ function getUserInfo() {
 
 function setMenuLinks(){
    $("#link_drivers").attr("href", "/admin/"+leagueID+"/drivers");
+   $("#link_classchanges").attr("href", "/admin/"+leagueID+"/classchanges_admin");
    $("#link_tables").attr("href", "/"+leagueID+"/");
    $("#link_stewarding").attr("href", "/admin/"+leagueID+"/stewarding");
    $("#link_protests").attr("href", "/admin/"+leagueID+"/protests_admin");

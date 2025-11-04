@@ -53,7 +53,10 @@ router.get('/:leagueid', auth.ensureAuthorizedForLeague, function (req, res) {
    //console.log("Admin request for /:leagueid   :", req.params.leagueid);
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    if (config.leagueIDs.includes(reqLeagueiD)) {
-      //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league admin');
+      // Redirect to URL with trailing slash to ensure relative URLs resolve correctly
+      if (!req.originalUrl.endsWith('/')) {
+         return res.redirect(301, req.originalUrl + '/');
+      }
 
       res.sendFile(path.join(__dirname, '/html/admin.html'));
 

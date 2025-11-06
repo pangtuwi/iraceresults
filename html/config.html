@@ -29,6 +29,9 @@
       width: 300px;
       padding: 5px;
    }
+   .form-row input[type="text"]#DISCORD_WEBHOOK_URL {
+      width: 500px;
+   }
    .help-text {
       display: block;
       margin-left: 250px;
@@ -87,6 +90,12 @@
                <option value="1">Yes</option>
             </select>
             <span class="help-text">Show combined overall standings table (0 = No, 1 = Yes)</span>
+         </div>
+
+         <div class="form-row">
+            <label for="DISCORD_WEBHOOK_URL">Discord Webhook URL:</label>
+            <input type="text" id="DISCORD_WEBHOOK_URL" name="DISCORD_WEBHOOK_URL" placeholder="https://discord.com/api/webhooks/...">
+            <span class="help-text">Discord webhook URL for notifications (leave empty to disable)</span>
          </div>
 
          <button type="submit" >Save Config</button>

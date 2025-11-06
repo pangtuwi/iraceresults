@@ -53,7 +53,10 @@ router.get('/:leagueid', auth.ensureAuthorizedForLeague, function (req, res) {
    //console.log("Admin request for /:leagueid   :", req.params.leagueid);
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    if (config.leagueIDs.includes(reqLeagueiD)) {
-      //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league admin');
+      // Redirect to URL with trailing slash to ensure relative URLs resolve correctly
+      if (!req.originalUrl.endsWith('/')) {
+         return res.redirect(301, req.originalUrl + '/');
+      }
 
       res.sendFile(path.join(__dirname, '/html/admin.html'));
 
@@ -164,6 +167,11 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.sendFile(path.join(__dirname, '/html/licencepoints_admin.html'));
          break;
 
+      case "classchanges_admin":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/classchanges_admin.html'));
+         break;
+
       case "session":
          res.cookie('leagueid', reqLeagueID);
          res.sendFile(path.join(__dirname, '/html/session.html'));
@@ -214,6 +222,13 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].licencepoints));
+         break;
+
+      case "classchangesjson":
+         console.log("processing request for class changes");
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classchanges));
          break;
 
       case "config":
@@ -534,6 +549,51 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
                res.writeHead(500);
                res.end(JSON.stringify({ error: error.message }));
             });
+         break;
+
+      case "addclasschange":
+         const newClassChange = req.body;
+         console.log("Add class change request:", newClassChange);
+         if (!newClassChange.cust_id || !newClassChange.new_class_number || !newClassChange.change_from_round) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "Missing required fields" }));
+            return;
+         }
+         leaguedata.addClassChange(reqLeagueID, newClassChange);
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify({ confirmation: "Class change added successfully" }));
+         break;
+
+      case "updateclasschange":
+         const updatedClassChange = req.body;
+         console.log("Update class change request:", updatedClassChange);
+         if (updatedClassChange.index === undefined || !updatedClassChange.cust_id || !updatedClassChange.new_class_number || !updatedClassChange.change_from_round) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "Missing required fields" }));
+            return;
+         }
+         leaguedata.updateClassChange(reqLeagueID, updatedClassChange.index, updatedClassChange);
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify({ confirmation: "Class change updated successfully" }));
+         break;
+
+      case "deleteclasschange":
+         const deleteIndex = req.body.index;
+         console.log("Delete class change request, index:", deleteIndex);
+         if (deleteIndex === undefined) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "Missing index" }));
+            return;
+         }
+         leaguedata.deleteClassChange(reqLeagueID, deleteIndex);
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify({ confirmation: "Class change deleted successfully" }));
          break;
 
       case "recalculate":

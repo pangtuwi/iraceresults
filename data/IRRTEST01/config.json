@@ -1,9 +1,11 @@
 {
-   "league_name": "IRACERESULTS Test League 01",
-   "apply_drop_scores" : "FALSE",
-   "no_drop_scores_rounds" : [10],
-   "class_to_add_new_drivers_to" : 4, 
-   "protest_open_after_hrs" : 24,
+   "apply_drop_scores": "FALSE",
+   "no_drop_scores_rounds": [
+      10
+   ],
+   "class_to_add_new_drivers_to": 4,
+   "protest_open_after_hrs": 24,
    "protest_open_for_hrs": 240000,
-   "display_overall_table" : 0
+   "display_overall_table": 0,
+   "DISCORD_WEBHOOK_URL": "https://discord.com/api/webhooks/1426975873055068271/x2HP3qQposhQfOHFwSFJ4RC9z4PVvLs2Y-bEXFLBsCGZnQobquIM_bh0CLroSahAf2Lb"
 }

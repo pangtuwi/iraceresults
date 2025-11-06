@@ -325,7 +325,7 @@ app.post('/:leagueid/:route', function (req, res) {
          console.log("Request body is ", req.body);
          const reqTrack = req.body.round_name;
          console.log("Requested track is ", reqTrack);
-         const availableTracks = ["Fuji", "RBull", "Spa", "Imola", "Thrux", "Dayt", "LagSeca", "Brands", "NurbGP, "];
+         const availableTracks = ["Fuji", "RBull", "Spa", "Imola", "Thrux", "Dayt", "LagSeca", "Brands", "NurbGP", "BrandsInd", "ZandV", "LongBeach"];
 
          //check if requested track is available (case insensitive)
          if (availableTracks.map(track => track.toLowerCase()).includes(reqTrack.toLowerCase())) {

@@ -1098,6 +1098,55 @@ function uploadTrackMap(shortName, file) {
    reader.readAsDataURL(file);
 }
 
+function validateTrackMaps() {
+   fetch('/superadmin/validate-trackmaps')
+      .then(res => res.json())
+      .then(data => {
+         showValidationModal(data);
+      })
+      .catch(error => {
+         console.error("Error validating track maps:", error);
+         showModal("Error", "Failed to validate track maps", "❌");
+      });
+}
+
+function showValidationModal(data) {
+   const missingTracksDiv = $("#validation_missing_tracks");
+   const missingFilesDiv = $("#validation_missing_files");
+
+   // Populate missing tracks
+   missingTracksDiv.empty();
+   if (data.missingFromTracksList && data.missingFromTracksList.length > 0) {
+      data.missingFromTracksList.forEach(item => {
+         const trackDiv = $("<div>").css({"margin-bottom": "10px", "padding": "5px", "background": "#f0f0f0", "border": "1px solid #ccc"});
+         trackDiv.append($("<div>").html(`<b>Track:</b> ${item.trackName}`));
+         trackDiv.append($("<div>").html(`<b>Used by leagues:</b> ${item.usedByLeagues.join(", ")}`));
+         missingTracksDiv.append(trackDiv);
+      });
+   } else {
+      missingTracksDiv.append($("<div>").text("All tracks used in rounds are registered in the tracks list.").css("color", "#666"));
+   }
+
+   // Populate missing files
+   missingFilesDiv.empty();
+   if (data.missingTrackMapFiles && data.missingTrackMapFiles.length > 0) {
+      data.missingTrackMapFiles.forEach(item => {
+         const fileDiv = $("<div>").css({"margin-bottom": "10px", "padding": "5px", "background": "#f0f0f0", "border": "1px solid #ccc"});
+         fileDiv.append($("<div>").html(`<b>Track:</b> ${item.fullName}`));
+         fileDiv.append($("<div>").html(`<b>Short Name:</b> ${item.shortName}`));
+         missingFilesDiv.append(fileDiv);
+      });
+   } else {
+      missingFilesDiv.append($("<div>").text("All registered tracks have corresponding PNG files.").css("color", "#666"));
+   }
+
+   $("#validation_modal_overlay").addClass("show");
+}
+
+function hideValidationModal() {
+   $("#validation_modal_overlay").removeClass("show");
+}
+
 // =========================
 // INITIALIZATION
 // =========================
@@ -1170,6 +1219,8 @@ $(function () {
    $("#add_track_btn").on("click", addTrack);
    $("#save_track_btn").on("click", saveTrackFromModal);
    $("#cancel_track_btn").on("click", hideTrackModal);
+   $("#validate_trackmaps_link").on("click", validateTrackMaps);
+   $("#validation_ok_btn").on("click", hideValidationModal);
    $("#track_map_upload").on("change", function() {
       trackMapFile = this.files[0];
       // Preview the uploaded image immediately

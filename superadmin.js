@@ -268,6 +268,77 @@ router.post('/uploadtrackmap', async function (req, res) {
    }
 });
 
+// Validate track maps
+router.get('/validate-trackmaps', async function (req, res) {
+   try {
+      // 1. Get all track names used in rounds across all leagues
+      const tracksUsedInRounds = new Map(); // Map<trackName, Set<leagueID>>
+
+      for (const leagueID of config.leagueIDs) {
+         try {
+            const roundsPath = path.join(__dirname, 'data', leagueID, 'rounds.json');
+            const roundsData = JSON.parse(await fs.readFile(roundsPath, 'utf8'));
+
+            roundsData.forEach(round => {
+               if (round.track_name) {
+                  if (!tracksUsedInRounds.has(round.track_name)) {
+                     tracksUsedInRounds.set(round.track_name, new Set());
+                  }
+                  tracksUsedInRounds.get(round.track_name).add(leagueID);
+               }
+            });
+         } catch (err) {
+            console.log(`Could not read rounds for league ${leagueID}:`, err.message);
+         }
+      }
+
+      // 2. Get all tracks registered in tracks.json
+      const tracksPath = path.join(__dirname, 'tracks.json');
+      const tracksData = JSON.parse(await fs.readFile(tracksPath, 'utf8'));
+      const registeredTracks = new Set(tracksData.map(t => t.short_name));
+
+      // 3. Get all track map PNG files from /trackmaps
+      const trackmapsDir = path.join(__dirname, 'trackmaps');
+      const trackMapFiles = await fs.readdir(trackmapsDir);
+      const availableTrackMaps = new Set(
+         trackMapFiles
+            .filter(file => file.endsWith('.png') && file !== 'blank.png' && file !== 'nomap.png')
+            .map(file => file.replace('.png', ''))
+      );
+
+      // 4. Find tracks used in rounds but missing from tracks.json
+      const missingFromTracksList = [];
+      tracksUsedInRounds.forEach((leagues, trackName) => {
+         if (!registeredTracks.has(trackName)) {
+            missingFromTracksList.push({
+               trackName: trackName,
+               usedByLeagues: Array.from(leagues)
+            });
+         }
+      });
+
+      // 5. Find tracks in tracks.json but missing PNG files
+      const missingTrackMapFiles = [];
+      tracksData.forEach(track => {
+         const shortNameLower = track.short_name.toLowerCase();
+         if (!availableTrackMaps.has(shortNameLower)) {
+            missingTrackMapFiles.push({
+               fullName: track.full_name,
+               shortName: track.short_name
+            });
+         }
+      });
+
+      res.json({
+         missingFromTracksList,
+         missingTrackMapFiles
+      });
+   } catch (error) {
+      console.error("Error validating track maps:", error);
+      res.status(500).json({ error: error.message });
+   }
+});
+
 // Helper functions
 
 async function copyDirectory(src, dest) {

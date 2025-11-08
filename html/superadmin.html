@@ -477,6 +477,9 @@
       <div id="section-tracks" class="section">
          <h2 style="color: white;">Tracks Configuration</h2>
          <p>Manage the list of available tracks and their track maps. The short name is used in the rounds configuration and as the filename for the track map PNG.</p>
+         <div style="text-align: left; margin-bottom: 10px;">
+            <a href="#" id="validate_trackmaps_link" style="color: white; text-decoration: underline; cursor: pointer; font-weight: bold;">Validate Trackmap Availability</a>
+         </div>
          <div class="table" id="tracks_table" style="width: 70%;">
             <div class="row header blue">
                <div class="cell">Full Track Name</div>
@@ -538,6 +541,33 @@
          <div style="display: flex; gap: 15px; justify-content: center;">
             <button class="modal-btn" id="confirm-yes-btn">Yes</button>
             <button class="modal-btn error" id="confirm-no-btn">No</button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Validation Results Modal -->
+   <div id="validation_modal_overlay" class="modal-overlay">
+      <div class="modal-container" style="background-color: #f09537; max-width: 800px; border-radius: 0; border: 3px solid white;">
+         <h2 class="modal-title" style="color: white; text-align: left; margin-left: 20px;">Track Map Validation Results</h2>
+         <div class="wrapper" style="background-color: #f09537; color: #000;">
+
+            <div style="margin: 20px; text-align: left; color: white;">
+               <h3 style="color: white; margin-bottom: 10px;">Tracks Missing from Tracks List</h3>
+               <div id="validation_missing_tracks" style="background: white; padding: 10px; color: black; min-height: 50px; max-height: 200px; overflow-y: auto; border: 1px solid white;">
+                  <!-- Will be populated by JavaScript -->
+               </div>
+            </div>
+
+            <div style="margin: 20px; text-align: left; color: white;">
+               <h3 style="color: white; margin-bottom: 10px;">Tracks Missing Track Map Files</h3>
+               <div id="validation_missing_files" style="background: white; padding: 10px; color: black; min-height: 50px; max-height: 200px; overflow-y: auto; border: 1px solid white;">
+                  <!-- Will be populated by JavaScript -->
+               </div>
+            </div>
+
+            <div style="margin-top: 20px; margin-right: 20px; text-align: right;">
+               <button class="modal-btn" id="validation_ok_btn">OK</button>
+            </div>
          </div>
       </div>
    </div>

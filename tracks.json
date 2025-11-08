@@ -38,5 +38,13 @@
    {
       "full_name": "Monza No Chicane",
       "short_name": "MonzaNC"
+   },
+   {
+      "full_name": "Sebring",
+      "short_name": "Sebr"
+   },
+   {
+      "full_name": "Silverstone",
+      "short_name": "SilverS"
    }
 ]

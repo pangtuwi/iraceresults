@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/jquery-3.7.1.js"></script>
+    <script src="/grid_admin.js"></script>
+</head>
+
+<style>
+    .download-link {
+        margin: 20px;
+        display: inline-block;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .download-link:hover {
+        background-color: #45a049;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px;
+    }
+
+    th {
+        background-color: #333;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: bold;
+        border: 1px solid #555;
+    }
+
+    td {
+        padding: 10px;
+        border: 1px solid #555;
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #2b2b2b;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #1f1f1f;
+    }
+
+    .class-header {
+        background-color: #1a5490 !important;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    #status-message {
+        margin: 20px;
+        padding: 10px;
+        color: #fff;
+    }
+
+    .error {
+        color: #f44336;
+    }
+</style>
+
+<body>
+    <div class="subtitle">
+        <b>Grid Order</b> - Grid Order for Next Race
+    </div>
+
+    <div style="padding: 20px 20px 0 20px; color: #ccc; font-size: 0.95em; line-height: 1.5;">
+        <p style="margin: 0 0 15px 0;">
+            Grid order is generated based on reverse championship standings. Classes are gridded in order by class number (lowest first).
+            Within each class, drivers are ordered in reverse championship position (championship leaders start at the back).
+            Drivers who did not participate in the previous Feature race are placed at the back of their class.
+        </p>
+        <a href="#" id="download-csv" class="download-link">Download Grid for Google Sheets (CSV)</a>
+        <div id="status-message"></div>
+        <div id="grid-container">
+            <table id="grid-table">
+                <thead>
+                    <tr>
+                        <th>Grid Position</th>
+                        <th>Class</th>
+                        <th>Class Position</th>
+                        <th>Driver Name</th>
+                        <th>Championship Position</th>
+                        <th>Championship Points</th>
+                        <th>Previous Race Participation</th>
+                    </tr>
+                </thead>
+                <tbody id="grid-tbody">
+                    <!-- Grid data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>

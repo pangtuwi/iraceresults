@@ -40,6 +40,7 @@ function setMenuLinks(){
    $("#link_licencepoints").attr("href", "/admin/"+leagueID+"/licencepoints_admin");
    $("#link_session").attr("href", "/admin/"+leagueID+"/session");
    $("#link_log").attr("href", "/admin/"+leagueID+"/loglist");
+   $("#link_grid").attr("href", "/admin/"+leagueID+"/grid");
    $("#link_config").attr("href", "/admin/"+leagueID+"/config");
 }//setMenuLinks
 

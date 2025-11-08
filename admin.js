@@ -236,6 +236,11 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.sendFile(path.join(__dirname, '/html/config.html'));
          break;
 
+      case "grid":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/grid_admin.html'));
+         break;
+
       case "configjson":
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
@@ -594,6 +599,86 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
          res.setHeader("Content-Type", "application/json");
          res.writeHead(200);
          res.end(JSON.stringify({ confirmation: "Class change deleted successfully" }));
+         break;
+
+      case "griddata":
+         console.log("Processing request for grid data");
+
+         // Get all classes sorted by classnumber
+         const classes = leaguedata.cache[reqLeagueID].classes.slice().sort((a, b) => a.classnumber - b.classnumber);
+         const classtotals = leaguedata.cache[reqLeagueID].classtotals;
+         const fullresults = leaguedata.cache[reqLeagueID].fullresults;
+         const completedRounds = leaguedata.getCompletedRounds(reqLeagueID);
+         const scoring = leaguedata.cache[reqLeagueID].scoring;
+
+         // Find the Feature score type index
+         const featureScoreTypeIndex = scoring.findIndex(st => st.score_type === "Feature");
+
+         let gridData = [];
+         let gridPosition = 1;
+
+         // Determine previous Feature race
+         let previousFeatureRace = null;
+         if (completedRounds.length > 0) {
+            const lastRound = completedRounds[completedRounds.length - 1];
+            // Find Feature race in fullresults
+            previousFeatureRace = fullresults.find(result =>
+               result.round_no === lastRound.round_no &&
+               result.score_event === "Feature Race"
+            );
+         }
+
+         // Process each class
+         classes.forEach((classInfo, classIndex) => {
+            const classDrivers = classtotals[classIndex] || [];
+
+            // Separate drivers who participated and didn't participate in previous Feature
+            let participatedDrivers = [];
+            let nonParticipatedDrivers = [];
+
+            classDrivers.forEach(driver => {
+               let participated = false;
+
+               if (previousFeatureRace) {
+                  // Check if driver participated in previous Feature race
+                  const classResults = previousFeatureRace.results.find(r => r.classnumber === classInfo.classnumber);
+                  if (classResults) {
+                     participated = classResults.positions.some(pos => pos.cust_id === driver.ID);
+                  }
+               }
+
+               if (participated || !previousFeatureRace) {
+                  participatedDrivers.push(driver);
+               } else {
+                  nonParticipatedDrivers.push(driver);
+               }
+            });
+
+            // Sort both groups in reverse championship order (highest Pos value first)
+            participatedDrivers.sort((a, b) => b.Pos - a.Pos);
+            nonParticipatedDrivers.sort((a, b) => b.Pos - a.Pos);
+
+            // Combine: participated first, then non-participated
+            const orderedDrivers = [...participatedDrivers, ...nonParticipatedDrivers];
+
+            // Create grid entries
+            orderedDrivers.forEach((driver, index) => {
+               gridData.push({
+                  gridPosition: gridPosition++,
+                  classname: classInfo.classname,
+                  classnumber: classInfo.classnumber,
+                  classPosition: index + 1,
+                  driverName: driver.Name,
+                  championshipPosition: driver.Pos,
+                  championshipPoints: driver.Total,
+                  previousRaceParticipation: participatedDrivers.includes(driver) && previousFeatureRace ? "Yes" : previousFeatureRace ? "No" : "N/A"
+               });
+            });
+         });
+
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(gridData));
          break;
 
       case "recalculate":

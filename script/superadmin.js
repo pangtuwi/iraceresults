@@ -932,7 +932,17 @@ function displayTracks() {
       return;
    }
 
-   tracksData.forEach((track, index) => {
+   // Sort tracks alphabetically by full name
+   const sortedTracks = [...tracksData].sort((a, b) =>
+      a.full_name.localeCompare(b.full_name)
+   );
+
+   sortedTracks.forEach((track) => {
+      // Find original index in unsorted array for edit/delete operations
+      const originalIndex = tracksData.findIndex(t =>
+         t.full_name === track.full_name && t.short_name === track.short_name
+      );
+
       const row = $("<div>").addClass("row");
 
       row.append($("<div>").addClass("cell").text(track.full_name));
@@ -942,7 +952,7 @@ function displayTracks() {
       const editBtn = $("<span>")
          .css({"cursor": "pointer", "margin-right": "10px"})
          .html("<b>Edit</b>")
-         .on("click", function() { editTrack(index); });
+         .on("click", function() { editTrack(originalIndex); });
       const deleteBtn = $("<span>")
          .css("cursor", "pointer")
          .html("<b>Delete</b>")
@@ -950,7 +960,7 @@ function displayTracks() {
             showConfirmModal(
                "Delete Track",
                `Are you sure you want to delete ${track.full_name}?`,
-               function() { deleteTrack(index); }
+               function() { deleteTrack(originalIndex); }
             );
          });
       actionsCell.append(editBtn).append(deleteBtn);

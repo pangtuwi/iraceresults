@@ -1,0 +1,42 @@
+[
+   {
+      "full_name": "Fuji International Speedway",
+      "short_name": "Fuji"
+   },
+   {
+      "full_name": "Red Bull Ring",
+      "short_name": "RBull"
+   },
+   {
+      "full_name": "Circuit de Spa-Francorchamps",
+      "short_name": "Spa"
+   },
+   {
+      "full_name": "Autodromo Enzo e Dino Ferrari - Imola",
+      "short_name": "Imola"
+   },
+   {
+      "full_name": "Circuit Zolder",
+      "short_name": "Thrux"
+   },
+   {
+      "full_name": "Daytona International Speedway",
+      "short_name": "Dayt"
+   },
+   {
+      "full_name": "WeatherTech Raceway Laguna Seca",
+      "short_name": "LagSeca"
+   },
+   {
+      "full_name": "Brands Hatch Circuit",
+      "short_name": "Brands"
+   },
+   {
+      "full_name": "Nürburgring Grand-Prix-Strecke",
+      "short_name": "NurbGP"
+   },
+   {
+      "full_name": "Monza No Chicane",
+      "short_name": "MonzaNC"
+   }
+]

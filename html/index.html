@@ -5,48 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iRaceResults</title>
+    <link rel="stylesheet" href="/style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
+            background: #2b2b2b;
         }
 
-        .container {
-            background-color: #2a2a2a;
-            padding: 50px 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            max-width: 950px;
-            width: 90%;
-        }
-
-        .racing-icon {
-            font-size: 48px;
+        .racing-icon-small {
+            font-size: 24px;
             margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .subtitle {
-            color: #aaa;
-            margin-bottom: 40px;
-            font-size: 16px;
         }
 
         .buttons-container {
@@ -54,7 +21,7 @@
             flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
-            margin-bottom: 20px;
+            padding: 20px;
         }
 
         .link-btn {
@@ -81,45 +48,22 @@
         .link-btn:active {
             transform: translateY(0);
         }
-
-        .info-box {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #1a1a1a;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
-        }
-
-        .info-box h3 {
-            color: #4CAF50;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-
-        .info-box p {
-            color: #ccc;
-            font-size: 14px;
-            line-height: 1.6;
-        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="racing-icon">🏁</div>
-        <h1>iRaceResults</h1>
-        <p class="subtitle">by Paul Williams</p>
+    <div class="title">
+        <span class="racing-icon-small">🏁</span>
+        iRaceResults - League Selection
+        <span style="float: right; font-size: 14px; margin-right: 20px;"><i>by Paul Williams</i></span>
+    </div>
 
-        <div id="league-buttons" class="buttons-container">
-            <!-- Buttons will be generated dynamically -->
-        </div>
+    <div class="subtitle">
+        <b>Select a League</b>
+    </div>
 
-        <div class="info-box">
-            <h3>iRacing League Results</h3>
-            <p>
-                iRacing League results calculation on node js server
-            </p>
-        </div>
+    <div id="league-buttons" class="buttons-container">
+        <!-- Buttons will be generated dynamically -->
     </div>
 
     <script>

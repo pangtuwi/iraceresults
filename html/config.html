@@ -48,6 +48,23 @@
    <div style="padding: 20px;">
       <form id="config-form">
          <div class="form-row">
+            <label for="league_name">League Name:</label>
+            <input type="text" id="league_name" name="league_name" maxlength="100">
+            <span class="help-text">The display name for this league</span>
+         </div>
+
+         <div class="form-row">
+            <label for="league_status">League Status:</label>
+            <select id="league_status" name="league_status">
+               <option value="0">Hidden</option>
+               <option value="1">Active</option>
+               <option value="2">Completed</option>
+               <option value="3">Archived</option>
+            </select>
+            <span class="help-text">0=Hidden (not in listings), 1=Active (visible & editable), 2=Completed (visible, read-only), 3=Archived (not visible)</span>
+         </div>
+
+         <div class="form-row">
             <label for="apply_drop_scores">Apply Drop Scores:</label>
             <select id="apply_drop_scores" name="apply_drop_scores">
                <option value="FALSE">FALSE</option>

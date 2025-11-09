@@ -2,3 +2,9 @@ data/
 .env
 node_modules/
 superusers.json
+
+# Testing
+coverage/
+tests/fixtures/*
+!tests/fixtures/.gitkeep
+*.test-backup.json

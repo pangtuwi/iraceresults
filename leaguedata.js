@@ -91,6 +91,19 @@ function getRounds(leagueID) {
  
 } //getRounds
 
+function getLeagueList() {
+   let leagueList = [];
+   for (const leagueID in cache) {
+      let thisLeague = {};
+      thisLeague.leagueID = leagueID;
+      thisLeague.leagueName = cache[leagueID].config.league_name;
+      leagueList.push(thisLeague);
+   }
+   return leagueList;
+} //getLeagueList 
+
+
+
 function getProtestableRounds(leagueID) {
    const rounds = cache[leagueID].rounds;
    var protestableRounds = [];
@@ -693,6 +706,7 @@ async function reCalculate(leagueID) {
 }
 
 exports.cache = cache;
+exports.getLeagueList = getLeagueList;
 exports.loadCache = loadCache;
 exports.updateCache = updateCache;
 exports.reCalculate = reCalculate;

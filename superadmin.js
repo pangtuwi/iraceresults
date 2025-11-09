@@ -19,15 +19,19 @@ router.get('/leagues', function (req, res) {
       const leagues = config.leagueIDs.map(leagueID => {
          const configPath = path.join(__dirname, 'data', leagueID, 'config.json');
          try {
+            // Clear the require cache to get fresh data
+            delete require.cache[require.resolve(configPath)];
             const configData = require(configPath);
             return {
                leagueID: leagueID,
-               leagueName: configData.league_name || leagueID
+               leagueName: configData.league_name || leagueID,
+               leagueStatus: configData.league_status !== undefined ? configData.league_status : 1
             };
          } catch (err) {
             return {
                leagueID: leagueID,
-               leagueName: leagueID
+               leagueName: leagueID,
+               leagueStatus: 1
             };
          }
       });
@@ -106,6 +110,40 @@ router.post('/deleteleague', async function (req, res) {
       res.json({ confirmation: "League removed from config (data directory preserved)" });
    } catch (error) {
       console.error("Error deleting league:", error);
+      res.status(500).json({ error: error.message });
+   }
+});
+
+// Update league status
+router.post('/updateleaguestatus', async function (req, res) {
+   const { leagueID, leagueStatus } = req.body;
+
+   if (!leagueID) {
+      return res.status(400).json({ error: "Missing leagueID" });
+   }
+
+   if (leagueStatus === undefined || leagueStatus === null) {
+      return res.status(400).json({ error: "Missing leagueStatus" });
+   }
+
+   try {
+      const configPath = path.join(__dirname, 'data', leagueID, 'config.json');
+      const configData = JSON.parse(await fs.readFile(configPath, 'utf8'));
+      configData.league_status = parseInt(leagueStatus);
+      await fs.writeFile(configPath, JSON.stringify(configData, null, 3));
+
+      // Clear the require cache for this config file
+      delete require.cache[require.resolve(configPath)];
+
+      // Update the leaguedata cache with the new status
+      const leaguedata = require('./leaguedata.js');
+      if (leaguedata.cache[leagueID] && leaguedata.cache[leagueID].config) {
+         leaguedata.cache[leagueID].config.league_status = parseInt(leagueStatus);
+      }
+
+      res.json({ confirmation: "League status updated successfully" });
+   } catch (error) {
+      console.error("Error updating league status:", error);
       res.status(500).json({ error: error.message });
    }
 });

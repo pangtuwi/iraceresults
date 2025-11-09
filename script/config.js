@@ -45,6 +45,7 @@ function populateForm(config) {
     document.getElementById('protest_open_after_hrs').value = config.protest_open_after_hrs || 0;
     document.getElementById('protest_open_for_hrs').value = config.protest_open_for_hrs || 0;
     document.getElementById('display_overall_table').value = config.display_overall_table || 0;
+    document.getElementById('DISCORD_WEBHOOK_URL').value = config.DISCORD_WEBHOOK_URL || '';
 }
 
 // Show status message
@@ -79,7 +80,8 @@ function saveConfig(event) {
         class_to_add_new_drivers_to: parseInt(document.getElementById('class_to_add_new_drivers_to').value),
         protest_open_after_hrs: parseInt(document.getElementById('protest_open_after_hrs').value),
         protest_open_for_hrs: parseInt(document.getElementById('protest_open_for_hrs').value),
-        display_overall_table: parseInt(document.getElementById('display_overall_table').value)
+        display_overall_table: parseInt(document.getElementById('display_overall_table').value),
+        DISCORD_WEBHOOK_URL: document.getElementById('DISCORD_WEBHOOK_URL').value.trim()
     };
 
     console.log("Saving config:", configData);

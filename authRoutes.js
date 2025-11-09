@@ -39,7 +39,13 @@ router.get('/success', function(req, res) {
    }
 
    const leagues = req.user.authorizedLeagues;
+   const isSuperAdmin = req.user.isSuperAdmin;
    let leagueLinks = '';
+
+   // Add super admin link if user is super admin
+   if (isSuperAdmin) {
+      leagueLinks += `<div style="margin: 10px 0;"><a href="/superadmin/" style="color: #fff; text-decoration: none; font-size: 18px; background: #ff6b00; padding: 10px 20px; display: inline-block; border-radius: 5px;">Super Admin</a></div>`;
+   }
 
    leagues.forEach(league => {
       leagueLinks += `<div style="margin: 10px 0;"><a href="/admin/${league}/" style="color: #fff; text-decoration: none; font-size: 18px; background: #4CAF50; padding: 10px 20px; display: inline-block; border-radius: 5px;">${league} Admin</a></div>`;
@@ -116,7 +122,8 @@ router.get('/status', function(req, res) {
          user: {
             email: req.user.email,
             displayName: req.user.displayName,
-            authorizedLeagues: req.user.authorizedLeagues
+            authorizedLeagues: req.user.authorizedLeagues,
+            isSuperAdmin: req.user.isSuperAdmin || false
          }
       });
    } else {

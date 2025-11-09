@@ -15,6 +15,7 @@ var session = require('express-session');
 //my app requirements
 var leaguedata = require('./leaguedata.js'); //was calc_league.js
 var admin = require('./admin.js');
+var superadmin = require('./superadmin.js');
 var protest = require('./protest.js');
 var register = require('./register.js');
 var logger = require('./logger.js');
@@ -29,8 +30,8 @@ var authConfig = {
    SESSION_SECRET: process.env.SESSION_SECRET || 'iraceresults-secret-change-this-in-production'
 };
 
-app.use(bodyParser.urlencoded({ extended: false })); //To parse URL encoded data
-app.use(bodyParser.json());//To parse json data
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' })); //To parse URL encoded data
+app.use(bodyParser.json({ limit: '50mb' }));//To parse json data with increased limit for image uploads
 app.use(cookieParser());//To Parse Cookies
 
 // Session middleware (must be before passport)
@@ -50,12 +51,14 @@ auth.initializePassport(app, authConfig);
 app.use(express.static('script'));
 app.use(express.static('html'));
 app.use(express.static('css'));
+app.use('/trackmaps', express.static('trackmaps'));
 
 // Authentication Routes
 app.use('/auth', authRoutes);
 
 // Custom Routes
 app.use('/admin', admin);
+app.use('/superadmin', superadmin);
 app.use('/:leagueid/protest', protest);
 app.use('/:leagueid/register', register);
 
@@ -169,6 +172,11 @@ app.get('/:leagueid/:route', function (req, res) {
 
          case "tables":
             res.redirect('/' + reqLeagueID);
+            break;
+
+         case "licence":
+            res.cookie('leagueid', reqLeagueID);
+            res.sendFile(path.join(__dirname, '/html/licence.html'));
             break;
 
          // Return league name
@@ -287,15 +295,14 @@ app.get('/:leagueid/:route', function (req, res) {
             break;
 
          case "penalties":
-            //res.cookie('leagueid', reqLeagueID);
-            //      res.cookie('leagueid', reqLeagueID);
             res.sendFile(path.join(__dirname, '/html/penalties.html'));
             break;
 
-   /*      case "irres":
-            res.sendFile(path.join(__dirname, '/html/irres.html'));
+         case "licencepoints":
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200);
+            res.end(JSON.stringify(leaguedata.cache[reqLeagueID].licencepoints));
             break;
-*/
 
          case "results":
             res.cookie('leagueid', reqLeagueID);
@@ -321,7 +328,11 @@ app.post('/:leagueid/:route', function (req, res) {
          console.log("Request body is ", req.body);
          const reqTrack = req.body.round_name;
          console.log("Requested track is ", reqTrack);
-         const availableTracks = ["Fuji", "RBull", "Spa", "Imola", "Thrux", "Dayt", "LagSeca", "Brands", "NurbGP, "];   
+
+         // Load tracks from tracks.json
+         const fs = require('fs');
+         const tracksData = JSON.parse(fs.readFileSync(path.join(__dirname, 'tracks.json'), 'utf8'));
+         const availableTracks = tracksData.map(track => track.short_name);
 
          //check if requested track is available (case insensitive)
          if (availableTracks.map(track => track.toLowerCase()).includes(reqTrack.toLowerCase())) {

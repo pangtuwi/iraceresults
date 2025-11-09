@@ -29,7 +29,9 @@ function getUserInfo() {
 
 function setMenuLinks(){
    $("#link_drivers").attr("href", "/admin/"+leagueID+"/drivers");
+   $("#link_classchanges").attr("href", "/admin/"+leagueID+"/classchanges_admin");
    $("#link_tables").attr("href", "/"+leagueID+"/");
+   $("#link_stewarding").attr("href", "/admin/"+leagueID+"/stewarding");
    $("#link_protests").attr("href", "/admin/"+leagueID+"/protests_admin");
    $("#link_penalty").attr("href", "/admin/"+leagueID+"/stewardspen");
    $("#link_recalculate").attr("href", "/admin/"+leagueID+"/recalc_admin");
@@ -38,6 +40,7 @@ function setMenuLinks(){
    $("#link_licencepoints").attr("href", "/admin/"+leagueID+"/licencepoints_admin");
    $("#link_session").attr("href", "/admin/"+leagueID+"/session");
    $("#link_log").attr("href", "/admin/"+leagueID+"/loglist");
+   $("#link_grid").attr("href", "/admin/"+leagueID+"/grid");
    $("#link_config").attr("href", "/admin/"+leagueID+"/config");
 }//setMenuLinks
 

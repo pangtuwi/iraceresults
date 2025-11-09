@@ -17,6 +17,24 @@ function loadAdminUsers(leagueID) {
    }
 }
 
+// Load super admin users
+function loadSuperUsers() {
+   try {
+      const filePath = path.join(__dirname, 'superusers.json');
+      const data = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(data);
+   } catch (error) {
+      console.error('Error loading super users:', error);
+      return [];
+   }
+}
+
+// Check if email is a super admin
+function isSuperAdmin(email) {
+   const superUsers = loadSuperUsers();
+   return superUsers.some(user => user.email.toLowerCase() === email.toLowerCase());
+}
+
 // Check if email is authorized for any league
 function isAuthorizedAdmin(email, leagueID = null) {
    const config = require('./appconfig.js');
@@ -69,13 +87,17 @@ function initializePassport(app, authConfig) {
          return done(null, false, { message: 'No email found in Google profile' });
       }
 
-      // Check if user is authorized
-      if (isAuthorizedAdmin(email)) {
+      // Check if user is authorized (either super admin or league admin)
+      const isSuperUser = isSuperAdmin(email);
+      const isLeagueAdmin = isAuthorizedAdmin(email);
+
+      if (isSuperUser || isLeagueAdmin) {
          const user = {
             id: profile.id,
             email: email,
             displayName: profile.displayName,
-            authorizedLeagues: getAuthorizedLeagues(email)
+            authorizedLeagues: getAuthorizedLeagues(email),
+            isSuperAdmin: isSuperUser
          };
          return done(null, user);
       } else {
@@ -144,11 +166,27 @@ function ensureAuthorizedForLeague(req, res, next) {
    res.status(403).send('You are not authorized to access this league');
 }
 
+// Middleware to check if user is a super admin
+function ensureSuperAdmin(req, res, next) {
+   if (!req.isAuthenticated()) {
+      return res.redirect('/auth/login');
+   }
+
+   if (req.user.isSuperAdmin) {
+      return next();
+   }
+
+   res.status(403).send('You are not authorized to access super admin functions');
+}
+
 module.exports = {
    initializePassport,
    ensureAuthenticated,
    ensureAuthorizedForLeague,
+   ensureSuperAdmin,
    isAuthorizedAdmin,
+   isSuperAdmin,
    getAuthorizedLeagues,
-   loadAdminUsers
+   loadAdminUsers,
+   loadSuperUsers
 };

@@ -53,7 +53,10 @@ router.get('/:leagueid', auth.ensureAuthorizedForLeague, function (req, res) {
    //console.log("Admin request for /:leagueid   :", req.params.leagueid);
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    if (config.leagueIDs.includes(reqLeagueiD)) {
-      //res.send('Found the league you specified : ' + reqLeagueiD + ' : will route to league admin');
+      // Redirect to URL with trailing slash to ensure relative URLs resolve correctly
+      if (!req.originalUrl.endsWith('/')) {
+         return res.redirect(301, req.originalUrl + '/');
+      }
 
       res.sendFile(path.join(__dirname, '/html/admin.html'));
 
@@ -164,6 +167,11 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.sendFile(path.join(__dirname, '/html/licencepoints_admin.html'));
          break;
 
+      case "classchanges_admin":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/classchanges_admin.html'));
+         break;
+
       case "session":
          res.cookie('leagueid', reqLeagueID);
          res.sendFile(path.join(__dirname, '/html/session.html'));
@@ -216,9 +224,21 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
          res.end(JSON.stringify(leaguedata.cache[reqLeagueID].licencepoints));
          break;
 
+      case "classchangesjson":
+         console.log("processing request for class changes");
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(leaguedata.cache[reqLeagueID].classchanges));
+         break;
+
       case "config":
          res.cookie('leagueid', reqLeagueID);
          res.sendFile(path.join(__dirname, '/html/config.html'));
+         break;
+
+      case "grid":
+         res.cookie('leagueid', reqLeagueID);
+         res.sendFile(path.join(__dirname, '/html/grid_admin.html'));
          break;
 
       case "configjson":
@@ -229,7 +249,7 @@ router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, r
 
       case "discordtablesupdated":
          console.log("Request received to notify Discord that tables have been updated");
-         discord.sendWebhookMessage("Tables have been updated : http://iraceresults.co.uk/" + reqLeagueID + "/").then((result) => {
+         discord.sendWebhookMessage(leaguedata.cache[reqLeagueID].config.DISCORD_WEBHOOK_URL, "Tables have been updated : http://iraceresults.co.uk/" + reqLeagueID + "/").then((result) => {
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify({ confirmation: "ok" }));
@@ -350,25 +370,22 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
 
       case "deletedriver":
          //var deleteDriver = JSON.parse(data);
-         const deleteDriver = req.body.cust_id;
-         if (deleteDriver === undefined) {
+         const deleteCustId = Number(req.body.cust_id);
+         if (deleteCustId === undefined || isNaN(deleteCustId)) {
             const errormsg = { error: "could not read driver info sent to server" };
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify(errormsg));
          } else {
-            deleteDriver.cust_id = Number(deleteDriver.cust_id);
-            const existsDriverIndex = leaguedata.cache[reqLeagueID].drivers.findIndex((driver) => driver.cust_id === deleteDriver.cust_id);
-            if (existsDriverIndex == -1) {
+            const deleteSuccess = leaguedata.deleteDriver(reqLeagueID, deleteCustId);
+            if (!deleteSuccess) {
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
                res.end(JSON.stringify({ error: "could not find matching driver in database" }));
             } else {
-               leaguedata.deleteDriver(reqLeagueID, deleteDriver.cust_id);
-
                res.setHeader("Content-Type", "application/json");
                res.writeHead(200);
-               res.end(JSON.stringify({ confirmation: "modified driver record saved successfuly" }));
+               res.end(JSON.stringify({ confirmation: "driver deleted successfully" }));
             }
          }
          break;
@@ -526,7 +543,7 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
          console.log("Discord Message Request Body : ", req.body);
          message = req.body.message;
          console.log("Discord Message Received : ", message);
-         discord.sendWebhookMessage(message).then((result) => {
+         discord.sendWebhookMessage(leaguedata.cache[reqLeagueID].config.DISCORD_WEBHOOK_URL, message).then((result) => {
             res.setHeader("Content-Type", "application/json");
             res.writeHead(200);
             res.end(JSON.stringify({ confirmation: "ok" }));
@@ -537,6 +554,131 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
                res.writeHead(500);
                res.end(JSON.stringify({ error: error.message }));
             });
+         break;
+
+      case "addclasschange":
+         const newClassChange = req.body;
+         console.log("Add class change request:", newClassChange);
+         if (!newClassChange.cust_id || !newClassChange.new_class_number || !newClassChange.change_from_round) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "Missing required fields" }));
+            return;
+         }
+         leaguedata.addClassChange(reqLeagueID, newClassChange);
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify({ confirmation: "Class change added successfully" }));
+         break;
+
+      case "updateclasschange":
+         const updatedClassChange = req.body;
+         console.log("Update class change request:", updatedClassChange);
+         if (updatedClassChange.index === undefined || !updatedClassChange.cust_id || !updatedClassChange.new_class_number || !updatedClassChange.change_from_round) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "Missing required fields" }));
+            return;
+         }
+         leaguedata.updateClassChange(reqLeagueID, updatedClassChange.index, updatedClassChange);
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify({ confirmation: "Class change updated successfully" }));
+         break;
+
+      case "deleteclasschange":
+         const deleteIndex = req.body.index;
+         console.log("Delete class change request, index:", deleteIndex);
+         if (deleteIndex === undefined) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "Missing index" }));
+            return;
+         }
+         leaguedata.deleteClassChange(reqLeagueID, deleteIndex);
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify({ confirmation: "Class change deleted successfully" }));
+         break;
+
+      case "griddata":
+         console.log("Processing request for grid data");
+
+         // Get all classes sorted by classnumber
+         const classes = leaguedata.cache[reqLeagueID].classes.slice().sort((a, b) => a.classnumber - b.classnumber);
+         const classtotals = leaguedata.cache[reqLeagueID].classtotals;
+         const fullresults = leaguedata.cache[reqLeagueID].fullresults;
+         const completedRounds = leaguedata.getCompletedRounds(reqLeagueID);
+         const scoring = leaguedata.cache[reqLeagueID].scoring;
+
+         // Find the Feature score type index
+         const featureScoreTypeIndex = scoring.findIndex(st => st.score_type === "Feature");
+
+         let gridData = [];
+         let gridPosition = 1;
+
+         // Determine previous Feature race
+         let previousFeatureRace = null;
+         if (completedRounds.length > 0) {
+            const lastRound = completedRounds[completedRounds.length - 1];
+            // Find Feature race in fullresults
+            previousFeatureRace = fullresults.find(result =>
+               result.round_no === lastRound.round_no &&
+               result.score_event === "Feature Race"
+            );
+         }
+
+         // Process each class
+         classes.forEach((classInfo, classIndex) => {
+            const classDrivers = classtotals[classIndex] || [];
+
+            // Separate drivers who participated and didn't participate in previous Feature
+            let participatedDrivers = [];
+            let nonParticipatedDrivers = [];
+
+            classDrivers.forEach(driver => {
+               let participated = false;
+
+               if (previousFeatureRace) {
+                  // Check if driver participated in previous Feature race
+                  const classResults = previousFeatureRace.results.find(r => r.classnumber === classInfo.classnumber);
+                  if (classResults) {
+                     participated = classResults.positions.some(pos => pos.cust_id === driver.ID);
+                  }
+               }
+
+               if (participated || !previousFeatureRace) {
+                  participatedDrivers.push(driver);
+               } else {
+                  nonParticipatedDrivers.push(driver);
+               }
+            });
+
+            // Sort both groups in reverse championship order (highest Pos value first)
+            participatedDrivers.sort((a, b) => b.Pos - a.Pos);
+            nonParticipatedDrivers.sort((a, b) => b.Pos - a.Pos);
+
+            // Combine: participated first, then non-participated
+            const orderedDrivers = [...participatedDrivers, ...nonParticipatedDrivers];
+
+            // Create grid entries
+            orderedDrivers.forEach((driver, index) => {
+               gridData.push({
+                  gridPosition: gridPosition++,
+                  classname: classInfo.classname,
+                  classnumber: classInfo.classnumber,
+                  classPosition: index + 1,
+                  driverName: driver.Name,
+                  championshipPosition: driver.Pos,
+                  championshipPoints: driver.Total,
+                  previousRaceParticipation: participatedDrivers.includes(driver) && previousFeatureRace ? "Yes" : previousFeatureRace ? "No" : "N/A"
+               });
+            });
+         });
+
+         res.setHeader("Content-Type", "application/json");
+         res.writeHead(200);
+         res.end(JSON.stringify(gridData));
          break;
 
       case "recalculate":
@@ -569,7 +711,7 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
          if (post_to_discord && post_to_discord === "TRUE") {
             const formattedDate = formatDateTimeReadable(recalcTimestamp);
 
-            discord.sendWebhookMessage("Tables updated at " + formattedDate + " by " + req.user.displayName +
+            discord.sendWebhookMessage(leaguedata.cache[reqLeagueID].config.DISCORD_WEBHOOK_URL, "Tables updated at " + formattedDate + " by " + req.user.displayName +
                " \n Updated tables  can be found at http://iraceresults.co.uk/" + reqLeagueID + "/" +
                (reason_for_recalculation && reason_for_recalculation.length > 0 ? ". \n Reason for Update: " + reason_for_recalculation : ". No reason given.")).catch((error) => {
                   logger.log("Error sending Discord notification of recalculation: " + error.message);

@@ -21,6 +21,7 @@ var register = require('./register.js');
 var logger = require('./logger.js');
 var auth = require('./auth.js');
 var authRoutes = require('./authRoutes.js');
+var protestMonitor = require('./protestMonitor.js');
 
 // Authentication configuration
 var authConfig = {
@@ -69,7 +70,10 @@ app.use('/:leagueid/register', register);
 
 
 // Preload and cache config and results for named league
-leaguedata.loadCache();
+leaguedata.loadCache().then(() => {
+   // Start protest monitoring after cache is loaded
+   protestMonitor.startMonitoring();
+});
 
 //Middleware
 app.use(function (req, res, next) {
@@ -80,11 +84,15 @@ app.use(function (req, res, next) {
 //Routes
 
 app.get('/cache', function (req, res) {
-   res.send(JSON.stringify(leaguedata.cache));
+   res.setHeader("Content-Type", "application/json");
+   res.writeHead(200);
+   res.end(JSON.stringify(leaguedata.cache));
 });
 
 app.get('/leaguelist', function (req, res) {
-   res.send(JSON.stringify(leaguedata.getLeagueList()));
+   res.setHeader("Content-Type", "application/json");
+   res.writeHead(200);  
+   res.end(JSON.stringify(leaguedata.getLeagueList()));
 });
 
 

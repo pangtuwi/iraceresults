@@ -8,5 +8,7 @@
    "protest_open_after_hrs": 24,
    "protest_open_for_hrs": 24,
    "display_overall_table": 0,
-   "DISCORD_WEBHOOK_URL": "https://discord.com/api/webhooks/1426319240822128734/E4AUg--UMCEoFSkN7WtGxdgBUiRdx-D-9oY7VMT9td7G61vI1ezkNmY7EXPoRTk_QsPm"
+   "league_status": 1,
+   "DISCORD_WEBHOOK_URL": "https://discord.com/api/webhooks/1426319240822128734/E4AUg--UMCEoFSkN7WtGxdgBUiRdx-D-9oY7VMT9td7G61vI1ezkNmY7EXPoRTk_QsPm",
+   "DISCORD_PROTEST_WEBHOOK_URL": ""
 }

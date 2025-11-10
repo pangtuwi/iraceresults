@@ -29,7 +29,8 @@
       width: 300px;
       padding: 5px;
    }
-   .form-row input[type="text"]#DISCORD_WEBHOOK_URL {
+   .form-row input[type="text"]#DISCORD_WEBHOOK_URL,
+   .form-row input[type="text"]#DISCORD_PROTEST_WEBHOOK_URL {
       width: 500px;
    }
    .help-text {
@@ -112,7 +113,13 @@
          <div class="form-row">
             <label for="DISCORD_WEBHOOK_URL">Discord Webhook URL:</label>
             <input type="text" id="DISCORD_WEBHOOK_URL" name="DISCORD_WEBHOOK_URL" placeholder="https://discord.com/api/webhooks/...">
-            <span class="help-text">Discord webhook URL for notifications (leave empty to disable)</span>
+            <span class="help-text">Discord webhook URL for general notifications (leave empty to disable)</span>
+         </div>
+
+         <div class="form-row">
+            <label for="DISCORD_PROTEST_WEBHOOK_URL">Discord Protest Webhook URL:</label>
+            <input type="text" id="DISCORD_PROTEST_WEBHOOK_URL" name="DISCORD_PROTEST_WEBHOOK_URL" placeholder="https://discord.com/api/webhooks/...">
+            <span class="help-text">Discord webhook URL for protest window notifications (leave empty to disable)</span>
          </div>
 
          <button type="submit" >Save Config</button>

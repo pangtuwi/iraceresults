@@ -1,9 +1,15 @@
 {
    "league_name": "NXTGen GT3 Season 7",
-   "apply_drop_scores" : "TRUE",
-   "no_drop_scores_rounds" : [4, 10],
-   "class_to_add_new_drivers_to" : 4, 
-   "protest_open_after_hrs" : 24,
+   "apply_drop_scores": "TRUE",
+   "no_drop_scores_rounds": [
+      4,
+      10
+   ],
+   "class_to_add_new_drivers_to": 4,
+   "protest_open_after_hrs": 24,
    "protest_open_for_hrs": 600,
-   "display_overall_table" : 0
+   "display_overall_table": 0,
+   "league_status": 2,
+   "DISCORD_WEBHOOK_URL": "",
+   "DISCORD_PROTEST_WEBHOOK_URL": ""
 }

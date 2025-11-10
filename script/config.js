@@ -30,6 +30,8 @@ function loadConfig() {
 
 // Populate form with config data
 function populateForm(config) {
+    document.getElementById('league_name').value = config.league_name || "";
+    document.getElementById('league_status').value = config.league_status !== undefined ? config.league_status : 1;
     document.getElementById('apply_drop_scores').value = config.apply_drop_scores || "FALSE";
 
     // Handle no_drop_scores_rounds array
@@ -71,6 +73,8 @@ function saveConfig(event) {
     }
 
     const configData = {
+        league_name: document.getElementById('league_name').value,
+        league_status: parseInt(document.getElementById('league_status').value),
         apply_drop_scores: document.getElementById('apply_drop_scores').value,
         no_drop_scores_rounds: noDropScoresArray,
         class_to_add_new_drivers_to: parseInt(document.getElementById('class_to_add_new_drivers_to').value),

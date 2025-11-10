@@ -309,6 +309,22 @@ function getTablesDisplayConfig(leagueID) {
    return displayConfig;
 } //getTablesDisplayConfig
 
+function getLeagueList() {
+   const leagues = [];
+   for (const leagueID in cache) {
+      const league_status = cache[leagueID].config.league_status !== undefined ? cache[leagueID].config.league_status : 1;
+      // Only include Active (1) and Completed (2) leagues
+      if (league_status === 1 || league_status === 2) {
+         leagues.push({
+            leagueID: leagueID,
+            league_name: cache[leagueID].config.league_name || leagueID,
+            league_status: league_status
+         });
+      }
+   }
+   return leagues;
+} //getLeagueList
+
 
 //Function to get filtered class totals (removes cust_id / ID)
 async function getFilteredClassTotals(reqLeagueID) {
@@ -735,3 +751,4 @@ exports.deleteClassChange = deleteClassChange;
 exports.updateConfig = updateConfig;
 exports.updateSessionID = updateSessionID;
 exports.getTablesDisplayConfig = getTablesDisplayConfig;
+exports.getLeagueList = getLeagueList;

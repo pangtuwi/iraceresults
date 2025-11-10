@@ -11,6 +11,23 @@
             background: #2b2b2b;
         }
 
+        .title {
+            text-align: left;
+            font-size: 28px;
+            
+            color: #fff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: left;
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 10px;
+            margin-top: 30px;
+        }
+
         .racing-icon-small {
             font-size: 24px;
             margin-bottom: 20px;
@@ -54,38 +71,92 @@
 <body>
     <div class="title">
         <span class="racing-icon-small">🏁</span>
-        iRaceResults - League Selection
+        <b>iRaceResults</b> &nbsp; <small> League Management and Tables display system for iRacing Leagues</small>
         <span style="float: right; font-size: 14px; margin-right: 20px;"><i>by Paul Williams</i></span>
     </div>
 
     <div class="subtitle">
-        <b>Select a League</b>
+        <b>Select a League below to display League Tables</b>
     </div>
 
-    <div id="league-buttons" class="buttons-container">
-        <!-- Buttons will be generated dynamically -->
+    <div style="max-width: 800px; margin: 0 10px; padding: 10px;">
+        <div id="active-leagues-section" style="margin-bottom: 40px;">
+            <h2 style="color: #4285f4; margin-bottom: 15px; font-size: 18px;">Active Leagues</h2>
+            <div id="active-leagues-list" style="background: #1a1a1a; padding: 20px; border-radius: 8px; min-height: 50px;">
+                <!-- Active leagues will be generated dynamically -->
+            </div>
+        </div>
+
+        <div id="completed-leagues-section">
+            <h2 style="color: #888; margin-bottom: 15px; font-size: 18px;">Completed Leagues</h2>
+            <div id="completed-leagues-list" style="background: #1a1a1a; padding: 20px; border-radius: 8px; min-height: 50px;">
+                <!-- Completed leagues will be generated dynamically -->
+            </div>
+        </div>
     </div>
 
     <script>
-        // Fetch available leagues from the server cache
-        fetch('/cache')
+        // Fetch available leagues from the server (filtered by status)
+        fetch('/leaguelist')
             .then(response => response.json())
-            .then(cache => {
-                const buttonsContainer = document.getElementById('league-buttons');
-                const leagueIDs = Object.keys(cache);
+            .then(leagues => {
+                const activeContainer = document.getElementById('active-leagues-list');
+                const completedContainer = document.getElementById('completed-leagues-list');
 
-                leagueIDs.forEach(leagueID => {
-                    const button = document.createElement('a');
-                    button.href = `./${leagueID}/`;
-                    button.className = 'link-btn';
-                    button.textContent = leagueID;
-                    buttonsContainer.appendChild(button);
-                });
+                // Separate leagues by status
+                const activeLeagues = leagues.filter(league => league.league_status === 1);
+                const completedLeagues = leagues.filter(league => league.league_status === 2);
+
+                // Display active leagues
+                if (activeLeagues.length === 0) {
+                    activeContainer.innerHTML = '<p style="color: #888; text-align: center;">No active leagues</p>';
+                } else {
+                    activeLeagues.forEach(league => {
+                        const link = document.createElement('a');
+                        link.href = `./${league.leagueID}/`;
+                        link.style.cssText = 'display: block; color: #4285f4; padding: 12px; margin: 5px 0; background: #2a2a2a; border-radius: 5px; text-decoration: none; font-size: 16px; transition: all 0.3s ease;';
+                        link.textContent = league.league_name;
+                        link.onmouseover = function() {
+                            this.style.background = '#357ae8';
+                            this.style.color = '#fff';
+                            this.style.paddingLeft = '20px';
+                        };
+                        link.onmouseout = function() {
+                            this.style.background = '#2a2a2a';
+                            this.style.color = '#4285f4';
+                            this.style.paddingLeft = '12px';
+                        };
+                        activeContainer.appendChild(link);
+                    });
+                }
+
+                // Display completed leagues
+                if (completedLeagues.length === 0) {
+                    completedContainer.innerHTML = '<p style="color: #888; text-align: center;">No completed leagues</p>';
+                } else {
+                    completedLeagues.forEach(league => {
+                        const link = document.createElement('a');
+                        link.href = `./${league.leagueID}/`;
+                        link.style.cssText = 'display: block; color: #888; padding: 12px; margin: 5px 0; background: #2a2a2a; border-radius: 5px; text-decoration: none; font-size: 16px; transition: all 0.3s ease;';
+                        link.textContent = league.league_name;
+                        link.onmouseover = function() {
+                            this.style.background = '#666';
+                            this.style.color = '#fff';
+                            this.style.paddingLeft = '20px';
+                        };
+                        link.onmouseout = function() {
+                            this.style.background = '#2a2a2a';
+                            this.style.color = '#888';
+                            this.style.paddingLeft = '12px';
+                        };
+                        completedContainer.appendChild(link);
+                    });
+                }
             })
             .catch(error => {
                 console.error('Error fetching leagues:', error);
-                document.getElementById('league-buttons').innerHTML =
-                    '<p style="color: #f44336;">Error loading leagues</p>';
+                document.getElementById('active-leagues-list').innerHTML =
+                    '<p style="color: #f44336; text-align: center;">Error loading leagues</p>';
             });
     </script>
 </body>

@@ -66,7 +66,7 @@ function displayLeagues() {
 
    if (leagues.length === 0) {
       const row = $("<div>").addClass("row");
-      row.append($("<div>").addClass("cell").attr("colspan", "3").text("No leagues found"));
+      row.append($("<div>").addClass("cell").attr("colspan", "4").text("No leagues found"));
       container.append(row);
       return;
    }
@@ -76,6 +76,21 @@ function displayLeagues() {
 
       row.append($("<div>").addClass("cell").text(league.leagueID));
       row.append($("<div>").addClass("cell").text(league.leagueName));
+
+      // Add league status dropdown
+      const statusCell = $("<div>").addClass("cell");
+      const statusSelect = $("<select>")
+         .css({"width": "150px", "padding": "5px"})
+         .append($("<option>").val(0).text("Hidden"))
+         .append($("<option>").val(1).text("Active"))
+         .append($("<option>").val(2).text("Completed"))
+         .append($("<option>").val(3).text("Archived"))
+         .val(league.leagueStatus !== undefined ? league.leagueStatus : 1)
+         .on("change", function() {
+            updateLeagueStatus(league.leagueID, $(this).val());
+         });
+      statusCell.append(statusSelect);
+      row.append(statusCell);
 
       const actionsCell = $("<div>").addClass("cell");
       const deleteBtn = $("<div>")
@@ -159,6 +174,29 @@ function deleteLeague(leagueID) {
    .catch(error => {
       console.error("Error deleting league:", error);
       showModal("Error", "Failed to delete league", "❌");
+   });
+}
+
+function updateLeagueStatus(leagueID, newStatus) {
+   fetch('/superadmin/updateleaguestatus', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ leagueID, leagueStatus: parseInt(newStatus) })
+   })
+   .then(res => res.json())
+   .then(data => {
+      if (data.confirmation) {
+         showModal("Success", "League status updated successfully", "✅");
+         loadLeagues();
+      } else if (data.error) {
+         showModal("Error", data.error, "❌");
+         loadLeagues(); // Reload to revert dropdown
+      }
+   })
+   .catch(error => {
+      console.error("Error updating league status:", error);
+      showModal("Error", "Failed to update league status", "❌");
+      loadLeagues(); // Reload to revert dropdown
    });
 }
 

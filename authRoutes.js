@@ -4,6 +4,7 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const path = require('path');
+const leaguedata = require('./leaguedata.js');
 
 // Login page
 router.get('/login', function(req, res) {
@@ -47,8 +48,20 @@ router.get('/success', function(req, res) {
       leagueLinks += `<div style="margin: 10px 0;"><a href="/superadmin/" style="color: #fff; text-decoration: none; font-size: 18px; background: #ff6b00; padding: 10px 20px; display: inline-block; border-radius: 5px;">Super Admin</a></div>`;
    }
 
+   // Filter out archived (status = 3) and hidden (status = 0) leagues
    leagues.forEach(league => {
-      leagueLinks += `<div style="margin: 10px 0;"><a href="/admin/${league}/" style="color: #fff; text-decoration: none; font-size: 18px; background: #4CAF50; padding: 10px 20px; display: inline-block; border-radius: 5px;">${league} Admin</a></div>`;
+      const leagueStatus = leaguedata.cache[league] && leaguedata.cache[league].config.league_status !== undefined
+         ? leaguedata.cache[league].config.league_status
+         : 1; // Default to Active if not set
+
+      // Only show Active (1) and Completed (2) leagues
+      if (leagueStatus === 1 || leagueStatus === 2) {
+         const leagueName = leaguedata.cache[league] && leaguedata.cache[league].config.league_name
+            ? leaguedata.cache[league].config.league_name
+            : league;
+         const statusBadge = leagueStatus === 2 ? ' <span style="font-size: 12px; background: #888; padding: 2px 6px; border-radius: 3px;">COMPLETED</span>' : '';
+         leagueLinks += `<div style="margin: 10px 0;"><a href="/admin/${league}/" style="color: #fff; text-decoration: none; font-size: 18px; background: #4CAF50; padding: 10px 20px; display: inline-block; border-radius: 5px;">${leagueName} Admin${statusBadge}</a></div>`;
+      }
    });
 
    res.send(`

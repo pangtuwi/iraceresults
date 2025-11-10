@@ -53,6 +53,13 @@ router.get('/:leagueid', auth.ensureAuthorizedForLeague, function (req, res) {
    //console.log("Admin request for /:leagueid   :", req.params.leagueid);
    const reqLeagueiD = req.params.leagueid.toUpperCase();
    if (config.leagueIDs.includes(reqLeagueiD)) {
+      // Check if league is archived (status = 3) and block access
+      const leagueStatus = leaguedata.cache[reqLeagueiD].config.league_status;
+      if (leagueStatus === 3) {
+         res.status(403).send('This league has been archived and is no longer accessible through the admin interface.');
+         return;
+      }
+
       // Redirect to URL with trailing slash to ensure relative URLs resolve correctly
       if (!req.originalUrl.endsWith('/')) {
          return res.redirect(301, req.originalUrl + '/');
@@ -67,6 +74,13 @@ router.get('/:leagueid', auth.ensureAuthorizedForLeague, function (req, res) {
 
 router.get('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
+
+   // Check if league is archived (status = 3) and block access
+   const leagueStatus = leaguedata.cache[reqLeagueID].config.league_status;
+   if (leagueStatus === 3) {
+      res.status(403).send('This league has been archived and is no longer accessible through the admin interface.');
+      return;
+   }
 
    switch (req.params.route) {
 
@@ -273,6 +287,14 @@ router.post('/', function (req, res) {
 
 router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, res) {
    const reqLeagueID = req.params.leagueid.toUpperCase();
+
+   // Check if league is archived (status = 3) and block access
+   const leagueStatus = leaguedata.cache[reqLeagueID].config.league_status;
+   if (leagueStatus === 3) {
+      res.status(403).json({ error: 'This league has been archived and is no longer accessible through the admin interface.' });
+      return;
+   }
+
    switch (req.params.route) {
 
       case "scoredevents":
@@ -684,6 +706,18 @@ router.post('/:leagueid/:route', auth.ensureAuthorizedForLeague, function (req, 
       case "recalculate":
          console.log("have been asked to recalculate");
          console.log("Recalculate Message Request Body : ", req.body);
+
+         // Check if league is completed (status = 2) and block recalculation
+         const leagueConfig = leaguedata.cache[reqLeagueID].config;
+         if (leagueConfig.league_status === 2) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(403);
+            res.end(JSON.stringify({
+               error: "Cannot recalculate a completed league. Please change the league status in the config to allow recalculation."
+            }));
+            break;
+         }
+
          const reason_for_recalculation = req.body.reason_for_recalculation;
          const post_to_discord = req.body.post_to_discord;
          const recalcTimestamp = new Date();

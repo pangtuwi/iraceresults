@@ -91,6 +91,7 @@ function getRounds(leagueID) {
  
 } //getRounds
 
+/*
 function getLeagueList() {
    let leagueList = [];
    for (const leagueID in cache) {
@@ -102,6 +103,7 @@ function getLeagueList() {
    return leagueList;
 } //getLeagueList 
 
+*/
 
 
 function getProtestableRounds(leagueID) {
@@ -717,6 +719,7 @@ async function reCalculate(leagueID) {
    } catch (e) {
       logger.log(e, 0, 0);
       console.error(e);
+      throw e; // Re-throw the error so it can be caught by calling code
    }
 
 }
@@ -751,4 +754,3 @@ exports.deleteClassChange = deleteClassChange;
 exports.updateConfig = updateConfig;
 exports.updateSessionID = updateSessionID;
 exports.getTablesDisplayConfig = getTablesDisplayConfig;
-exports.getLeagueList = getLeagueList;

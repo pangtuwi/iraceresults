@@ -1,0 +1,32 @@
+name: Fix DigitalOcean NPM
+
+on: workflow_dispatch
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      DO_HOST: ${{ secrets.DO_HOST }}
+      DO_USER: ${{ secrets.DO_USER }}
+      DO_PATH: ${{ secrets.DO_PATH }}
+
+    steps:
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add droplet to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "$DO_HOST" >> ~/.ssh/known_hosts
+
+      - name: Run  script on droplet
+        run: |
+          ssh "$DO_USER@$DO_HOST" "cd '$DO_PATH' && sudo chown -R \$USER:\$USER node_modules && ./restart.sh"

@@ -309,24 +309,42 @@ router.post('/uploadtrackmap', async function (req, res) {
 // Validate track maps
 router.get('/validate-trackmaps', async function (req, res) {
    try {
-      // 1. Get all track names used in rounds across all leagues
+      // 1. Get all track names used in active rounds across all active leagues
       const tracksUsedInRounds = new Map(); // Map<trackName, Set<leagueID>>
 
       for (const leagueID of config.leagueIDs) {
          try {
+            // Load league config to check status
+            const configPath = path.join(__dirname, 'data', leagueID, 'config.json');
+            const leagueConfig = JSON.parse(await fs.readFile(configPath, 'utf8'));
+
+            // Only check Active leagues (league_status = 1)
+            if (leagueConfig.league_status !== 1) {
+               continue;
+            }
+
             const roundsPath = path.join(__dirname, 'data', leagueID, 'rounds.json');
             const roundsData = JSON.parse(await fs.readFile(roundsPath, 'utf8'));
 
+            // Only check rounds that haven't been completed yet
+            const now = new Date();
             roundsData.forEach(round => {
                if (round.track_name) {
-                  if (!tracksUsedInRounds.has(round.track_name)) {
-                     tracksUsedInRounds.set(round.track_name, new Set());
+                  // Check if round is in the future or recent past (within 7 days)
+                  const roundDate = new Date(round.start_time);
+                  const daysSinceRound = (now - roundDate) / (1000 * 60 * 60 * 24);
+
+                  // Include rounds that are upcoming or happened within the last 7 days
+                  if (daysSinceRound < 7) {
+                     if (!tracksUsedInRounds.has(round.track_name)) {
+                        tracksUsedInRounds.set(round.track_name, new Set());
+                     }
+                     tracksUsedInRounds.get(round.track_name).add(leagueID);
                   }
-                  tracksUsedInRounds.get(round.track_name).add(leagueID);
                }
             });
          } catch (err) {
-            console.log(`Could not read rounds for league ${leagueID}:`, err.message);
+            console.log(`Could not read data for league ${leagueID}:`, err.message);
          }
       }
 

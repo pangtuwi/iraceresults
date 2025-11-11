@@ -1,0 +1,1 @@
+ssh "$DO_USER@$DO_HOST" "cd '$DO_PATH' && sudo chown -R \$USER:\$USER node_modules && ./restart.sh"

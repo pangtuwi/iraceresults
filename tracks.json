@@ -46,5 +46,9 @@
    {
       "full_name": "Silverstone",
       "short_name": "SilverS"
+   },
+   {
+      "full_name": "Brands Hatch Indy",
+      "short_name": "BrandsInd"
    }
 ]
